@@ -1,0 +1,32 @@
+// ============================================
+// Jonsoft Framework - 메인 SCSS 진입점
+// ============================================
+// _variables.scss는 nuxt.config의 additionalData로 전역 주입됨
+
+// CSS 변수 (전역 사용)
+:root {
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+}
+
+// Reset & Base
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: $font-size-base;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: $font-family-base;
+  line-height: $line-height-base;
+  color: var(--text-primary);
+}
