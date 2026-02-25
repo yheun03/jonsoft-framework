@@ -47,24 +47,7 @@ Vite, SCSS, Axios, Pinia, Nuxt 기반의 풀스택 프레임워크 개발 가이
 
 ### 사용법
 
-Vite 설정은 `nuxt.config.ts`의 `vite` 옵션으로 커스터마이징합니다:
-
-```ts
-// nuxt.config.ts
-export default defineNuxtConfig({
-  vite: {
-    css: {
-      preprocessorOptions: {
-        scss: {
-          additionalData: '@use "~/assets/scss/_variables.scss" as *;',
-        },
-      },
-    },
-    // 추가 Vite 플러그인
-    // plugins: [],
-  },
-})
-```
+Vite 설정은 `nuxt.config.ts`의 `vite` 옵션으로 커스터마이징합니다. SCSS는 각 파일에서 필요한 것만 `@use`로 임포트하는 방식을 권장합니다.
 
 ### 관련 명령어
 
@@ -87,16 +70,19 @@ npm run preview # 빌드 결과 미리보기
 ```
 assets/
 └── scss/
-    ├── _variables.scss   # 전역 변수 (색상, 간격, 폰트 등)
-    └── main.scss         # 메인 스타일 시트 (진입점)
+    ├── abstract/
+    │   └── _variables.scss   # 변수 (색상, 간격, 폰트 등)
+    └── main.scss             # 메인 스타일 시트 (진입점)
 ```
 
 ### 변수 사용
 
-`_variables.scss`에 정의된 변수는 `nuxt.config`의 `additionalData`로 모든 SCSS 파일에 자동 주입됩니다:
+각 파일에서 필요한 SCSS를 `@use`로 임포트합니다. `nuxt.config` 수정 없이 새 파일 추가가 가능합니다:
 
 ```scss
-// 컴포넌트에서 바로 사용 가능
+// 변수가 필요한 파일 상단에
+@use "~/assets/scss/abstract/variables" as *;
+
 .my-component {
   color: $color-primary;
   padding: $spacing-md;
@@ -104,7 +90,7 @@ assets/
 }
 ```
 
-### 주요 변수 (assets/scss/_variables.scss)
+### 주요 변수 (assets/scss/abstract/_variables.scss)
 
 | 변수 | 설명 |
 |------|------|
@@ -121,6 +107,8 @@ assets/
 </template>
 
 <style scoped lang="scss">
+@use "~/assets/scss/abstract/variables" as *;
+
 .card {
   padding: $spacing-md;
   border-radius: 8px;
@@ -179,7 +167,10 @@ await post('/users', { name: 'John' })
 `.env` 파일:
 
 ```
-NUXT_PUBLIC_API_BASE=https://api.example.com
+# 상대경로(기본): IP/포트 변경에 영향 없음
+NUXT_PUBLIC_API_BASE=/api
+# 외부 API 사용 시에만 절대경로
+# NUXT_PUBLIC_API_BASE=https://api.example.com
 ```
 
 ### 인터셉터 확장
@@ -338,7 +329,8 @@ jonsoft-framework/
 │   └── router.options.ts
 ├── assets/
 │   └── scss/
-│       ├── _variables.scss
+│       ├── abstract/
+│       │   └── _variables.scss
 │       └── main.scss
 ├── components/          # Vue 컴포넌트 (자동 임포트)
 ├── composables/         # useApi 등
@@ -368,7 +360,7 @@ jonsoft-framework/
 # 의존성 설치
 npm install
 
-# 개발 서버 실행 (http://localhost:3000)
+# 개발 서버 실행 (기본 http://localhost:3000, 포트 충돌 시 자동 변경)
 npm run dev
 
 # 프로덕션 빌드
@@ -383,7 +375,7 @@ npm run preview
 `.env` 파일을 생성하고 `.env.example`을 참고하여 설정합니다.
 
 ```
-NUXT_PUBLIC_API_BASE=http://localhost:3000/api
+NUXT_PUBLIC_API_BASE=/api
 ```
 
 ### 새 페이지 추가
