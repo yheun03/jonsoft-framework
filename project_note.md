@@ -368,6 +368,24 @@ npm run build
 
 # 빌드 결과 미리보기
 npm run preview
+
+# 캐시 삭제 (오류 발생 시)
+npm run clean
+```
+
+### 오류 해결 (Troubleshooting)
+
+다음 오류가 발생하면 개발 서버를 **완전히 종료**한 뒤 캐시를 삭제하고 재시작하세요:
+
+- `#internal/nuxt/paths` is not defined
+- `ENOENT: no such file or directory, open './assets/scss/_variables.scss'`
+
+> **참고**: `#app-manifest` 오류는 `nuxt.config`의 `experimental: { appManifest: false }`로 비활성화됨
+
+```bash
+# 1. 개발 서버 중지 (Ctrl+C)
+# 2. 캐시 삭제 후 재시작
+npm run clean && npm run dev
 ```
 
 ### 환경 변수

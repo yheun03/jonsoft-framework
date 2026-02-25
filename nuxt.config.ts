@@ -3,6 +3,9 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-02-25',
     devtools: { enabled: true },
 
+    // #app-manifest 오류 방지 (Nuxt 3.15+ app manifest 충돌)
+    experimental: { appManifest: false },
+
     modules: ['@pinia/nuxt'],
 
     css: ['~/assets/scss/main.scss'],

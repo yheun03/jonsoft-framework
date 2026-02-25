@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
+    "clean": "rm -rf .nuxt .output node_modules/.vite",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
