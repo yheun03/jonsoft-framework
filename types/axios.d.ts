@@ -1,15 +1,15 @@
 import type { AxiosInstance } from 'axios'
 
 declare module '#app' {
-  interface NuxtApp {
-    $axios: AxiosInstance
-  }
+    interface NuxtApp {
+        $axios: AxiosInstance
+    }
 }
 
 declare module 'vue' {
-  interface ComponentCustomProperties {
-    $axios: AxiosInstance
-  }
+    interface ComponentCustomProperties {
+        $axios: AxiosInstance
+    }
 }
 
-export {}
+export { }

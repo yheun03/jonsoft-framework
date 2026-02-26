@@ -6,28 +6,28 @@
 
 // CSS 변수 (전역 사용)
 :root {
-  --color-primary: #{$color-primary};
-  --color-secondary: #{$color-secondary};
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
+    --color-primary: #{$color-primary};
+    --color-secondary: #{$color-secondary};
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
 }
 
 // Reset & Base
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
-  font-size: $font-size-base;
-  -webkit-font-smoothing: antialiased;
+    font-size: $font-size-base;
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
-  font-family: $font-family-base;
-  line-height: $line-height-base;
-  color: var(--text-primary);
+    font-family: $font-family-base;
+    line-height: $line-height-base;
+    color: var(--text-primary);
 }
