@@ -33,6 +33,11 @@ export default defineEventHandler(() => {
                 label: '유저 목록',
                 to: '/users',
             },
+            {
+                id: '6',
+                label: '유저별 구매이력',
+                to: '/purchases',
+            },
         ],
     }
 })

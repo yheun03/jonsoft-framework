@@ -6,10 +6,13 @@
             <AppButton to="/button-demo" variant="primary" size="lg">
                 AppButton 데모 보기
             </AppButton>
-            <AppButton to="/users" variant="secondary" size="lg">
-                유저 목록 (AG Grid)
-            </AppButton>
-        </div>
+<AppButton to="/users" variant="secondary" size="lg">
+        유저 목록 (AG Grid)
+      </AppButton>
+      <AppButton to="/purchases" variant="outline" size="lg">
+        유저별 구매이력
+      </AppButton>
+    </div>
     </div>
 </template>
 

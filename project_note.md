@@ -334,7 +334,9 @@ jonsoft-framework/
 │       └── main.scss
 ├── components/          # Vue 컴포넌트 (자동 임포트)
 │   ├── AppButton.vue
-│   └── AppUserTable.vue # AG Grid 유저 테이블
+│   ├── AppButton.vue
+│   ├── AppUserTable.vue
+│   └── AppUserPurchasesTable.vue # 유저·구매이력 조인 테이블
 ├── composables/         # useApi 등
 │   └── useApi.ts
 ├── layouts/
@@ -344,7 +346,8 @@ jonsoft-framework/
 ├── pages/
 │   ├── index.vue
 │   ├── button-demo.vue
-│   └── users.vue        # 유저 목록 (AG Grid)
+│   ├── users.vue        # 유저 목록 (AG Grid)
+│   └── purchases.vue    # 유저별 구매이력 (조인)
 ├── plugins/
 │   └── axios.ts
 ├── stores/
@@ -421,6 +424,8 @@ NUXT_PUBLIC_API_BASE=/api
 |------|------|
 | `GET /api/links` | 링크 목록 |
 | `GET /api/users` | 유저 목록 (예제) |
+| `GET /api/users/:id/purchases` | 유저별 구매이력 |
+| `GET /api/users-with-purchases` | 유저·구매이력 조인 (전체) |
 
 ---
 
