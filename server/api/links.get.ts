@@ -28,6 +28,11 @@ export default defineEventHandler(() => {
                 to: 'https://pinia.vuejs.org',
                 newTab: true,
             },
+            {
+                id: '5',
+                label: '유저 목록',
+                to: '/users',
+            },
         ],
     }
 })

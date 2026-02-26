@@ -333,12 +333,18 @@ jonsoft-framework/
 │       │   └── _variables.scss
 │       └── main.scss
 ├── components/          # Vue 컴포넌트 (자동 임포트)
+│   ├── AppButton.vue
+│   └── AppUserTable.vue # AG Grid 유저 테이블
 ├── composables/         # useApi 등
 │   └── useApi.ts
 ├── layouts/
 │   └── default.vue
+├── data/
+│   └── users.json       # 유저 예제 데이터 (참고용)
 ├── pages/
-│   └── index.vue
+│   ├── index.vue
+│   ├── button-demo.vue
+│   └── users.vue        # 유저 목록 (AG Grid)
 ├── plugins/
 │   └── axios.ts
 ├── stores/
@@ -409,6 +415,13 @@ NUXT_PUBLIC_API_BASE=/api
 - **Axios**: `useApi()` 또는 `useNuxtApp().$axios`
 - **Nuxt 내장**: `useFetch()`, `$fetch()` (SSR 친화적)
 
+### API 엔드포인트
+
+| 경로 | 설명 |
+|------|------|
+| `GET /api/links` | 링크 목록 |
+| `GET /api/users` | 유저 목록 (예제) |
+
 ---
 
 ## 참고 링크
@@ -418,3 +431,4 @@ NUXT_PUBLIC_API_BASE=/api
 - [Pinia 문서](https://pinia.vuejs.org/)
 - [Axios 문서](https://axios-http.com/)
 - [Sass 문서](https://sass-lang.com/)
+- [AG Grid 문서](https://www.ag-grid.com/vue-data-grid/)

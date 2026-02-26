@@ -2,9 +2,14 @@
     <div class="home">
         <h1>Jonsoft Framework</h1>
         <p>Vite + SCSS + Axios + Pinia + Nuxt 기반 프레임워크</p>
-        <AppButton to="/button-demo" variant="primary" size="lg">
-            AppButton 데모 보기
-        </AppButton>
+<div class="buttons">
+      <AppButton to="/button-demo" variant="primary" size="lg">
+        AppButton 데모 보기
+      </AppButton>
+      <AppButton to="/users" variant="secondary" size="lg">
+        유저 목록 (AG Grid)
+      </AppButton>
+    </div>
     </div>
 </template>
 
@@ -17,9 +22,13 @@
     padding: 2rem;
     text-align: center;
 
-    .app-button {
-        margin-top: 1.5rem;
-    }
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+  }
 
     h1 {
         font-size: 2.5rem;
