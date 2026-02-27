@@ -13,8 +13,9 @@
     },
     "dependencies": {
         "@pinia/nuxt": "^0.5.4",
-        "ag-grid-community": "^33.3.2",
-        "ag-grid-vue3": "^33.3.2",
+"@ag-grid-community/locale": "^33.3.2",
+    "ag-grid-community": "^33.3.2",
+    "ag-grid-vue3": "^33.3.2",
         "axios": "^1.7.7",
         "nuxt": "^3.14.1593",
         "pinia": "^2.2.4",

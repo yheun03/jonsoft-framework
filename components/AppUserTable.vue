@@ -3,9 +3,15 @@
         <div class="app-user-table">
             <div v-if="loading" class="loading">로딩 중...</div>
             <div v-else-if="error" class="error">{{ error }}</div>
-            <ag-grid-vue v-else class="ag-theme-quartz" :row-data="users" :column-defs="columnDefs"
-                :default-col-def="defaultColDef" style="height: 400px; width: 100%" row-selection="multiple"
-                animate-rows />
+            <AppAgGrid
+                v-else
+                :row-data="users"
+                :column-defs="columnDefs"
+                :default-col-def="defaultColDef"
+                style="height: 400px; width: 100%"
+                row-selection="multiple"
+                animate-rows
+            />
         </div>
         <template #fallback>
             <div class="loading">테이블 로딩 중...</div>
@@ -14,13 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { AgGridVue } from 'ag-grid-vue3'
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
-import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-quartz.css'
-
-// AG Grid Community 모듈 등록
-ModuleRegistry.registerModules([AllCommunityModule])
 
 const { $axios } = useNuxtApp()
 

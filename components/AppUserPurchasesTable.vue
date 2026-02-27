@@ -8,9 +8,16 @@
                     <h2 class="user-name">{{ user.name }}의 구매이력</h2>
                     <p class="user-meta">{{ user.email }} · {{ user.department }}</p>
                     <div v-if="user.purchases.length === 0" class="empty">구매 이력이 없습니다.</div>
-                    <ag-grid-vue v-else class="ag-theme-quartz purchase-grid" :row-data="user.purchases"
-                        :column-defs="purchaseColumnDefs" :default-col-def="defaultColDef" :dom-layout="'autoHeight'"
-                        style="width: 100%" animate-rows />
+                    <AppAgGrid
+                        v-else
+                        class="purchase-grid"
+                        :row-data="user.purchases"
+                        :column-defs="purchaseColumnDefs"
+                        :default-col-def="defaultColDef"
+                        :dom-layout="'autoHeight'"
+                        style="width: 100%"
+                        animate-rows
+                    />
                 </section>
             </div>
         </div>
@@ -21,13 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { AgGridVue } from 'ag-grid-vue3'
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
-import 'ag-grid-community/styles/ag-grid.css'
-import 'ag-grid-community/styles/ag-theme-quartz.css'
-
-ModuleRegistry.registerModules([AllCommunityModule])
-
 const { $axios } = useNuxtApp()
 
 interface Purchase {
@@ -54,7 +54,7 @@ const error = ref('')
 const purchaseColumnDefs = [
     { field: 'productName', headerName: '상품명', filter: true, sortable: true },
     { field: 'quantity', headerName: '수량', width: 90 },
-    { field: 'amount', headerName: '금액', width: 120, valueFormatter: (params) => params.value != null ? Number(params.value).toLocaleString() + '원' : '' },
+    { field: 'amount', headerName: '금액', width: 120, valueFormatter: (params: { value?: unknown }) => params.value != null ? Number(params.value).toLocaleString() + '원' : '' },
     { field: 'status', headerName: '상태', width: 100, filter: true },
     { field: 'purchasedAt', headerName: '구매일', width: 120 },
 ]
