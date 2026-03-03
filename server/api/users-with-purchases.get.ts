@@ -6,9 +6,9 @@
 import { USERS, PURCHASES } from '../utils/purchase-data'
 
 export default defineEventHandler(() => {
-  const data = USERS.map((user) => ({
-    ...user,
-    purchases: PURCHASES[user.id] ?? [],
-  }))
-  return { data }
+    const data = USERS.map((user) => ({
+        ...user,
+        purchases: PURCHASES[user.id] ?? [],
+    }))
+    return { data }
 })
