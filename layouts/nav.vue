@@ -1,7 +1,7 @@
 <template>
     <nav class="layout-nav" aria-label="Sidebar navigation">
         <div class="layout-nav-header">
-            <h1>Jonsoft Framework</h1>
+            <div class="nav-logo" aria-hidden="true" v-html="logoSvg" />
         </div>
 
         <div class="layout-nav-body">
@@ -10,7 +10,7 @@
                     v-for="menu in menuTree"
                     :key="menu.id"
                     :item="menu"
-                    :get-icon-comp="getIconComp"
+                    :get-icon-svg="getIconSvg"
                 />
             </ul>
         </div>
@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts">
-import type { Component } from 'vue'
 import PatternNavItem from '@/components/patterns/PatternNavItem.vue'
 import { MENUS } from '~/server/utils/menu-data'
-import TempIcon from '~/assets/icons/temp.svg?component'
+import TempIconSvg from '@/assets/icons/temp.svg?raw'
+import LogoIconSvg from '@/assets/icons/logo.svg?raw'
 
 type Menu = {
     id: string
@@ -76,12 +76,15 @@ function buildMenuTreeAndSort(items: readonly Menu[]): Menu[] {
 
 const menuTree = computed(() => buildMenuTreeAndSort(MENUS as unknown as Menu[]))
 
-const ICON_COMPONENTS: Record<string, Component> = {
-    temp: TempIcon,
+const ICON_SVGS: Record<string, string> = {
+    temp: TempIconSvg,
+    logo: LogoIconSvg,
 }
 
-function getIconComp(icon?: string): Component | null {
+const logoSvg = ICON_SVGS.logo
+
+function getIconSvg(icon?: string): string | null {
     if (!icon) return null
-    return ICON_COMPONENTS[icon] ?? null
+    return ICON_SVGS[icon] ?? null
 }
 </script>

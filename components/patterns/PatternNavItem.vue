@@ -11,23 +11,45 @@
                 ▾
             </button>
             <!-- 링크(이동) -->
-            <component :is="item.newTab ? 'a' : NuxtLinkComp" v-bind="linkProps(item)" class="nav-link" role="menuitem"
-                :aria-haspopup="hasChildren ? true : undefined" :aria-expanded="hasChildren ? open : undefined">
-                <component v-if="getIconComp(item.icon)" :is="getIconComp(item.icon)" class="nav-icon"
-                    aria-hidden="true" />
+            <component
+                :is="item.newTab ? 'a' : NuxtLinkComp"
+                v-bind="linkProps(item)"
+                class="nav-link"
+                role="menuitem"
+                :aria-haspopup="hasChildren ? true : undefined"
+                :aria-expanded="hasChildren ? open : undefined"
+            >
+                <span
+                    v-if="getIconSvg(item.icon)"
+                    class="nav-icon"
+                    aria-hidden="true"
+                    v-html="getIconSvg(item.icon)"
+                />
                 <span class="nav-label">{{ item.label }}</span>
             </component>
         </div>
 
         <!-- 서브 메뉴 -->
-        <ul v-if="hasChildren" :id="submenuId" class="nav-sublist" role="menu" v-show="open"
-            :aria-label="`${item.label} submenu`">
-            <PatternNavItem v-for="child in item.children" :key="child.id" :item="child" :get-icon-comp="getIconComp" />
+        <ul
+            v-if="hasChildren"
+            :id="submenuId"
+            class="nav-sublist"
+            role="menu"
+            v-show="open"
+            :aria-label="`${item.label} submenu`"
+        >
+            <PatternNavItem
+                v-for="child in item.children"
+                :key="child.id"
+                :item="child"
+                :get-icon-svg="getIconSvg"
+            />
         </ul>
     </li>
 </template>
 
 <script setup lang="ts">
+
 type Menu = {
     id: string
     label: string
@@ -41,7 +63,7 @@ type Menu = {
 
 const props = defineProps<{
     item: Menu
-    getIconComp: (icon?: string) => unknown
+    getIconSvg: (icon?: string) => string | null
 }>()
 
 const NuxtLinkComp = resolveComponent('NuxtLink')

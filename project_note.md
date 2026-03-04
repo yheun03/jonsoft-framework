@@ -510,29 +510,44 @@ NUXT_PUBLIC_API_BASE=/api
   - 렌더링 컴포넌트: `components/patterns/PatternNavItem.vue` (재귀)
 - **API**: `server/api/menus.get.ts`에서 `GET /api/menus`로 반환합니다.
 
-#### SVG를 컴포넌트처럼 사용하기
+#### SVG 아이콘 렌더링 방식 (`?raw` + `v-html`)
 
-`AppSelect`처럼 SVG 자체를 Vue 컴포넌트로 렌더링하기 위해 `vite-svg-loader`를 사용합니다.
+- **아이콘 자산 위치**:
+  - 로고: `assets/icons/logo.svg`
+  - 메뉴 아이콘 예시: `assets/icons/temp.svg`
 
-- **설치**:
-
-```bash
-npm install -D vite-svg-loader
-```
-
-- **Nuxt 설정**: `nuxt.config.ts`의 Vite plugins에 등록합니다.
-
-- **사용 예시**:
+- **SVG 문자열로 import**:
 
 ```ts
-import TempIcon from '~/assets/icons/temp.svg?component'
+import TempIconSvg from '~/assets/icons/temp.svg?raw'
+import LogoIconSvg from '~/assets/icons/logo.svg?raw'
+
+const ICON_SVGS = {
+  temp: TempIconSvg,
+  logo: LogoIconSvg,
+}
 ```
+
+- **레이아웃에서 로고 렌더링 (`layouts/nav.vue`)**:
 
 ```vue
-<component :is="TempIcon" class="nav-icon" aria-hidden="true" />
+<div class="layout-nav-header">
+  <div class="nav-logo" aria-hidden="true" v-html="logoSvg" />
+</div>
 ```
 
-> **아이콘 매핑 방식**: 메뉴 데이터의 `icon`(예: `"temp"`)을 키로 하여, 코드에서 `{ temp: TempIcon }`처럼 컴포넌트를 매핑해 렌더링합니다.
+- **메뉴 아이콘 렌더링 (`PatternNavItem.vue`)**:
+
+```vue
+<span
+  v-if="getIconSvg(item.icon)"
+  class="nav-icon"
+  aria-hidden="true"
+  v-html="getIconSvg(item.icon)"
+/>
+```
+
+> **매핑 규칙**: 메뉴 데이터의 `icon` 값(예: `"temp"`, `"logo"`)을 키로 사용해, 코드에서 `ICON_SVGS[icon]`으로 SVG 문자열을 찾아 `v-html`로 인라인 렌더링합니다.
 
 ---
 
