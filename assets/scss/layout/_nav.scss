@@ -14,6 +14,12 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 2px;
 
+    .nav-link{
+        span{
+            @include b3_rg;
+            color: $gray-0;
+        }
+    }
 }
