@@ -1,4 +1,4 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+// nuxt.config.ts
 export default defineNuxtConfig({
     devtools: { enabled: true },
 
@@ -15,6 +15,10 @@ export default defineNuxtConfig({
                 scss: {
                     // abstract/variables 등 상대 경로가 assets/scss 기준으로 해석됨
                     loadPaths: ['assets/scss'],
+
+                    // ✅ 실무에서 가장 많이 쓰는 “전역 주입”
+                    // 모든 scss에서 variables/mixins/functions를 import 없이 사용
+                    additionalData: `@use "abstract/variables" as *;`,
                 },
             },
         },
@@ -22,7 +26,7 @@ export default defineNuxtConfig({
 
     runtimeConfig: {
         public: {
-            apiBase: '/api', // 상대경로 - IP/포트 변경에 영향 없음
+            apiBase: '/api',
         },
     },
 })

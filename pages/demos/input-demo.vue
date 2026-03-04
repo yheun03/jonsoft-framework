@@ -38,7 +38,7 @@ function onSave() {
     if (!form.userPw.trim()) return alert('userPw를 입력해주세요.')
 
     auth.save({ userId: form.userId.trim(), userPw: form.userPw })
-    alert('저장 완료 (localStorage)')
+    alert('저장 완료 (sessionStorage)')
 }
 
 function onClear() {

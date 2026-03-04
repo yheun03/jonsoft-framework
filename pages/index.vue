@@ -3,10 +3,10 @@
         <h1>Jonsoft Framework</h1>
         <p>Vite + SCSS + Axios + Pinia + Nuxt 기반 프레임워크</p>
         <div class="buttons">
-            <AppButton to="/button-demo" variant="primary" size="lg">
+            <AppButton to="/demos/button-demo" variant="primary" size="lg">
                 AppButton 데모 보기
             </AppButton>
-            <AppButton to="/input-demo" variant="primary" size="lg">
+            <AppButton to="/demos/input-demo" variant="primary" size="lg">
                 AppInput 데모 보기
             </AppButton>
             <AppButton to="/users" variant="secondary" size="lg">

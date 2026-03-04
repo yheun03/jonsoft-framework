@@ -320,43 +320,119 @@ definePageMeta({
 ## 7. 프로젝트 구조
 
 ```
-jonsoft-framework/
-├── app.vue              # 루트 컴포넌트
-├── nuxt.config.ts       # Nuxt 설정
-├── package.json
-├── tsconfig.json
-├── app/
-│   └── router.options.ts
-├── assets/
-│   └── scss/
-│       ├── abstract/
-│       │   └── _variables.scss
-│       └── main.scss
-├── components/          # Vue 컴포넌트 (자동 임포트)
-│   ├── AppButton.vue
-│   ├── AppButton.vue
-│   ├── AppUserTable.vue
-│   └── AppUserPurchasesTable.vue # 유저·구매이력 조인 테이블
-├── composables/         # useApi 등
-│   └── useApi.ts
-├── layouts/
-│   └── default.vue
-├── data/
-│   └── users.json       # 유저 예제 데이터 (참고용)
-├── pages/
-│   ├── index.vue
-│   ├── button-demo.vue
-│   ├── users.vue        # 유저 목록 (AG Grid)
-│   └── purchases.vue    # 유저별 구매이력 (조인)
-├── plugins/
-│   └── axios.ts
-├── stores/
-│   └── example.ts
-├── types/
-│   └── axios.d.ts
-├── .env.example
-├── .gitignore
-└── project_note.md      # 본 문서
+JONSOFT-FRAMEWORK
+├─ app/
+│  └─ router.options.ts
+
+├─ assets/
+│  └─ scss/
+│     ├─ abstract/               # 디자인 토큰/함수/믹스인
+│     │  ├─ _variables.scss      # color, spacing, typography, z-index...
+│     │  ├─ _mixins.scss         # media, ellipsis, safe-area...
+│     │  ├─ _functions.scss      # rem(), color-get()...
+│     │  └─ _index.scss          # abstract 진입점(모아서 forward)
+│     ├─ base/                   # reset, typography, global
+│     │  ├─ _reset.scss
+│     │  ├─ _typography.scss
+│     │  ├─ _utilities.scss      # .sr-only, .ellipsis, .container 등
+│     │  └─ _index.scss
+│     ├─ layout/                 # header/footer/grid/page frame
+│     │  ├─ _grid.scss
+│     │  ├─ _header.scss
+│     │  ├─ _footer.scss
+│     │  └─ _index.scss
+│     ├─ components/             # “전역 공통 UI” 스타일(필요시)
+│     │  ├─ _button.scss
+│     │  ├─ _input.scss
+│     │  └─ _index.scss
+│     ├─ pages/                  # 페이지 전용 스타일(선택)
+│     │  ├─ _users.scss
+│     │  └─ _index.scss
+│     └─ main.scss               # 단 하나의 진입점
+
+├─ components/
+│  ├─ base/                      # 디자인 시스템 기본 컴포넌트
+│  │  ├─ AppButton.vue
+│  │  ├─ AppInput.vue
+│  │  └─ AppSelect.vue
+│  ├─ data/                      # 데이터 표시(테이블/카드/리스트)
+│  │  ├─ AppAgGrid.vue
+│  │  └─ AppTable.vue
+│  ├─ modules/                   # 도메인(업무) 단위 조합 컴포넌트
+│  │  ├─ user/
+│  │  │  ├─ UserTable.vue
+│  │  │  └─ UserPurchasesTable.vue
+│  │  └─ purchase/
+│  │     └─ PurchaseSummary.vue
+│  └─ layout/                    # 레이아웃 전용 컴포넌트
+│     ├─ AppHeader.vue
+│     └─ AppSidebar.vue
+
+├─ composables/                  # UI/상태/유틸성 훅
+│  ├─ useApi.ts                  # 공통 fetch wrapper(또는 axios wrapper)
+│  ├─ useToast.ts
+│  └─ useModal.ts
+
+├─ plugins/
+│  ├─ axios.ts                   # axios 인스턴스 + interceptor
+│  └─ ag-grid.client.ts
+
+├─ services/                     # API “도메인 레이어”
+│  ├─ user.service.ts
+│  ├─ purchase.service.ts
+│  └─ link.service.ts
+
+├─ repositories/                 # (선택) data access 계층(서비스보다 더 하위)
+│  └─ user.repository.ts
+
+├─ stores/
+│  ├─ auth.ts
+│  └─ user.ts                    # (선택) Pinia store
+
+├─ utils/
+│  ├─ format.ts                  # number/date/string format
+│  ├─ guard.ts                   # type guard, assert
+│  └─ dom.ts                     # scroll lock 등
+
+├─ constants/
+│  ├─ api.ts                     # endpoint 상수
+│  ├─ routes.ts
+│  └─ ui.ts
+
+├─ types/
+│  ├─ api/                       # API DTO/Response 타입
+│  │  ├─ user.ts
+│  │  └─ purchase.ts
+│  ├─ ui/                        # 컴포넌트/토큰 타입
+│  │  └─ theme.ts
+│  └─ global/                    # global .d.ts
+│     ├─ axios.d.ts
+│     └─ ag-grid.d.ts
+
+├─ pages/
+│  ├─ index.vue
+│  ├─ users.vue
+│  ├─ purchases.vue
+│  └─ demos/
+│     ├─ button-demo.vue
+│     └─ input-demo.vue
+
+├─ layouts/
+│  └─ default.vue
+
+├─ server/
+│  ├─ api/                       # mock/bff
+│  │  ├─ users.get.ts
+│  │  ├─ users-with-purchases.get.ts
+│  │  ├─ links.get.ts
+│  │  └─ users/[id]/purchases.get.ts
+│  └─ utils/
+│     └─ purchase-data.ts
+
+├─ app.vue
+├─ nuxt.config.ts
+├─ package.json
+└─ project_note.md
 ```
 
 ---

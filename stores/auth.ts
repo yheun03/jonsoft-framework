@@ -10,8 +10,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     function hydrate() {
         if (!import.meta.client) return
-        userId.value = localStorage.getItem(KEY_USER_ID) ?? ''
-        userPw.value = localStorage.getItem(KEY_USER_PW) ?? ''
+        userId.value = sessionStorage.getItem(KEY_USER_ID) ?? ''
+        userPw.value = sessionStorage.getItem(KEY_USER_PW) ?? ''
     }
 
     function save(payload: { userId: string; userPw: string }) {
@@ -19,13 +19,13 @@ export const useAuthStore = defineStore('auth', () => {
         userPw.value = payload.userPw
 
         if (!import.meta.client) return
-        localStorage.setItem(KEY_USER_ID, payload.userId)
-        localStorage.setItem(KEY_USER_PW, payload.userPw)
+        sessionStorage.setItem(KEY_USER_ID, payload.userId)
+        sessionStorage.setItem(KEY_USER_PW, payload.userPw)
 
         // ✅ 디버깅용 (잘 저장됐는지 바로 확인)
         console.log('[auth.save] saved', {
-            [KEY_USER_ID]: localStorage.getItem(KEY_USER_ID),
-            [KEY_USER_PW]: localStorage.getItem(KEY_USER_PW),
+            [KEY_USER_ID]: sessionStorage.getItem(KEY_USER_ID),
+            [KEY_USER_PW]: sessionStorage.getItem(KEY_USER_PW),
         })
     }
 
@@ -34,8 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
         userPw.value = ''
 
         if (!import.meta.client) return
-        localStorage.removeItem(KEY_USER_ID)
-        localStorage.removeItem(KEY_USER_PW)
+        sessionStorage.removeItem(KEY_USER_ID)
+        sessionStorage.removeItem(KEY_USER_PW)
     }
 
     return { userId, userPw, hydrate, save, clear }

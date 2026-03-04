@@ -7,13 +7,13 @@
 
 <script setup lang="ts">
 const A_PATH = '/input-demo'
-const B_PATH = '/index'
+const B_PATH = './'
 
 const router = useRouter()
 
 onMounted(() => {
-    // SSR에서는 localStorage 접근 불가 -> 클라이언트에서만 실행
-    const userId = localStorage.getItem('demo_userId')?.trim() ?? ''
+    // SSR에서는 sessionStorage 접근 불가 -> 클라이언트에서만 실행
+    const userId = sessionStorage.getItem('demo_userId')?.trim() ?? ''
 
     router.replace(userId ? B_PATH : A_PATH)
 })

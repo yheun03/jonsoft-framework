@@ -12,7 +12,6 @@
 
             <button v-if="clearable && !disabled && !readonly && String(modelValue ?? '').length > 0" type="button"
                 class="app-input__clear" aria-label="Clear" @click="onClear">
-                ×
             </button>
         </div>
 
