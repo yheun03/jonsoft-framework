@@ -1,37 +1,24 @@
 <template>
-    <div class="users-page">
-        <h1>유저 목록</h1>
-        <p class="desc">API를 통해 불러온 유저 정보를 AG Grid로 표시합니다.</p>
-        <AppUserTable />
-        <div class="actions">
-            <AppButton to="/" variant="outline" size="sm">홈으로</AppButton>
-        </div>
+    <div class="page-users">
+        <h1>Users</h1>
+
+        <div v-if="pending">loading...</div>
+
+        <ul v-else>
+            <li v-for="u in users" :key="u.id">
+                {{ u.name }} <small v-if="u.email">({{ u.email }})</small>
+            </li>
+        </ul>
     </div>
 </template>
 
 <script setup lang="ts">
+import { userService } from '@/services/user.service'
+import type { User } from '@/types/api/user'
+
+const { data: users, pending } = await useAsyncData<User[]>(
+    'users',
+    () => userService.getUsers(),
+    { default: () => [] }
+)
 </script>
-
-<style scoped lang="scss">
-@use "abstract/variables" as *;
-
-.users-page {
-    padding: $spacing-lg;
-    max-width: 1200px;
-    margin: 0 auto;
-
-    h1 {
-        font-size: 2rem;
-        margin-bottom: $spacing-sm;
-    }
-
-    .desc {
-        color: var(--text-secondary);
-        margin-bottom: $spacing-xl;
-    }
-
-    .actions {
-        margin-top: $spacing-xl;
-    }
-}
-</style>

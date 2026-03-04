@@ -3,16 +3,16 @@
  * $axios 플러그인을 활용한 래퍼
  */
 export const useApi = () => {
-    const { $axios } = useNuxtApp()
+    const { $api } = useNuxtApp()
 
     return {
         get: <T>(url: string, config?: object) =>
-            $axios.get<T>(url, config),
+            $api.get<T>(url, config),
         post: <T>(url: string, data?: object, config?: object) =>
-            $axios.post<T>(url, data, config),
+            $api.post<T>(url, data, config),
         put: <T>(url: string, data?: object, config?: object) =>
-            $axios.put<T>(url, data, config),
+            $api.put<T>(url, data, config),
         delete: <T>(url: string, config?: object) =>
-            $axios.delete<T>(url, config),
+            $api.delete<T>(url, config),
     }
 }
