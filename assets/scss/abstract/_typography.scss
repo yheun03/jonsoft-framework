@@ -1,0 +1,150 @@
+@use "../abstract/variables" as *;
+
+/* Weight */
+$w-sb: 600;
+$w-rg: 400;
+$w-lt: 300;
+
+/* Letter Spacing (-2.5%) */
+$ls-tight: -0.025em;
+
+/* ----------------------------------------
+ * Token helper (선택)
+ * ---------------------------------------- */
+@function typo($size, $lh, $weight) {
+    @return (font-family: $font-family-base,
+        font-size: $size,
+        line-height: $lh,
+        font-weight: $weight,
+        letter-spacing: $ls-tight );
+}
+
+@mixin apply-typo($t) {
+    font-family: map-get($t, font-family);
+    font-size: map-get($t, font-size);
+    line-height: map-get($t, line-height);
+    font-weight: map-get($t, font-weight);
+    letter-spacing: map-get($t, letter-spacing);
+}
+
+/* ----------------------------------------
+ * Display (D1~D6)
+ * ---------------------------------------- */
+$D1_SB: typo(96px, 120px, $w-sb);
+$D1_RG: typo(96px, 120px, $w-rg);
+$D1_LT: typo(96px, 120px, $w-lt);
+
+$D2_SB: typo(88px, 114px, $w-sb);
+$D2_RG: typo(88px, 114px, $w-rg);
+$D2_LT: typo(88px, 114px, $w-lt);
+
+$D3_SB: typo(80px, 100px, $w-sb);
+$D3_RG: typo(80px, 100px, $w-rg);
+$D3_LT: typo(80px, 100px, $w-lt);
+
+$D4_SB: typo(72px, 90px, $w-sb);
+$D4_RG: typo(72px, 90px, $w-rg);
+$D4_LT: typo(72px, 90px, $w-lt);
+
+$D5_SB: typo(64px, 80px, $w-sb);
+$D5_RG: typo(64px, 80px, $w-rg);
+$D5_LT: typo(64px, 80px, $w-lt);
+
+$D6_SB: typo(56px, 72px, $w-sb);
+$D6_RG: typo(56px, 72px, $w-rg);
+$D6_LT: typo(56px, 72px, $w-lt);
+
+/* ----------------------------------------
+ * Headline (H1~H6)
+ * ---------------------------------------- */
+$H1_SB: typo(48px, 62px, $w-sb);
+$H1_RG: typo(48px, 62px, $w-rg);
+$H1_LT: typo(48px, 62px, $w-lt);
+
+$H2_SB: typo(40px, 52px, $w-sb);
+$H2_RG: typo(40px, 52px, $w-rg);
+$H2_LT: typo(40px, 52px, $w-lt);
+
+$H3_SB: typo(32px, 42px, $w-sb);
+$H3_RG: typo(32px, 42px, $w-rg);
+$H3_LT: typo(32px, 42px, $w-lt);
+
+$H4_SB: typo(28px, 38px, $w-sb);
+$H4_RG: typo(28px, 38px, $w-rg);
+$H4_LT: typo(28px, 38px, $w-lt);
+
+$H5_SB: typo(24px, 34px, $w-sb);
+$H5_RG: typo(24px, 34px, $w-rg);
+$H5_LT: typo(24px, 34px, $w-lt);
+
+$H6_SB: typo(20px, 28px, $w-sb);
+$H6_RG: typo(20px, 28px, $w-rg);
+$H6_LT: typo(20px, 28px, $w-lt);
+
+/* ----------------------------------------
+ * Title (T1~T5)
+ * ---------------------------------------- */
+$T1_SB: typo(32px, 42px, $w-sb);
+$T1_RG: typo(32px, 42px, $w-rg);
+$T1_LT: typo(32px, 42px, $w-lt);
+
+$T2_SB: typo(28px, 38px, $w-sb);
+$T2_RG: typo(28px, 38px, $w-rg);
+$T2_LT: typo(28px, 38px, $w-lt);
+
+$T3_SB: typo(24px, 34px, $w-sb);
+$T3_RG: typo(24px, 34px, $w-rg);
+$T3_LT: typo(24px, 34px, $w-lt);
+
+$T4_SB: typo(20px, 28px, $w-sb);
+$T4_RG: typo(20px, 28px, $w-rg);
+$T4_LT: typo(20px, 28px, $w-lt);
+
+$T5_SB: typo(18px, 26px, $w-sb);
+$T5_RG: typo(18px, 26px, $w-rg);
+$T5_LT: typo(18px, 26px, $w-lt);
+
+/* ----------------------------------------
+ * Body (B1~B4)
+ * ---------------------------------------- */
+$B1_SB: typo(16px, 24px, $w-sb);
+$B1_RG: typo(16px, 24px, $w-rg);
+$B1_LT: typo(16px, 24px, $w-lt);
+
+$B2_SB: typo(15px, 22px, $w-sb);
+$B2_RG: typo(15px, 22px, $w-rg);
+$B2_LT: typo(15px, 22px, $w-lt);
+
+$B3_SB: typo(14px, 20px, $w-sb);
+$B3_RG: typo(14px, 20px, $w-rg);
+$B3_LT: typo(14px, 20px, $w-lt);
+
+$B4_SB: typo(13px, 18px, $w-sb);
+$B4_RG: typo(13px, 18px, $w-rg);
+$B4_LT: typo(13px, 18px, $w-lt);
+
+/* ----------------------------------------
+ * Caption (C1~C3)
+ * ---------------------------------------- */
+$C1_SB: typo(13px, 18px, $w-sb);
+$C1_RG: typo(13px, 18px, $w-rg);
+$C1_LT: typo(13px, 18px, $w-lt);
+
+$C2_SB: typo(12px, 18px, $w-sb);
+$C2_RG: typo(12px, 18px, $w-rg);
+$C2_LT: typo(12px, 18px, $w-lt);
+
+$C3_SB: typo(11px, 16px, $w-sb);
+$C3_RG: typo(11px, 16px, $w-rg);
+$C3_LT: typo(11px, 16px, $w-lt);
+
+/* ----------------------------------------
+ * 사용 예시
+ * ----------------------------------------
+ * .title {
+ *   @include apply-typo($H2_SB);
+ * }
+ * .caption {
+ *   @include apply-typo($C2_RG);
+ * }
+ */

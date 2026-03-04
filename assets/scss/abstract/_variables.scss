@@ -10,17 +10,8 @@ $color-warning: #f59e0b;
 $color-error: #ef4444;
 
 // Typography
-$font-family-base: system-ui, -apple-system, sans-serif;
-$font-size-base: 16px;
-$line-height-base: 1.5;
+$font-family-base: "Pretendard", system-ui, -apple-system, sans-serif;
 
-// Spacing
-$spacing-unit: 8px;
-$spacing-xs: $spacing-unit;
-$spacing-sm: $spacing-unit * 2;
-$spacing-md: $spacing-unit * 4;
-$spacing-lg: $spacing-unit * 6;
-$spacing-xl: $spacing-unit * 8;
 
 // Breakpoints
 $breakpoint-sm: 640px;
