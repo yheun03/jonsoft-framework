@@ -502,6 +502,37 @@ NUXT_PUBLIC_API_BASE=/api
 | `GET /api/users` | 유저 목록 (예제) |
 | `GET /api/users/:id/purchases` | 유저별 구매이력 |
 | `GET /api/users-with-purchases` | 유저·구매이력 조인 (전체) |
+| `GET /api/menus` | 사이드바 메뉴 목록 (예제) |
+
+### 사이드바 메뉴 + SVG 아이콘 렌더링
+
+- **메뉴 데이터(Flat + depth)**: `server/utils/menu-data.ts`에서 `depth` 기반 Flat 목록을 관리하고, `layouts/nav.vue`에서 트리로 변환하여 렌더링합니다.
+  - 렌더링 컴포넌트: `components/patterns/PatternNavItem.vue` (재귀)
+- **API**: `server/api/menus.get.ts`에서 `GET /api/menus`로 반환합니다.
+
+#### SVG를 컴포넌트처럼 사용하기
+
+`AppSelect`처럼 SVG 자체를 Vue 컴포넌트로 렌더링하기 위해 `vite-svg-loader`를 사용합니다.
+
+- **설치**:
+
+```bash
+npm install -D vite-svg-loader
+```
+
+- **Nuxt 설정**: `nuxt.config.ts`의 Vite plugins에 등록합니다.
+
+- **사용 예시**:
+
+```ts
+import TempIcon from '~/assets/icons/temp.svg?component'
+```
+
+```vue
+<component :is="TempIcon" class="nav-icon" aria-hidden="true" />
+```
+
+> **아이콘 매핑 방식**: 메뉴 데이터의 `icon`(예: `"temp"`)을 키로 하여, 코드에서 `{ temp: TempIcon }`처럼 컴포넌트를 매핑해 렌더링합니다.
 
 ---
 

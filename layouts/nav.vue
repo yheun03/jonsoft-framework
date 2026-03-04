@@ -6,15 +6,22 @@
 
         <div class="layout-nav-body">
             <ul class="nav-list" role="menubar" aria-label="Main navigation">
-                <PatternNavItem v-for="menu in menuTree" :key="menu.id" :item="menu" :getIconSvg="getIconSvg" />
+                <PatternNavItem
+                    v-for="menu in menuTree"
+                    :key="menu.id"
+                    :item="menu"
+                    :get-icon-comp="getIconComp"
+                />
             </ul>
         </div>
     </nav>
 </template>
 
 <script setup lang="ts">
+import type { Component } from 'vue'
 import PatternNavItem from '@/components/patterns/PatternNavItem.vue'
 import { MENUS } from '~/server/utils/menu-data'
+import TempIcon from '~/assets/icons/temp.svg?component'
 
 type Menu = {
     id: string
@@ -69,15 +76,12 @@ function buildMenuTreeAndSort(items: readonly Menu[]): Menu[] {
 
 const menuTree = computed(() => buildMenuTreeAndSort(MENUS as unknown as Menu[]))
 
-/**
- * 아이콘 렌더: 네 프로젝트 기존 함수로 교체하면 됨.
- * - 현재는 icon이 'temp'면 샘플 SVG 반환 같은 식으로 구현 가능
- */
-function getIconSvg(icon?: string): string | null {
-    if (!icon) return null
+const ICON_COMPONENTS: Record<string, Component> = {
+    temp: TempIcon,
+}
 
-    // TODO: 실제 아이콘 매핑 로직 연결
-    // 예) return ICON_MAP[icon] ?? null
-    return null
+function getIconComp(icon?: string): Component | null {
+    if (!icon) return null
+    return ICON_COMPONENTS[icon] ?? null
 }
 </script>
