@@ -1,15 +1,5 @@
-// ============================================
-// Jonsoft Framework - 메인 SCSS 진입점
-// ============================================
+@use "abstract/index" as *;
 
-@use "abstract/variables" as *;
-@use "base/reset";
-@use "base/typography";
-
-// CSS 변수 (전역 사용)
-:root {
-    --color-primary: #{$color-primary};
-    --color-secondary: #{$color-secondary};
-    --text-primary: #1e293b;
-    --text-secondary: #64748b;
-}
+@use "base/index";
+@use "layout/index";
+@use "components/index";
