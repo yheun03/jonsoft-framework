@@ -13,26 +13,4 @@
 </script>
 
 <style scoped lang="scss">
-.layout-default {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-
-    .layout-header {
-        padding: 1rem 2rem;
-        background: var(--color-primary, #333);
-        color: white;
-
-        a {
-            color: inherit;
-            text-decoration: none;
-            font-weight: 600;
-        }
-    }
-
-    .layout-main {
-        flex: 1;
-        padding: 2rem;
-    }
-}
 </style>
