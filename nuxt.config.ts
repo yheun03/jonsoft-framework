@@ -6,7 +6,7 @@ export default defineNuxtConfig({
 
     components: [
         { path: '~/components/base', prefix: 'Base' },
-        { path: '~/components/patterns', prefix: 'Pattern' },
+        // { path: '~/components/patterns', prefix: 'Pattern' },
         { path: '~/components/modules', pathPrefix: false },
     ],
 

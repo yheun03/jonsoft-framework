@@ -1,0 +1,19 @@
+@use "../abstract/index" as *;
+
+.layout-nav {
+    background: $gradient-primary;
+    color: $gray-0;
+
+    &-body{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.nav-list{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+}

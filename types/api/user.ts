@@ -5,12 +5,3 @@ export interface User {
     email?: string
     [key: string]: unknown
 }
-
-export interface Purchase {
-    id: number
-    userId: number
-    itemName: string
-    price: number
-    purchasedAt: string
-    [key: string]: unknown
-}

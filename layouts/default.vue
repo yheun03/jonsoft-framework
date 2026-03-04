@@ -1,8 +1,6 @@
 <template>
-    <div class="layout-default">
-        <header class="layout-header">
-            <NuxtLink to="/">Jonsoft Framework</NuxtLink>
-        </header>
+    <div class="layout-container">
+        <LayoutNav class="layout-nav"/>
         <main class="layout-main">
             <slot />
         </main>
@@ -10,7 +8,5 @@
 </template>
 
 <script setup lang="ts">
+import LayoutNav from '~/layouts/nav.vue';
 </script>
-
-<style scoped lang="scss">
-</style>

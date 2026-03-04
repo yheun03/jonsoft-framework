@@ -1,4 +1,28 @@
+@use "../abstract/index" as *;
+
 // 필요할 때만 추가
 // @forward "header";
 // @forward "footer";
-// @forward "grid";
+@forward "nav";
+
+.layout-container {
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr;
+    grid-template-columns: $width-sidebar 1fr;
+    grid-template-areas:
+        "header header"
+        "nav main";
+}
+
+.layout-header {
+    grid-area: header;
+}
+
+.layout-nav {
+    grid-area: nav;
+}
+
+.layout-main {
+    grid-area: main;
+}

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <BaseButton>Button</BaseButton>
     </div>
 </template>
 
