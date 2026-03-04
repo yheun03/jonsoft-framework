@@ -11,7 +11,7 @@
  * icon: 실제 아이콘 파일명 사용 예정, 현재는 'temp'
  */
 export const MENUS = [
-    { id: 'MENU_010000', depth: 1, order: 1, label: 'Home', to: '/', icon: 'temp', newTab: false },
+    { id: 'MENU_010000', depth: 1, order: 1, label: 'Home', to: '/', newTab: false },
 
     { id: 'MENU_010100', depth: 2, order: 1, label: 'Dashboard', to: '/', icon: 'temp', newTab: false },
     { id: 'MENU_010200', depth: 2, order: 2, label: 'Google', to: 'https://www.google.com', icon: 'temp', newTab: true },

@@ -2,8 +2,14 @@
     <li class="nav-item" role="none" :class="[
         `nav-depth-${item.depth}`,
         { 'nav-has-children': hasChildren }
-    ]">
+    ]" :style="{ paddingLeft: `${(item.depth - 1) * 20}px` }">
         <div class="nav-row">
+
+            <!-- 토글(펼침/닫힘) -->
+            <button v-if="hasChildren" type="button" class="nav-toggle" @click.stop="open = !open" :aria-expanded="open"
+                :aria-controls="submenuId">
+                ▾
+            </button>
             <!-- 링크(이동) -->
             <component :is="item.newTab ? 'a' : NuxtLinkComp" v-bind="linkProps(item)" class="nav-link" role="menuitem"
                 :aria-haspopup="hasChildren ? true : undefined" :aria-expanded="hasChildren ? open : undefined">
@@ -11,12 +17,6 @@
                     aria-hidden="true" />
                 <span class="nav-label">{{ item.label }}</span>
             </component>
-
-            <!-- 토글(펼침/닫힘) -->
-            <button v-if="hasChildren" type="button" class="nav-toggle" @click.stop="open = !open" :aria-expanded="open"
-                :aria-controls="submenuId">
-                ▾
-            </button>
         </div>
 
         <!-- 서브 메뉴 -->

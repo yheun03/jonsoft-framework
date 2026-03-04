@@ -4,20 +4,33 @@
     background: $gradient-primary;
     color: $gray-0;
 
-    &-body{
+    &-body {
         display: flex;
         flex-direction: column;
     }
 }
 
-.nav-list{
+.nav-list {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
 
-    .nav-link{
-        span{
+    .nav-row {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 5px 4px;
+    }
+
+    .nav-link {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        span {
             @include b3_rg;
             color: $gray-0;
         }
