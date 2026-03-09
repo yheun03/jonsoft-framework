@@ -1,0 +1,143 @@
+@use "../../abstract/index" as *;
+@use "sass:color";
+
+.app-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+
+    @include btn2_rg;
+
+    &:focus-visible {
+        outline: 2px solid $primary-300;
+        outline-offset: 2px;
+    }
+
+    &.is-block {
+        width: 100%;
+    }
+
+    &.is-disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &.is-loading {
+        cursor: progress;
+    }
+
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 1em;
+            height: 1em;
+            display: block;
+        }
+    }
+
+    &__label {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* sizes */
+    &--sm {
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 8px;
+        gap: 6px;
+        @include btn3_rg;
+    }
+
+    &--md {
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 10px;
+        gap: 8px;
+        @include btn2_rg;
+    }
+
+    &--lg {
+        height: 48px;
+        padding: 0 20px;
+        border-radius: 12px;
+        gap: 10px;
+        @include btn1_rg;
+    }
+
+    /* variants */
+    &--fill {
+        background: $primary;
+        color: $gray-0;
+
+        &:hover {
+            background: color.adjust($primary, $lightness: -6%);
+        }
+
+        &:active {
+            background: color.adjust($primary, $lightness: -10%);
+        }
+    }
+
+    &--text {
+        background: transparent;
+        color: $primary;
+
+        &:hover {
+            background: rgba($primary, 0.10);
+        }
+
+        &:active {
+            background: rgba($primary, 0.16);
+        }
+    }
+
+    &--underline {
+        background: transparent;
+        color: $primary;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-thickness: 1px;
+        padding-left: 0;
+        padding-right: 0;
+        border-radius: 0;
+
+        &:hover {
+            color: color.adjust($primary, $lightness: -8%);
+        }
+
+        &:active {
+            color: color.adjust($primary, $lightness: -12%);
+        }
+    }
+
+    /* icon-only */
+    &--icon-only {
+        padding: 0;
+        gap: 0;
+
+        &.app-button--sm {
+            width: 32px;
+        }
+
+        &.app-button--md {
+            width: 40px;
+        }
+
+        &.app-button--lg {
+            width: 48px;
+        }
+    }
+}

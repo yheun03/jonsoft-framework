@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     css: ['~/assets/scss/main.scss'],
 
     components: [
-        { path: '~/components/base', prefix: 'Base' },
+        { path: '~/components/base' },
         // { path: '~/components/patterns', prefix: 'Pattern' },
         { path: '~/components/modules', pathPrefix: false },
     ],

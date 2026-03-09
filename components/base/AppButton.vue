@@ -1,122 +1,136 @@
 <template>
-    <NuxtLink v-if="!isExternal" :to="to" class="app-button" :class="[variantClass, sizeClass]" @click="handleClick">
-        <slot />
-    </NuxtLink>
-    <a v-else :href="to" :target="newTab ? '_blank' : undefined" :rel="newTab ? 'noopener noreferrer' : undefined"
-        class="app-button" :class="[variantClass, sizeClass]" @click="handleClick">
-        <slot />
-    </a>
+    <component
+        :is="componentTag"
+        v-bind="componentAttrs"
+        class="app-button"
+        :class="[
+            `app-button--${variant}`,
+            `app-button--${size}`,
+            { 'app-button--icon-only': isIconOnly, 'is-disabled': isActuallyDisabled, 'is-loading': loading, 'is-block': block },
+        ]"
+        :aria-label="computedAriaLabel"
+        :aria-disabled="isLinkLike ? (isActuallyDisabled ? 'true' : undefined) : undefined"
+        :tabindex="isLinkLike && isActuallyDisabled ? -1 : undefined"
+        @click="onClick"
+    >
+        <span v-if="hasIconLeft" class="app-button__icon app-button__icon--left" aria-hidden="true">
+            <slot name="iconLeft" />
+        </span>
+
+        <span v-if="hasLabel" class="app-button__label">
+            <slot />
+        </span>
+
+        <span v-if="hasIconRight" class="app-button__icon app-button__icon--right" aria-hidden="true">
+            <slot name="iconRight" />
+        </span>
+    </component>
 </template>
 
 <script setup lang="ts">
+type ButtonVariant = 'fill' | 'text' | 'underline'
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonType = 'button' | 'submit' | 'reset'
+
 const props = withDefaults(
     defineProps<{
-        /** 이동할 주소 (내부 경로: /about, 외부: https://...) */
-        to: string
-        /** primary | secondary | outline | ghost */
-        variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
-        /** sm | md | lg */
-        size?: 'sm' | 'md' | 'lg'
-        /** 외부 링크 시 새 탭 열기 */
+        /** 버튼 동작. 링크로 쓰려면 `to` 또는 `href` 사용 */
+        type?: ButtonType
+
+        /** Nuxt 내부 라우팅 */
+        to?: string
+        /** 외부/일반 링크 */
+        href?: string
+        /** 링크 새 탭 */
         newTab?: boolean
+
+        /** fill(면) | text(글자) | underline(밑줄) */
+        variant?: ButtonVariant
+        /** sm | md | lg */
+        size?: ButtonSize
+
+        /** 비활성화 */
+        disabled?: boolean
+        /** 로딩 상태 (클릭 막음 + 스타일만) */
+        loading?: boolean
+        /** 가로 100% */
+        block?: boolean
+
+        /** 아이콘만 렌더링 시 접근성 라벨(권장) */
+        ariaLabel?: string
     }>(),
     {
-        variant: 'primary',
-        size: 'md',
+        type: 'button',
+        to: undefined,
+        href: undefined,
         newTab: false,
-    }
+        variant: 'fill',
+        size: 'md',
+        disabled: false,
+        loading: false,
+        block: false,
+        ariaLabel: undefined,
+    },
 )
-
-const isExternal = computed(() =>
-    /^https?:\/\//.test(props.to)
-)
-
-const variantClass = computed(() => `app-button--${props.variant}`)
-const sizeClass = computed(() => `app-button--${props.size}`)
 
 const emit = defineEmits<{
     click: [event: MouseEvent]
 }>()
 
-const handleClick = (e: MouseEvent) => {
+const NuxtLinkComp = resolveComponent('NuxtLink')
+const slots = useSlots()
+
+const hasLabel = computed(() => {
+    const vnodes = slots.default?.()
+    return !!vnodes?.length
+})
+
+const hasIconLeft = computed(() => !!slots.iconLeft?.().length)
+const hasIconRight = computed(() => !!slots.iconRight?.().length)
+
+const isIconOnly = computed(() => !hasLabel.value && (hasIconLeft.value || hasIconRight.value))
+
+const isLinkLike = computed(() => !!props.to || !!props.href)
+const isActuallyDisabled = computed(() => props.disabled || props.loading)
+
+const componentTag = computed(() => {
+    if (props.to) return NuxtLinkComp
+    if (props.href) return 'a'
+    return 'button'
+})
+
+const componentAttrs = computed(() => {
+    if (props.to) {
+        return { to: props.to }
+    }
+
+    if (props.href) {
+        return {
+            href: props.href,
+            target: props.newTab ? '_blank' : undefined,
+            rel: props.newTab ? 'noopener noreferrer' : undefined,
+        }
+    }
+
+    return {
+        type: props.type,
+        disabled: isActuallyDisabled.value,
+    }
+})
+
+const computedAriaLabel = computed(() => {
+    if (!isIconOnly.value) return undefined
+    return props.ariaLabel
+})
+
+function onClick(e: MouseEvent) {
+    if (isActuallyDisabled.value) {
+        e.preventDefault()
+        e.stopPropagation()
+        return
+    }
     emit('click', e)
 }
 </script>
 
-<style scoped lang="scss">
-@use "abstract/variables" as *;
-@use "sass:color";
-
-.app-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: $spacing-xs;
-    font-family: $font-family-base;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-
-    &:focus-visible {
-        outline: 2px solid $color-primary;
-        outline-offset: 2px;
-    }
-
-    // Size
-    &--sm {
-        padding: $spacing-xs $spacing-sm;
-        font-size: 0.875rem;
-    }
-
-    &--md {
-        padding: $spacing-sm $spacing-md;
-        font-size: 1rem;
-    }
-
-    &--lg {
-        padding: $spacing-md $spacing-lg;
-        font-size: 1.125rem;
-    }
-
-    // Variant
-    &--primary {
-        background: $color-primary;
-        color: white;
-
-        &:hover {
-            background: color.adjust($color-primary, $lightness: -8%);
-        }
-    }
-
-    &--secondary {
-        background: $color-secondary;
-        color: white;
-
-        &:hover {
-            background: color.adjust($color-secondary, $lightness: -8%);
-        }
-    }
-
-    &--outline {
-        background: transparent;
-        color: $color-primary;
-        border: 2px solid $color-primary;
-
-        &:hover {
-            background: rgba($color-primary, 0.1);
-        }
-    }
-
-    &--ghost {
-        background: transparent;
-        color: $color-primary;
-
-        &:hover {
-            background: rgba($color-primary, 0.1);
-        }
-    }
-}
-</style>
+<style scoped lang="scss"></style>

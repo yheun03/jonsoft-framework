@@ -551,6 +551,81 @@ const ICON_SVGS = {
 
 ---
 
+### AppButton (버튼)
+
+- **컴포넌트**
+  - `components/base/AppButton.vue` → `<AppButton />`
+- **SCSS**
+  - `assets/scss/components/base/_button.scss`
+  - `assets/scss/components/base/_index.scss`에서 `@forward "button";`로 전역 번들(`assets/scss/main.scss`)에 포함
+
+#### 지원 조합(서로 스왑 가능)
+
+- **아이콘 위치**: `#iconLeft`, `#iconRight` 슬롯으로 좌/우 자유 조합
+- **버튼 형태(variant)**: `fill`(면/채움), `text`(글자), `underline`(밑줄)
+- **아이콘만 버튼**: 기본 슬롯(라벨) 없이 아이콘 슬롯만 넣으면 자동으로 아이콘 버튼 스타일 적용
+
+#### 주요 Props
+
+| Prop | 타입 | 기본값 | 설명 |
+|------|------|--------|------|
+| `variant` | `'fill' \| 'text' \| 'underline'` | `'fill'` | 면/글자/밑줄 |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 크기 |
+| `to` | `string` | - | Nuxt 내부 링크 |
+| `href` | `string` | - | 외부/일반 링크 |
+| `newTab` | `boolean` | `false` | 링크 새 탭 |
+| `type` | `'button' \| 'submit' \| 'reset'` | `'button'` | `<button>`일 때만 적용 |
+| `disabled` | `boolean` | `false` | 비활성화 |
+| `loading` | `boolean` | `false` | 로딩(클릭 방지 + 스타일) |
+| `block` | `boolean` | `false` | 가로 100% |
+| `ariaLabel` | `string` | - | 아이콘만 버튼에서 권장(접근성) |
+
+#### 사용 예시
+
+```vue
+<template>
+  <!-- 면 버튼 -->
+  <AppButton variant="fill">저장</AppButton>
+
+  <!-- 글자 버튼 -->
+  <AppButton variant="text">취소</AppButton>
+
+  <!-- 밑줄 버튼 -->
+  <AppButton variant="underline">자세히 보기</AppButton>
+
+  <!-- 왼쪽 아이콘 + 텍스트 -->
+  <AppButton variant="fill">
+    <template #iconLeft>
+      <span v-html="TempIconSvg" />
+    </template>
+    다운로드
+  </AppButton>
+
+  <!-- 텍스트 + 오른쪽 아이콘 -->
+  <AppButton variant="text">
+    다음
+    <template #iconRight>
+      <span v-html="TempIconSvg" />
+    </template>
+  </AppButton>
+
+  <!-- 아이콘만 버튼 (라벨은 ariaLabel로) -->
+  <AppButton variant="text" aria-label="설정">
+    <template #iconLeft>
+      <span v-html="TempIconSvg" />
+    </template>
+  </AppButton>
+
+  <!-- 링크 버튼 -->
+  <AppButton to="/users" variant="text">유저 목록</AppButton>
+  <AppButton href="https://example.com" new-tab variant="underline">외부 링크</AppButton>
+</template>
+
+<script setup lang="ts">
+import TempIconSvg from '~/assets/icons/temp.svg?raw'
+</script>
+```
+
 ## 참고 링크
 
 - [Nuxt 3 문서](https://nuxt.com/docs)
