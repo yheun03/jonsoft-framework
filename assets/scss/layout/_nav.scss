@@ -33,6 +33,24 @@
         padding: 5px 4px;
     }
 
+    .nav-toggle {
+        &.app-button--text {
+            color: $gray-0;
+
+            &:hover {
+                background: rgba($gray-0, 0.12);
+            }
+
+            &:active {
+                background: rgba($gray-0, 0.18);
+            }
+        }
+
+        .nav-toggle-icon {
+            line-height: 1;
+        }
+    }
+
     .nav-link {
         width: 100%;
         display: flex;

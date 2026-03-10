@@ -1,7 +1,7 @@
 <template>
     <component
         :is="componentTag"
-        v-bind="componentAttrs"
+        v-bind="{ ...attrs, ...componentAttrs }"
         class="app-button"
         :class="[
             `app-button--${variant}`,
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+const attrs = useAttrs()
+
 type ButtonVariant = 'fill' | 'text' | 'underline'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonType = 'button' | 'submit' | 'reset'

@@ -6,10 +6,20 @@
         <div class="nav-row">
 
             <!-- 토글(펼침/닫힘) -->
-            <button v-if="hasChildren" type="button" class="nav-toggle" @click.stop="open = !open" :aria-expanded="open"
-                :aria-controls="submenuId">
-                ▾
-            </button>
+            <AppButton
+                v-if="hasChildren"
+                class="nav-toggle"
+                variant="text"
+                size="sm"
+                ariaLabel="메뉴 펼치기/접기"
+                :aria-expanded="open"
+                :aria-controls="submenuId"
+                @click.stop="open = !open"
+            >
+                <template #iconLeft>
+                    <span class="nav-toggle-icon" aria-hidden="true">▾</span>
+                </template>
+            </AppButton>
             <!-- 링크(이동) -->
             <component
                 :is="item.newTab ? 'a' : NuxtLinkComp"
