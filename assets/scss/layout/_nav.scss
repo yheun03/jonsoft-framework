@@ -48,6 +48,20 @@
 
         .nav-toggle-icon {
             line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.16s ease-out;
+
+            svg {
+                width: 16px;
+                height: 16px;
+                display: block;
+            }
+
+            &.is-open {
+                transform: rotate(90deg);
+            }
         }
     }
 
