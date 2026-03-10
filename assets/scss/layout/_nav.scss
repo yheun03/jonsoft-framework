@@ -9,6 +9,24 @@
             padding: 16px 12px;
             svg{
                 width: 100%;
+                height: auto;
+            }
+        }
+
+        .nav-actions {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+
+            .nav-action {
+                &.app-button {
+
+                    border-radius: 4px;
+                    
+                    &:hover {
+                        background: rgba($gray-50, 0.1);
+                    }
+                }
             }
         }
     }
@@ -25,6 +43,7 @@
     flex-direction: column;
     gap: 2px;
     padding-inline: 12px;
+    margin-top: 10px;
     
     .nav-row {
         position: relative;

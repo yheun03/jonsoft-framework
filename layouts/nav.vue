@@ -1,7 +1,70 @@
 <template>
     <nav class="layout-nav" aria-label="Sidebar navigation">
         <div class="layout-nav-header">
-            <div class="nav-logo" aria-hidden="true" v-html="logoSvg" />
+            <div class="nav-logo" aria-hidden="true">
+                <i class="app-icon" v-html="logoSvg" />
+            </div>
+            <div class="nav-actions" aria-label="메모 툴바">
+                <AppButton
+                    class="nav-action"
+                    variant="text"
+                    size="custom"
+                    :custom-size="{ width: 28 }"
+                    ariaLabel="메모 추가"
+                >
+                    <template #iconLeft>
+                        <span class="nav-action-icon" aria-hidden="true" v-html="EditIconSvg" />
+                    </template>
+                </AppButton>
+
+                <AppButton
+                    class="nav-action"
+                    variant="text"
+                    size="custom"
+                    :custom-size="{ width: 28 }"
+                    ariaLabel="메모 폴더 추가"
+                >
+                    <template #iconLeft>
+                        <span class="nav-action-icon" aria-hidden="true" v-html="FolderPlusIconSvg" />
+                    </template>
+                </AppButton>
+
+                <AppButton
+                    class="nav-action"
+                    variant="text"
+                    size="custom"
+                    :custom-size="{ width: 28 }"
+                    ariaLabel="메모 필터 적용"
+                >
+                    <template #iconLeft>
+                        <span class="nav-action-icon" aria-hidden="true" v-html="FilterIconSvg" />
+                    </template>
+                </AppButton>
+
+                <AppButton
+                    class="nav-action"
+                    variant="text"
+                    size="custom"
+                    :custom-size="{ width: 28 }"
+                    ariaLabel="현재 열린 메모 표시"
+                >
+                    <template #iconLeft>
+                        <span class="nav-action-icon" aria-hidden="true" v-html="TargetIconSvg" />
+                    </template>
+                </AppButton>
+
+                <AppButton
+                    class="nav-action"
+                    variant="text"
+                    size="custom"
+                    :custom-size="{ width: 28 }"
+                    ariaLabel="메모 검색"
+                >
+                    <template #iconLeft>
+                        <span class="nav-action-icon" aria-hidden="true" v-html="SearchIconSvg" />
+                    </template>
+                </AppButton>
+            </div>
         </div>
 
         <div class="layout-nav-body">
@@ -22,6 +85,11 @@ import PatternNavItem from '@/components/patterns/PatternNavItem.vue'
 import { MENUS } from '~/server/utils/menu-data'
 import TempIconSvg from '@/assets/icons/temp.svg?raw'
 import LogoIconSvg from '@/assets/icons/logo.svg?raw'
+import EditIconSvg from '@/assets/icons/20/ic-edit.svg?raw'
+import FolderPlusIconSvg from '@/assets/icons/20/ic-folder-plus.svg?raw'
+import FilterIconSvg from '@/assets/icons/20/ic-filter.svg?raw'
+import TargetIconSvg from '@/assets/icons/20/ic-target.svg?raw'
+import SearchIconSvg from '@/assets/icons/20/ic-search.svg?raw'
 
 type Menu = {
     id: string
