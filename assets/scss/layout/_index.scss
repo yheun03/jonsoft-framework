@@ -9,7 +9,7 @@
     display: grid;
     min-height: 100dvh;
     grid-template-rows: auto 1fr;
-    grid-template-columns: $width-sidebar 1fr;
+    grid-template-columns: var(--width-sidebar) 1fr;
     grid-template-areas:
         "header header"
         "nav main";

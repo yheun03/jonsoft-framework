@@ -1,20 +1,22 @@
 @use "../../abstract/index" as *;
 @use "sass:color";
+@use "icon";
 
 .app-button {
+    @include btn2_rg;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     border: 1px solid transparent;
-    border-radius: 10px;
     cursor: pointer;
     user-select: none;
     text-decoration: none;
     white-space: nowrap;
     transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-
-    @include btn2_rg;
+    &:not([class*="app-button--custom"]) {
+        border-radius: 10px;
+    }
 
     &:focus-visible {
         outline: 2px solid $primary-300;
@@ -36,15 +38,7 @@
     }
 
     &__icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        svg {
-            width: 1em;
-            height: 1em;
-            display: block;
-        }
+        @extend .app-icon;
     }
 
     &__label {

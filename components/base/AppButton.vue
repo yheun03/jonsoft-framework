@@ -2,8 +2,10 @@
     <component
         :is="componentTag"
         v-bind="{ ...attrs, ...componentAttrs }"
-        class="app-button"
+        :style="customSizeStyle"
         :class="[
+            'app-button',
+            size == 'custom' ? 'app-button--custom' : '',
             `app-button--${variant}`,
             `app-button--${size}`,
             { 'app-button--icon-only': isIconOnly, 'is-disabled': isActuallyDisabled, 'is-loading': loading, 'is-block': block },
@@ -13,17 +15,17 @@
         :tabindex="isLinkLike && isActuallyDisabled ? -1 : undefined"
         @click="onClick"
     >
-        <span v-if="hasIconLeft" class="app-button__icon app-button__icon--left" aria-hidden="true">
+        <i v-if="hasIconLeft" class="app-icon app-button__icon--left" aria-hidden="true">
             <slot name="iconLeft" />
-        </span>
+        </i>
 
         <span v-if="hasLabel" class="app-button__label">
             <slot />
         </span>
 
-        <span v-if="hasIconRight" class="app-button__icon app-button__icon--right" aria-hidden="true">
+        <i v-if="hasIconRight" class="app-icon app-button__icon--right" aria-hidden="true">
             <slot name="iconRight" />
-        </span>
+        </i>
     </component>
 </template>
 
@@ -31,7 +33,7 @@
 const attrs = useAttrs()
 
 type ButtonVariant = 'fill' | 'text' | 'underline'
-type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonSize = 'sm' | 'md' | 'lg' | 'custom'
 type ButtonType = 'button' | 'submit' | 'reset'
 
 const props = withDefaults(
@@ -50,6 +52,11 @@ const props = withDefaults(
         variant?: ButtonVariant
         /** sm | md | lg */
         size?: ButtonSize
+        /** 커스텀 크기 */
+        customSize?: {
+            width: number
+            height?: number
+        }
 
         /** 비활성화 */
         disabled?: boolean
@@ -78,6 +85,15 @@ const props = withDefaults(
 const emit = defineEmits<{
     click: [event: MouseEvent]
 }>()
+
+const customSizeStyle = computed(() => {
+    const s = props.customSize
+    if (!s) return undefined
+    return {
+        width: `${s.width}px`,
+        height: `${(s.height ?? s.width)}px`,
+    }
+})
 
 const NuxtLinkComp = resolveComponent('NuxtLink')
 const slots = useSlots()

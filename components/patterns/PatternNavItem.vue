@@ -2,7 +2,7 @@
     <li class="nav-item" role="none" :class="[
         `nav-depth-${item.depth}`,
         { 'nav-has-children': hasChildren }
-    ]" :style="{ paddingLeft: `${(item.depth - 1) * 20}px` }">
+    ]" :style="{ '--pos': `${(item.depth - 1) * -20}px` }">
         <div class="nav-row">
 
             <!-- 토글(펼침/닫힘) -->
@@ -10,15 +10,19 @@
                 v-if="hasChildren"
                 class="nav-toggle"
                 variant="text"
-                size="sm"
+                size="custom"
+                :custom-size="{
+                    width: 20,
+                    height: 20,
+                }"
                 ariaLabel="메뉴 펼치기/접기"
                 :aria-expanded="open"
                 :aria-controls="submenuId"
                 @click.stop="open = !open"
             >
                 <template #iconLeft>
-                    <span
-                        class="nav-toggle-icon"
+                    <i
+                        class="icon nav-toggle-icon"
                         :class="{ 'is-open': open }"
                         aria-hidden="true"
                         v-html="ChevronRightSvg"
@@ -36,7 +40,7 @@
             >
                 <span
                     v-if="getIconSvg(item.icon)"
-                    class="nav-icon"
+                    class="app-icon"
                     aria-hidden="true"
                     v-html="getIconSvg(item.icon)"
                 />

@@ -44,4 +44,7 @@ $font-family-base: "Pretendard", system-ui, -apple-system, sans-serif;
 $font-size-base: 16px;
 $line-height-base: 1.5;
 
-$width-sidebar: 200px;
+// Variables
+:root {
+    --width-sidebar: 200px;
+}
