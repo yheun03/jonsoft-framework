@@ -4,27 +4,33 @@
             <main class="demo-main">
                 <header class="demo__header">
                     <h1 class="demo__title">Chart Demo (Chart.js)</h1>
-                    <p class="demo__desc">라인/바 전환, 데이터 랜덤 변경을 확인합니다.</p>
+                    <p class="demo__desc">라인/스텝/다중, 바/도넛/반도넛/원형 차트를 확인합니다.</p>
                 </header>
 
                 <section class="card">
-                    <h2 class="card__title">Chart</h2>
-                    <AppChart :type="chartType" :data="chartData" :options="chartOptions" />
+                    <h2 class="card__title">Line Variants</h2>
+                    <div class="grid">
+                        <AppChart class="chart-box" type="line" :data="lineData" :options="lineOptions" />
+                        <AppChart class="chart-box" type="line" :data="steppedLineData" :options="steppedLineOptions" />
+                        <AppChart class="chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                    </div>
+                </section>
+
+                <section class="card">
+                    <h2 class="card__title">Bar / Doughnut / Pie</h2>
+                    <div class="grid">
+                        <AppChart class="chart-box" type="bar" :data="barData" :options="barOptions" />
+                        <AppChart class="chart-box" type="doughnut" :data="doughnutData" :options="doughnutOptions" :height="220" />
+                        <AppChart class="chart-box" type="doughnut" :data="halfDoughnutData" :options="doughnutOptions" :height="220" />
+                        <AppChart class="chart-box" type="pie" :data="pieData" :options="pieOptions" :height="220" />
+                    </div>
                 </section>
 
                 <section class="card">
                     <h2 class="card__title">Controls</h2>
                     <div class="controls">
-                        <AppSelect
-                            v-model="chartType"
-                            label="차트 타입"
-                            :options="[
-                                { value: 'line', label: 'Line' },
-                                { value: 'bar', label: 'Bar' },
-                            ]"
-                        />
                         <div class="control">
-                            <label class="control__label">포인트 수</label>
+                            <label class="control__label">포인트 수 (Line)</label>
                             <input class="control__range" type="range" min="5" max="20" :value="points" @input="onPoints" />
                             <div class="control__value">{{ points }}</div>
                         </div>
@@ -54,9 +60,6 @@
 <script setup lang="ts">
 import type { ChartData, ChartOptions } from 'chart.js'
 
-type ChartType = 'line' | 'bar'
-
-const chartType = ref<ChartType>('line')
 const points = ref(12)
 
 const seed = ref<number[]>([])
@@ -76,7 +79,6 @@ function randomize() {
 function reset() {
     points.value = 12
     seed.value = makeSeed(12)
-    chartType.value = 'line'
 }
 
 function onPoints(e: Event) {
@@ -87,38 +89,178 @@ function onPoints(e: Event) {
 
 reset()
 
-const chartData = computed<ChartData<'line'> | ChartData<'bar'>>(() => {
+// Line 기본
+const lineData = computed<ChartData<'line'>>(() => {
     const labels = makeLabels(points.value)
     return {
         labels,
         datasets: [
             {
-                label: 'Score',
+                label: 'Line',
                 data: seed.value,
                 borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.25)',
+                backgroundColor: 'rgba(59, 130, 246, 0.15)',
                 fill: true,
                 tension: 0.35,
+                pointRadius: 3,
             },
         ],
-    } as ChartData<'line'> | ChartData<'bar'>
+    }
 })
 
-const chartOptions = computed<ChartOptions<'line'> | ChartOptions<'bar'>>(() => {
+const lineOptions = computed<ChartOptions<'line'>>(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { display: true },
+        tooltip: { enabled: true },
+    },
+    scales: {
+        y: { beginAtZero: true, suggestedMax: 100 },
+    },
+}))
+
+// 뚝뚝 끊기는 스텝 라인
+const steppedLineData = computed<ChartData<'line'>>(() => {
+    const base = lineData.value
     return {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: true },
-            tooltip: { enabled: true },
-        },
-        scales: {
-            y: { beginAtZero: true, suggestedMax: 100 },
-        },
-    } as ChartOptions<'line'> | ChartOptions<'bar'>
+        ...base,
+        datasets: base.datasets.map((ds) => ({
+            ...ds,
+            label: 'Stepped',
+            tension: 0,
+            stepped: true as const,
+        })),
+    }
 })
 
-const output = computed(() => JSON.stringify({ chartType: chartType.value, points: points.value, data: seed.value }, null, 2))
+const steppedLineOptions = computed<ChartOptions<'line'>>(() => lineOptions.value)
+
+// 다중 라인
+const multiLineData = computed<ChartData<'line'>>(() => {
+    const labels = makeLabels(points.value)
+    const base = seed.value
+    const second = base.map((v) => Math.max(0, Math.min(100, v + (Math.random() * 30 - 15))))
+    return {
+        labels,
+        datasets: [
+            {
+                label: 'Series A',
+                data: base,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                fill: true,
+                tension: 0.35,
+                pointRadius: 3,
+            },
+            {
+                label: 'Series B',
+                data: second,
+                borderColor: '#f97316',
+                backgroundColor: 'rgba(249, 115, 22, 0.15)',
+                fill: true,
+                tension: 0.35,
+                pointRadius: 3,
+            },
+        ],
+    }
+})
+
+const multiLineOptions = computed<ChartOptions<'line'>>(() => lineOptions.value)
+
+// Bar
+const barData = computed<ChartData<'bar'>>(() => {
+    const labels = makeLabels(points.value)
+    return {
+        labels,
+        datasets: [
+            {
+                label: 'Bar',
+                data: seed.value,
+                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            },
+        ],
+    }
+})
+
+const barOptions = computed<ChartOptions<'bar'>>(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { display: true },
+        tooltip: { enabled: true },
+    },
+    scales: {
+        y: { beginAtZero: true, suggestedMax: 100 },
+    },
+}))
+
+// 도넛 / 반도넛 / 원형
+const pieLabels = ['A', 'B', 'C', 'D']
+const pieBaseData = computed(() => makeSeed(pieLabels.length))
+
+const doughnutData = computed<ChartData<'doughnut'>>(() => ({
+    labels: pieLabels,
+    datasets: [
+        {
+            label: 'Doughnut',
+            data: pieBaseData.value,
+            backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
+        },
+    ],
+}))
+
+// 반 도넛(위가 평평한 반원)
+const halfDoughnutData = computed<ChartData<'doughnut'>>(() => ({
+    labels: pieLabels,
+    datasets: [
+        {
+            label: 'Half Doughnut',
+            data: pieBaseData.value,
+            backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
+            circumference: Math.PI,
+            rotation: -0.5 * Math.PI,
+        },
+    ],
+}))
+
+const doughnutOptions = computed<ChartOptions<'doughnut'>>(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { position: 'bottom' },
+    },
+}))
+
+const pieData = computed<ChartData<'pie'>>(() => ({
+    labels: pieLabels,
+    datasets: [
+        {
+            label: 'Pie',
+            data: pieBaseData.value,
+            backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
+        },
+    ],
+}))
+
+const pieOptions = computed<ChartOptions<'pie'>>(() => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: { position: 'bottom' },
+    },
+}))
+
+const output = computed(() =>
+    JSON.stringify(
+        {
+            points: points.value,
+            seed: seed.value,
+        },
+        null,
+        2,
+    ),
+)
 </script>
 
 <style scoped lang="scss">
@@ -189,10 +331,10 @@ const output = computed(() => JSON.stringify({ chartType: chartType.value, point
 }
 
 .controls {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 12px;
-    align-items: end;
+    align-items: center;
 }
 
 .control {
@@ -222,6 +364,19 @@ const output = computed(() => JSON.stringify({ chartType: chartType.value, point
     overflow: auto;
     font-size: 12px;
     // max-height: calc(100dvh - 220px);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.chart-box {
+    border-radius: 12px;
+    border: 1px solid rgba(226, 232, 240, 1);
+    background: #fff;
+    padding: 8px;
 }
 
 @media (max-width: 900px) {

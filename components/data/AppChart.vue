@@ -5,16 +5,32 @@
                 v-if="type === 'line'"
                 :key="renderKey"
                 class="app-chart__canvas"
-                :data="lineData"
-                :options="lineOptions"
+                :data="chartData"
+                :options="mergedOptions"
                 :height="height"
             />
             <Bar
+                v-else-if="type === 'bar'"
+                :key="renderKey"
+                class="app-chart__canvas"
+                :data="chartData"
+                :options="mergedOptions"
+                :height="height"
+            />
+            <Doughnut
+                v-else-if="type === 'doughnut'"
+                :key="renderKey"
+                class="app-chart__canvas"
+                :data="chartData"
+                :options="mergedOptions"
+                :height="height"
+            />
+            <Pie
                 v-else
                 :key="renderKey"
                 class="app-chart__canvas"
-                :data="barData"
-                :options="barOptions"
+                :data="chartData"
+                :options="mergedOptions"
                 :height="height"
             />
         </div>
@@ -25,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { Bar, Line } from 'vue-chartjs'
+import { Bar, Line, Doughnut, Pie } from 'vue-chartjs'
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -33,23 +49,25 @@ import {
     PointElement,
     LineElement,
     BarElement,
+    ArcElement,
     Title,
     Tooltip,
     Legend,
     Filler,
     type ChartData,
     type ChartOptions,
+    type ChartType as JsChartType,
 } from 'chart.js'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler)
 
-type ChartType = 'line' | 'bar'
+type ChartType = 'line' | 'bar' | 'doughnut' | 'pie'
 
 const props = withDefaults(
     defineProps<{
         type: ChartType
-        data: ChartData<'line'> | ChartData<'bar'>
-        options?: ChartOptions<'line'> | ChartOptions<'bar'>
+        data: ChartData<JsChartType>
+        options?: ChartOptions<JsChartType>
         height?: number
     }>(),
     { height: 260 },
@@ -73,10 +91,8 @@ const baseOptions = {
     animation: false,
 } as const
 
-const lineData = computed(() => props.data as ChartData<'line'>)
-const barData = computed(() => props.data as ChartData<'bar'>)
-const lineOptions = computed(() => ({ ...baseOptions, ...((props.options as ChartOptions<'line'> | undefined) ?? {}) }))
-const barOptions = computed(() => ({ ...baseOptions, ...((props.options as ChartOptions<'bar'> | undefined) ?? {}) }))
+const chartData = computed<any>(() => props.data)
+const mergedOptions = computed<any>(() => ({ ...baseOptions, ...(props.options ?? {}) }))
 </script>
 
 <style scoped lang="scss">
