@@ -4,6 +4,10 @@
     background: $gradient-primary;
     color: $gray-0;
 
+    display: grid;
+    min-height: 0;
+    grid-template-rows: auto 1fr auto;
+
     &-header {
         .nav-logo{
             padding: 16px 12px;
@@ -34,6 +38,13 @@
     &-body {
         display: flex;
         flex-direction: column;
+        min-height: 0;
+        // overflow-y: auto;
+        overflow: hidden auto;
+    }
+
+    &-footer {
+        padding: 12px 20px;
     }
 }
 
@@ -87,14 +98,6 @@
     .nav-toggle {
         &.app-button--text {
             color: $gray-0;
-
-            &:hover {
-                // background: rgba($gray-0, 0.12);
-            }
-
-            &:active {
-                // background: rgba($gray-0, 0.18);
-            }
         }
 
         .nav-toggle-icon {

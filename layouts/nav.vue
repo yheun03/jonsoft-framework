@@ -77,6 +77,14 @@
                 />
             </ul>
         </div>
+
+        <div class="layout-nav-footer">
+            <AppButton variant="text" size="custom" :custom-size="{ width: 28 }" ariaLabel="테마 변경">
+                <template #iconLeft>
+                    <span class="nav-action-icon" aria-hidden="true" v-html="ThemeIconSvg" />
+                </template>
+            </AppButton>
+        </div>
     </nav>
 </template>
 
@@ -90,6 +98,7 @@ import FolderPlusIconSvg from '@/assets/icons/20/ic-folder-plus.svg?raw'
 import FilterIconSvg from '@/assets/icons/20/ic-filter.svg?raw'
 import TargetIconSvg from '@/assets/icons/20/ic-target.svg?raw'
 import SearchIconSvg from '@/assets/icons/20/ic-search.svg?raw'
+import ThemeIconSvg from '@/assets/icons/20/ic-moon.svg?raw'
 
 type Menu = {
     id: string

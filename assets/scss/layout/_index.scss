@@ -7,7 +7,7 @@
 
 .layout-container {
     display: grid;
-    min-height: 100dvh;
+    height: 100dvh;
     grid-template-rows: auto 1fr;
     grid-template-columns: var(--width-sidebar) 1fr;
     grid-template-areas:
@@ -25,4 +25,6 @@
 
 .layout-main {
     grid-area: main;
+    min-height: 0;
+    overflow: hidden;
 }
