@@ -1,3 +1,3 @@
-@forward "base/index";
-@forward "patterns/index";
-@forward "modules/index";
+@use "base/index" as base;
+@use "patterns/index" as patterns;
+@use "modules/index" as modules;

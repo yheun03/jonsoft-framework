@@ -1,9 +1,9 @@
 @use "../abstract/index" as *;
+@use "nav";
 
 // 필요할 때만 추가
 // @forward "header";
 // @forward "footer";
-@forward "nav";
 
 .layout-container {
     display: grid;
