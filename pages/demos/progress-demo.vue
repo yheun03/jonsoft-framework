@@ -11,7 +11,7 @@
                     <h2 class="card__title">Controls</h2>
                     <div class="controls">
                         <div class="control">
-                            <label class="control__label">값</label>
+                            <label class="control__label">단일 값</label>
                             <input class="control__range" type="range" min="0" max="100" :value="value" @input="onValue" />
                             <div class="control__value">{{ value }}%</div>
                         </div>
@@ -19,8 +19,25 @@
                 </section>
 
                 <section class="card">
-                    <h2 class="card__title">Linear</h2>
+                    <h2 class="card__title">Linear (단일 값)</h2>
                     <AppProgress :value="value" variant="linear" />
+                </section>
+
+                <section class="card">
+                    <h2 class="card__title">Linear (범위)</h2>
+                    <AppProgress
+                        :value="range.end"
+                        variant="linear"
+                        :range="range"
+                        :range-selectable="true"
+                        @update:range="(v) => {
+                            range.start = v.start
+                            range.end = v.end
+                        }"
+                    />
+                    <div class="hint">
+                        드래그로 범위 선택: {{ Math.min(range.start, range.end) }}% ~ {{ Math.max(range.start, range.end) }}%
+                    </div>
                 </section>
 
                 <section class="card">
@@ -50,6 +67,7 @@
 
 <script setup lang="ts">
 const value = ref(35)
+let range = reactive({ start: 20, end: 70 })
 
 function onValue(e: Event) {
     value.value = Number((e.target as HTMLInputElement).value)
@@ -57,13 +75,28 @@ function onValue(e: Event) {
 
 function randomize() {
     value.value = Math.round(Math.random() * 100)
+    const a = Math.round(Math.random() * 100)
+    const b = Math.round(Math.random() * 100)
+    range.start = Math.min(a, b)
+    range.end = Math.max(a, b)
 }
 
 function reset() {
     value.value = 35
+    range.start = 20
+    range.end = 70
 }
 
-const output = computed(() => JSON.stringify({ value: value.value }, null, 2))
+const output = computed(() =>
+    JSON.stringify(
+        {
+            value: value.value,
+            range: { start: range.start, end: range.end },
+        },
+        null,
+        2,
+    ),
+)
 </script>
 
 <style scoped lang="scss">
@@ -150,6 +183,11 @@ const output = computed(() => JSON.stringify({ value: value.value }, null, 2))
 
 .control__range {
     width: 100%;
+}
+
+.hint {
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.7);
 }
 
 .control__value {

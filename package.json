@@ -3,6 +3,9 @@
     "version": "0.0.1",
     "private": true,
     "type": "module",
+    "engines": {
+        "node": ">=20 <23"
+    },
     "scripts": {
         "build": "nuxt build",
         "clean": "rm -rf .nuxt .output node_modules/.vite",
@@ -20,6 +23,8 @@
         "ag-grid-vue3": "^33.3.2",
         "axios": "^1.7.7",
         "chart.js": "^4.5.1",
+        "flatpickr": "^4.6.13",
+        "nouislider": "^15.8.1",
         "nuxt": "^3.14.1593",
         "pinia": "^2.2.4",
         "vue": "^3.5.12",
