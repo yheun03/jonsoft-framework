@@ -3,15 +3,39 @@
         <label v-if="label" class="app-input__label" :for="inputId">{{ label }}</label>
 
         <div class="app-input__control">
-            <input :id="inputId" class="app-input__field" :type="type" :value="modelValue" :placeholder="placeholder"
-                :disabled="disabled" :readonly="readonly" :autocomplete="autocomplete" :name="name"
-                :inputmode="computedInputMode" :maxlength="maxlength" :minlength="minlength" :min="min" :max="max"
-                :step="step" :aria-invalid="!!error" :aria-describedby="describedBy" @input="onInput"
-                @change="emit('change', $event)" @focus="emit('focus', $event)" @blur="emit('blur', $event)"
-                @keydown="emit('keydown', $event)" />
+            <input
+                :id="inputId"
+                class="app-input__field"
+                :type="type"
+                :value="modelValue"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                :readonly="readonly"
+                :autocomplete="autocomplete"
+                :name="name"
+                :inputmode="computedInputMode"
+                :maxlength="maxlength"
+                :minlength="minlength"
+                :min="min"
+                :max="max"
+                :step="step"
+                :aria-invalid="!!error"
+                :aria-describedby="describedBy"
+                @input="onInput"
+                @change="emit('change', $event)"
+                @focus="emit('focus', $event)"
+                @blur="emit('blur', $event)"
+                @keydown="emit('keydown', $event)"
+            />
 
-            <button v-if="clearable && !disabled && !readonly && String(modelValue ?? '').length > 0" type="button"
-                class="app-input__clear" aria-label="Clear" @click="onClear">
+            <button
+                v-if="clearable && !disabled && !readonly && String(modelValue ?? '').length > 0"
+                type="button"
+                class="app-input__clear"
+                aria-label="Clear"
+                @click="onClear"
+            >
+                ×
             </button>
         </div>
 
@@ -22,16 +46,7 @@
 
 <script setup lang="ts">
 type InputSize = 'sm' | 'md' | 'lg'
-type InputType =
-    | 'text'
-    | 'password'
-    | 'email'
-    | 'number'
-    | 'tel'
-    | 'url'
-    | 'search'
-    | 'date'
-    | 'time'
+type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time'
 
 const props = withDefaults(
     defineProps<{
@@ -59,7 +74,6 @@ const props = withDefaults(
         max?: number | string
         step?: number | string
 
-        /** 필요하면 남겨둘 수 있는 "예외 override" (원치 않으면 이것도 삭제 가능) */
         inputModeOverride?: 'none' | 'text' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal' | 'search'
     }>(),
     {
@@ -69,7 +83,7 @@ const props = withDefaults(
         readonly: false,
         clearable: false,
         inputModeOverride: undefined,
-    }
+    },
 )
 
 const emit = defineEmits<{
@@ -91,7 +105,6 @@ const describedBy = computed(() => {
     return undefined
 })
 
-/** type 기반으로 inputmode 자동 매핑 */
 const computedInputMode = computed(() => {
     if (props.inputModeOverride) return props.inputModeOverride
 
@@ -105,7 +118,6 @@ const computedInputMode = computed(() => {
         case 'search':
             return 'search'
         case 'number':
-            // 숫자 입력은 보통 decimal이 UX 좋음 (소수 가능)
             return 'decimal'
         default:
             return 'text'
@@ -164,10 +176,10 @@ function onClear() {
         right: 10px;
         border: 0;
         background: transparent;
-        font-size: 18px;
-        line-height: 1;
         cursor: pointer;
         color: var(--text-secondary, #64748b);
+        font-size: 18px;
+        line-height: 1;
         padding: 2px 6px;
     }
 
