@@ -8,6 +8,13 @@
     min-height: 0;
     grid-template-rows: auto 1fr auto;
 
+    .app-button {
+        border-radius: 4px;
+        &:hover {
+            background: rgba($gray-50, 0.1);
+        }
+    }
+
     &-header {
         .nav-logo{
             padding: 16px 12px;
@@ -21,17 +28,6 @@
             display: flex;
             justify-content: center;
             gap: 8px;
-
-            .nav-action {
-                &.app-button {
-
-                    border-radius: 4px;
-                    
-                    &:hover {
-                        background: rgba($gray-50, 0.1);
-                    }
-                }
-            }
         }
     }
 
