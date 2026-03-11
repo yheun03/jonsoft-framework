@@ -12,18 +12,18 @@ $status-info: #2F6BFF;
 // Colors Palette (raw 토큰)
 // Primary (blue) 50~900
 $primary-50:  #EEF4FF;
-$primary-100: #DCEBFF;
-$primary-200: #BED1FF;
-$primary-300: #B7D7FF;
-$primary-400: #9CC5FF;
+$primary-100: #DCE8FF;
+$primary-200: #B8D1FF;
+$primary-300: #8FB7FF;
+$primary-400: #5C95FF;
 $primary-500: #2F6BFF;
 $primary-600: #2456D9;
-$primary-700: #1C4383;
-$primary-800: #163B6C;
-$primary-900: #0C255F;
+$primary-700: #1C43B3;
+$primary-800: #16358C;
+$primary-900: #0F255F;
 $primary: $primary-500;
 
-// Gray 0~900
+// Gray 0~900 
 $gray-0:   #FFFFFF;
 $gray-50:  #F7F8FA;
 $gray-100: #EFF1F4;
@@ -37,7 +37,7 @@ $gray-800: #2A2F38;
 $gray-900: #1C2026;
 
 
-$gradient-primary: linear-gradient(to top, $primary-900 0%, $primary-800 100%);
+$gradient-primary: linear-gradient(to bottom, $primary-800 0%, $primary-900 100%);
 
 // Typography
 $font-family-base: "Pretendard", system-ui, -apple-system, sans-serif;
