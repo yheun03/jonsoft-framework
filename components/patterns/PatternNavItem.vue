@@ -2,7 +2,7 @@
     <li class="nav-item" role="none" :class="[
         `nav-depth-${item.depth}`,
         { 'nav-has-children': hasChildren }
-    ]" :style="{ '--pos': `${(item.depth - 1) * -20}px` }">
+    ]" :style="{ '--indent': `${(item.depth - 1) * 20}px` }">
         <div class="nav-row">
 
             <!-- 토글(펼침/닫힘) -->

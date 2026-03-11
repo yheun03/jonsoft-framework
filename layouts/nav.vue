@@ -68,14 +68,16 @@
         </div>
 
         <div class="layout-nav-body">
-            <ul class="nav-list" role="menubar" aria-label="Main navigation">
-                <PatternNavItem
-                    v-for="menu in menuTree"
-                    :key="menu.id"
-                    :item="menu"
-                    :get-icon-svg="getIconSvg"
-                />
-            </ul>
+            <div class="nav-list-wrap">
+                <ul class="nav-list" role="menubar" aria-label="Main navigation">
+                    <PatternNavItem
+                        v-for="menu in menuTree"
+                        :key="menu.id"
+                        :item="menu"
+                        :get-icon-svg="getIconSvg"
+                    />
+                </ul>
+            </div>
         </div>
 
         <div class="layout-nav-footer">
