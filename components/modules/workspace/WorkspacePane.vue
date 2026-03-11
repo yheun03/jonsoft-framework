@@ -1,15 +1,5 @@
 <template>
     <section class="workspace-pane">
-        <header class="workspace-pane__header">
-            <AppTabs
-                :tabs="tabs"
-                :active-id="activeId"
-                closable
-                @select="(id) => emit('select', id)"
-                @close="(id) => emit('close', id)"
-            />
-        </header>
-
         <div class="workspace-pane__body">
             <MarkdownEditor
                 :model-value="content"
@@ -40,11 +30,13 @@ const emit = defineEmits<{
 <style scoped lang="scss">
 .workspace-pane {
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr;
+    height: 100%;
     min-height: 0;
 }
 
 .workspace-pane__body {
+    height: 100%;
     min-height: 0;
     overflow: hidden;
 }
