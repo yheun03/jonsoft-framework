@@ -9,7 +9,7 @@ export const MENUS = [
     { id: 'MENU_010000', depth: 1, order: 1, label: '워크스페이스', to: '/', newTab: false },
 
     // 데모
-    { id: 'MENU_020000', depth: 1, order: 2, label: '데모', to: '/demos', newTab: false },
+    { id: 'MENU_020000', depth: 1, order: 2, label: '데모', to: '', newTab: false },
     { id: 'MENU_020100', depth: 2, order: 1, label: '버튼 데모', to: '/demos/button-demo', newTab: false },
     { id: 'MENU_020200', depth: 2, order: 2, label: '인풋 데모', to: '/demos/input-demo', newTab: false },
 ] as const

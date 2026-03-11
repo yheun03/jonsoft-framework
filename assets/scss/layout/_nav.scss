@@ -135,6 +135,11 @@
         display: flex;
         align-items: center;
         gap: 4px;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        text-align: left;
+        cursor: pointer;
 
         span {
             @include b3_rg;

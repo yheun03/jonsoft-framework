@@ -29,14 +29,15 @@
                     />
                 </template>
             </AppButton>
-            <!-- 링크(이동) -->
+            <!-- 링크(이동) / 그룹(토글) -->
             <component
-                :is="item.newTab ? 'a' : NuxtLinkComp"
-                v-bind="linkProps(item)"
+                :is="hasTo ? (item.newTab ? 'a' : NuxtLinkComp) : 'button'"
+                v-bind="hasTo ? linkProps(item) : { type: 'button' }"
                 class="nav-link"
                 role="menuitem"
                 :aria-haspopup="hasChildren ? true : undefined"
                 :aria-expanded="hasChildren ? open : undefined"
+                @click="onClickRow"
             >
                 <span
                     v-if="getIconSvg(item.icon)"
@@ -73,7 +74,7 @@ import ChevronRightSvg from '@/assets/icons/16/ic-chevron-right.svg?raw'
 type Menu = {
     id: string
     label: string
-    to: string
+    to?: string
     order: number
     depth: number
     icon?: string
@@ -91,11 +92,21 @@ const open = ref(false)
 
 const hasChildren = computed(() => !!props.item.children?.length)
 const submenuId = computed(() => `submenu-${props.item.id}`)
+const hasTo = computed(() => !!props.item.to?.trim())
 
 function linkProps(item: Menu) {
+    if (!item.to?.trim()) return {}
     if (item.newTab) {
         return { href: item.to, target: '_blank', rel: 'noopener noreferrer' }
     }
     return { to: item.to }
+}
+
+function onClickRow(e: MouseEvent) {
+    // to가 없으면 "그룹 항목"이므로 클릭 시 토글
+    if (!hasTo.value && hasChildren.value) {
+        e.preventDefault()
+        open.value = !open.value
+    }
 }
 </script>

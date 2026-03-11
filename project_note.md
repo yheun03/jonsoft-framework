@@ -510,6 +510,11 @@ NUXT_PUBLIC_API_BASE=/api
   - 렌더링 컴포넌트: `components/patterns/PatternNavItem.vue` (재귀)
 - **API**: `server/api/menus.get.ts`에서 `GET /api/menus`로 반환합니다.
 
+#### 그룹(폴더) 메뉴 규칙 (`to` 유무)
+
+- `MENUS`의 아이템에서 `to` 값이 **없거나**, **빈 문자열이거나**, **공백만 있는 값**이면 해당 아이템은 “이동 링크”가 아니라 **그룹(폴더) 항목**으로 처리합니다.
+- 그룹 항목은 `components/patterns/PatternNavItem.vue`에서 링크 대신 버튼으로 렌더링되며, **행 클릭 시 서브메뉴가 펼침/접힘 토글**됩니다.
+
 #### SVG 아이콘 렌더링 방식 (`?raw` + `v-html`)
 
 - **아이콘 자산 위치**:
