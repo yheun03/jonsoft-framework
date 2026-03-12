@@ -1,69 +1,44 @@
 <template>
-    <div class="demo">
-        <div class="demo-layout">
-            <main class="demo-main">
-                <header class="demo__header">
-                    <h1 class="demo__title">AG Grid Demo</h1>
-                    <p class="demo__desc">기본 컬럼/선택/정렬/필터 케이스와 선택 로그를 확인합니다.</p>
+    <div class="page-demo">
+        <div class="page-demo-layout">
+            <main class="page-demo-main">
+                <header class="page-demo__header">
+                    <h1 class="page-demo__title">AG Grid Demo</h1>
+                    <p class="page-demo__desc">기본 컬럼/선택/정렬/필터 케이스와 선택 로그를 확인합니다.</p>
                 </header>
 
-                <!-- 그리드 고유 ID: 엑셀 다운로드·검색 폼 등에서 타깃으로 사용 -->
-                <section class="card" :data-grid-section="GRID_ID_1">
-                    <h2 class="card__title">{{ GRID_ID_1 }}</h2>
-                    <div class="grid-actions">
-                        <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_1)">
-                            엑셀 다운로드
-                        </AppButton>
-                        <AppButton variant="outline" size="sm" @click="exportSelectedToExcel(GRID_ID_1)">
-                            선택만 엑셀
-                        </AppButton>
-                    </div>
-                    <ClientOnly>
-                        <AppAgGrid :grid-id="GRID_ID_1" class="grid" :row-data="rows1" :column-defs="columnDefs"
-                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
-                            style="height: 320px; width: 100%" @grid-ready="onGridReady"
-                            @selection-changed="onSelectionChanged" />
-                        <template #fallback>
-                            <div class="fallback">그리드 로딩 중...</div>
-                        </template>
-                    </ClientOnly>
-                </section>
+                <AppAgGridExportSection
+                    :grid-id="GRID_ID_1"
+                    :row-data="rows1"
+                    :column-defs="columnDefs"
+                    :default-col-def="defaultColDef"
+                    @grid-ready="({ event }) => onGridReady(event)"
+                    @selection-changed="({ event }) => onSelectionChanged(event)"
+                />
 
-                <section class="card" :data-grid-section="GRID_ID_2">
-                    <h2 class="card__title">{{ GRID_ID_2 }}</h2>
-                    <div class="grid-actions">
-                        <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_2)">
-                            엑셀 다운로드
-                        </AppButton>
-                        <AppButton variant="outline" size="sm" @click="exportSelectedToExcel(GRID_ID_2)">
-                            선택만 엑셀
-                        </AppButton>
-                    </div>
-                    <ClientOnly>
-                        <AppAgGrid :grid-id="GRID_ID_2" class="grid" :row-data="rows2" :column-defs="columnDefs"
-                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
-                            style="height: 320px; width: 100%" @grid-ready="onGridReady"
-                            @selection-changed="onSelectionChanged" />
-                        <template #fallback>
-                            <div class="fallback">그리드 로딩 중...</div>
-                        </template>
-                    </ClientOnly>
-                </section>
+                <AppAgGridExportSection
+                    :grid-id="GRID_ID_2"
+                    :row-data="rows2"
+                    :column-defs="columnDefs"
+                    :default-col-def="defaultColDef"
+                    @grid-ready="({ event }) => onGridReady(event)"
+                    @selection-changed="({ event }) => onSelectionChanged(event)"
+                />
             </main>
 
-            <aside class="demo-aside" aria-label="현재 값 패널">
-                <div class="demo-aside__sticky">
-                    <section class="card">
-                        <h2 class="card__title">Actions</h2>
-                        <div class="actions">
+            <aside class="page-demo-aside" aria-label="현재 값 패널">
+                <div class="page-demo-aside__sticky">
+                    <section class="page-demo-card">
+                        <h2 class="page-demo-card__title">Actions</h2>
+                        <div class="page-demo-actions">
                             <AppButton variant="fill" @click="shuffle">데이터 섞기</AppButton>
                             <AppButton variant="text" @click="clearSelection">선택 해제</AppButton>
                         </div>
                     </section>
 
-                    <section class="card">
-                        <h2 class="card__title">현재 값</h2>
-                        <pre class="output">{{ output }}</pre>
+                    <section class="page-demo-card">
+                        <h2 class="page-demo-card__title">현재 값</h2>
+                        <pre class="page-demo-output">{{ output }}</pre>
                     </section>
                 </div>
             </aside>
@@ -87,8 +62,6 @@ type Row = {
 /** 그리드 고유 ID (엑셀 / 검색 타깃) */
 const GRID_ID_1 = '결과_0001'
 const GRID_ID_2 = '결과_0002'
-const EXPORT_ORIGIN = 'A1'
-
 const columnDefs: ColDef<Row>[] = [
     { field: 'id', headerName: 'ID', width: 90, checkboxSelection: true, headerCheckboxSelection: true },
     { field: 'name', headerName: '이름', filter: true, sortable: true },
@@ -125,64 +98,6 @@ const rows2 = ref<Row[]>([
 const apiMap = ref<Record<string, GridApi<Row>>>({})
 const selected = ref<Row[]>([])
 
-// ----- 헬퍼 -----
-function makeExportFileName(base: string) {
-    const d = new Date()
-    const pad = (n: number) => String(n).padStart(2, '0')
-    const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(
-        d.getMinutes(),
-    )}${pad(d.getSeconds())}`
-    return `${base}_${stamp}`
-}
-
-function getColumns(api: GridApi<Row>) {
-    return api.getAllDisplayedColumns().map((col) => ({
-        field: col.getColId(),
-        headerName: (col.getColDef().headerName as string) || col.getColId(),
-    }))
-}
-
-function getDisplayedRows(api: GridApi<Row>) {
-    const rows: Record<string, unknown>[] = []
-    const count = api.getDisplayedRowCount()
-    for (let i = 0; i < count; i++) {
-        const node = api.getDisplayedRowAtIndex(i)
-        if (node?.data) rows.push(node.data as Record<string, unknown>)
-    }
-    return rows
-}
-
-function getDisplayedSelectedRows(api: GridApi<Row>) {
-    const rows: Record<string, unknown>[] = []
-    const count = api.getDisplayedRowCount()
-    for (let i = 0; i < count; i++) {
-        const node = api.getDisplayedRowAtIndex(i)
-        if (node?.isSelected() && node.data) rows.push(node.data as Record<string, unknown>)
-    }
-    return rows
-}
-
-async function requestExcelDownload(payload: {
-    gridId: string
-    columns: { field: string; headerName: string }[]
-    rows: Record<string, unknown>[]
-    fileName: string
-    sheetName: string
-}) {
-    const res = await $fetch<Blob>('/api/export/excel', {
-        method: 'POST',
-        body: { ...payload, origin: EXPORT_ORIGIN },
-        responseType: 'blob',
-    })
-
-    const url = URL.createObjectURL(res)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${payload.fileName}.xlsx`
-    a.click()
-    URL.revokeObjectURL(url)
-}
-
 // ----- 이벤트 핸들러 -----
 function onGridReady(e: GridReadyEvent<Row>) {
     const id = e.api.getGridId()
@@ -191,42 +106,6 @@ function onGridReady(e: GridReadyEvent<Row>) {
 
 function onSelectionChanged(e: SelectionChangedEvent<Row>) {
     selected.value = e.api.getSelectedRows()
-}
-
-async function exportToExcel(gridId: string) {
-    const api = apiMap.value[gridId]
-    if (!api) return
-
-    const columns = getColumns(api)
-    const rows = getDisplayedRows(api)
-    if (!rows.length) return
-
-    const baseName = gridId
-    await requestExcelDownload({
-        gridId,
-        columns,
-        rows,
-        fileName: makeExportFileName(baseName),
-        sheetName: gridId,
-    })
-}
-
-async function exportSelectedToExcel(gridId: string) {
-    const api = apiMap.value[gridId]
-    if (!api) return
-
-    const columns = getColumns(api)
-    const rows = getDisplayedSelectedRows(api)
-    if (!rows.length) return
-
-    const baseName = `${gridId}_선택`
-    await requestExcelDownload({
-        gridId: `${gridId}_selected`,
-        columns,
-        rows,
-        fileName: makeExportFileName(baseName),
-        sheetName: baseName,
-    })
 }
 
 function shuffle() {
@@ -259,108 +138,4 @@ const output = computed(() =>
 )
 </script>
 
-<style scoped lang="scss">
-.demo {
-    padding: 16px;
-    max-width: 1120px;
-}
-
-.demo-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: 16px;
-    align-items: start;
-}
-
-.demo-main {
-    display: grid;
-    gap: 16px;
-    min-width: 0;
-}
-
-.demo-aside {
-    min-width: 0;
-}
-
-.demo-aside__sticky {
-    position: sticky;
-    top: 16px;
-    display: grid;
-    gap: 16px;
-}
-
-.demo__header {
-    display: grid;
-    gap: 6px;
-}
-
-.demo__title {
-    font-size: 18px;
-    margin: 0;
-}
-
-.demo__desc {
-    margin: 0;
-    color: rgba(15, 23, 42, 0.7);
-    font-size: 13px;
-}
-
-.card {
-    border: 1px solid rgba(226, 232, 240, 1);
-    border-radius: 14px;
-    padding: 14px;
-    background: #fff;
-    display: grid;
-    gap: 12px;
-}
-
-.card__title {
-    margin: 0;
-    font-size: 14px;
-}
-
-.grid-actions {
-    margin-bottom: 10px;
-}
-
-.actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-}
-
-.output {
-    margin: 0;
-    padding: 12px;
-    background: rgba(15, 23, 42, 0.04);
-    border-radius: 12px;
-    overflow: auto;
-    font-size: 12px;
-    max-height: calc(100dvh - 220px);
-}
-
-.grid {
-    --ag-border-radius: 12px;
-}
-
-.fallback {
-    height: 520px;
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    border: 1px solid rgba(226, 232, 240, 1);
-    color: rgba(15, 23, 42, 0.7);
-}
-
-@media (max-width: 900px) {
-    .demo-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .demo-aside__sticky {
-        position: static;
-        top: auto;
-    }
-}
-</style>
+<!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
