@@ -437,13 +437,15 @@ const dashOffset = computed(() => circleLen.value - (clampedValue.value / 100) *
 .app-progress__ring {
     fill: none;
     stroke: $gray-200;
-    stroke-width: 6;
+    stroke-width: var(--app-progress-track-h);
+    vector-effect: non-scaling-stroke;
 }
 
 .app-progress__value {
     fill: none;
     stroke: $primary;
-    stroke-width: 6;
+    stroke-width: var(--app-progress-track-h);
+    vector-effect: non-scaling-stroke;
     stroke-linecap: round;
     transition: none;
 }
