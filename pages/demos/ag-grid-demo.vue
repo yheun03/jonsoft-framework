@@ -8,17 +8,59 @@
                 </header>
 
                 <section class="card">
-                    <h2 class="card__title">Grid</h2>
+                    <h2 class="card__title">결과_0001</h2>
+                    <div class="grid-actions">
+                        <AppButton
+                            variant="outline"
+                            size="small"
+                            :disabled="!apiMap['결과_0001']"
+                            @click="exportToExcel('결과_0001')"
+                        >
+                            엑셀 다운로드
+                        </AppButton>
+                    </div>
                     <ClientOnly>
                         <AppAgGrid
                             class="grid"
-                            :row-data="rows"
+                            grid-id="결과_0001"
+                            :row-data="rows1"
                             :column-defs="columnDefs"
                             :default-col-def="defaultColDef"
                             row-selection="multiple"
                             animate-rows
-                            style="height: 520px; width: 100%"
-                            @grid-ready="onGridReady"
+                            style="height: 320px; width: 100%"
+                            @grid-ready="makeGridReadyHandler('결과_0001')"
+                            @selection-changed="onSelectionChanged"
+                        />
+                        <template #fallback>
+                            <div class="fallback">그리드 로딩 중...</div>
+                        </template>
+                    </ClientOnly>
+                </section>
+
+                <section class="card">
+                    <h2 class="card__title">결과_0002</h2>
+                    <div class="grid-actions">
+                        <AppButton
+                            variant="outline"
+                            size="small"
+                            :disabled="!apiMap['결과_0002']"
+                            @click="exportToExcel('결과_0002')"
+                        >
+                            엑셀 다운로드
+                        </AppButton>
+                    </div>
+                    <ClientOnly>
+                        <AppAgGrid
+                            class="grid"
+                            grid-id="결과_0002"
+                            :row-data="rows2"
+                            :column-defs="columnDefs"
+                            :default-col-def="defaultColDef"
+                            row-selection="multiple"
+                            animate-rows
+                            style="height: 320px; width: 100%"
+                            @grid-ready="makeGridReadyHandler('결과_0002')"
                             @selection-changed="onSelectionChanged"
                         />
                         <template #fallback>
@@ -82,37 +124,74 @@ const baseRows: Row[] = [
     { id: 6, name: '정다은', department: '디자인', status: 'PAUSED', score: 79 },
 ]
 
-const rows = ref<Row[]>([...baseRows])
+const rows1 = ref<Row[]>([...baseRows])
+const rows2 = ref<Row[]>([
+    { id: 101, name: '한소희', department: '마케팅', status: 'ACTIVE', score: 91 },
+    { id: 102, name: '윤도현', department: '개발', status: 'PAUSED', score: 67 },
+    { id: 103, name: '송지혜', department: '인사', status: 'ACTIVE', score: 84 },
+    { id: 104, name: '임재현', department: '재무', status: 'BLOCKED', score: 52 },
+    { id: 105, name: '오민지', department: '기획', status: 'ACTIVE', score: 78 },
+    { id: 106, name: '강서준', department: '디자인', status: 'PAUSED', score: 88 },
+])
+
+const apiMap = ref<Record<string, GridApi<Row>>>({})
 const selected = ref<Row[]>([])
 
-const gridApi = shallowRef<GridApi<Row> | null>(null)
-
-function onGridReady(e: GridReadyEvent<Row>) {
-    gridApi.value = e.api
+function makeGridReadyHandler(gridId: string) {
+    return (e: GridReadyEvent<Row>) => {
+        apiMap.value[gridId] = e.api
+    }
 }
 
 function onSelectionChanged(e: SelectionChangedEvent<Row>) {
     selected.value = e.api.getSelectedRows()
 }
 
+async function exportToExcel(gridId: string) {
+    const api = apiMap.value[gridId]
+    if (!api) return
+    const columns = api.getAllDisplayedColumns().map((col) => ({
+        field: col.getColId(),
+        headerName: (col.getColDef().headerName as string) || col.getColId(),
+    }))
+    const rows: Record<string, unknown>[] = []
+    api.forEachNodeAfterFilterAndSort((node) => {
+        if (node.data) rows.push(node.data as Record<string, unknown>)
+    })
+    const res = await $fetch<Blob>('/api/export/excel', {
+        method: 'POST',
+        body: { gridId, columns, rows },
+        responseType: 'blob',
+    })
+    const url = URL.createObjectURL(res)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${gridId}.xlsx`
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
 function shuffle() {
-    const next = [...rows.value]
-    for (let i = next.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[next[i], next[j]] = [next[j], next[i]]
+    for (const rowRef of [rows1, rows2]) {
+        const next = [...rowRef.value]
+        for (let i = next.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[next[i], next[j]] = [next[j], next[i]]
+        }
+        rowRef.value = next
     }
-    rows.value = next
 }
 
 function clearSelection() {
-    gridApi.value?.deselectAll()
+    Object.values(apiMap.value).forEach((api) => api.deselectAll())
     selected.value = []
 }
 
 const output = computed(() =>
     JSON.stringify(
         {
-            rowCount: rows.value.length,
+            rowCount1: rows1.value.length,
+            rowCount2: rows2.value.length,
             selectedCount: selected.value.length,
             selected: selected.value,
         },
@@ -180,6 +259,10 @@ const output = computed(() =>
 .card__title {
     margin: 0;
     font-size: 14px;
+}
+
+.grid-actions {
+    margin-bottom: 10px;
 }
 
 .actions {
