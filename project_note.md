@@ -88,10 +88,11 @@ assets/scss/
 │   ├── _footer.scss
 │   ├── _nav.scss
 │   └── _index.scss
-├── components/         # 전역 컴포넌트 스타일(필요 시)
-│   ├── base/
+├── components/         # 전역 컴포넌트/데모 스타일
+│   ├── base/           # AppButton, AppProgress 등 기본 UI
 │   │   ├── _button.scss
 │   │   ├── _icon.scss
+│   │   ├── _progress.scss
 │   │   └── _index.scss
 │   └── _index.scss
 └── main.scss           # 진입점 (base, layout, components 순)
@@ -367,12 +368,14 @@ jonsoft-framework/
 │     │  ├─ _footer.scss
 │     │  ├─ _nav.scss
 │     │  └─ _index.scss
-│     ├─ components/             # “전역 공통 UI” 스타일(필요시)
-│     │  ├─ _button.scss
-│     │  ├─ _icon.scss
+│     ├─ components/
+│     │  ├─ base/                # AppButton, AppProgress 등 전역 UI 스타일
+│     │  │  ├─ _button.scss
+│     │  │  ├─ _icon.scss
+│     │  │  ├─ _progress.scss
+│     │  │  └─ _index.scss
 │     │  └─ _index.scss
-│     ├─ components/_index.scss
-│     └─ main.scss
+│     └─ main.scss               # 진입점 (base, layout, components 순)
 
 ├─ components/
 │  ├─ base/                      # 디자인 시스템 기본 (자동 임포트)
@@ -612,7 +615,7 @@ UI 컴포넌트(버튼, 인풋, 차트 등) 상세는 **[§9. UI 컴포넌트 & 
 - **AppButton**
   - **파일**: `components/base/AppButton.vue`
   - **역할**: 버튼/링크 통합. variant `fill`(면), `text`(글자), `underline`(밑줄). 슬롯 `#iconLeft`, `#iconRight`. 아이콘만 사용 시 `ariaLabel` 권장. `to`(Nuxt 링크), `href`(외부 링크), `newTab`, `disabled`, `loading`, `block` 지원.
-  - **SCSS**: `assets/scss/components/base/_button.scss` (전역 번들 포함)
+  - **SCSS**: `assets/scss/components/base/_button.scss` (`<style scoped>` 미사용, 전역 번들에서 관리)
   - **라이브러리 의존성**: 없음.
 
 - **AppInput**
@@ -643,6 +646,9 @@ UI 컴포넌트(버튼, 인풋, 차트 등) 상세는 **[§9. UI 컴포넌트 & 
   - **사용 라이브러리**: `nouislider`
     - **경로**: `node_modules/nouislider`
     - **목적**: 터치/마우스를 모두 지원하는 2핸들 슬라이더. 이 프로젝트에서는 **하나의 프로그래스 트랙 안에서 시작/종료 퍼센트 범위를 드래그로 선택**하는 용도로 사용.
+  - **SCSS**: `assets/scss/components/base/_progress.scss`
+    - 리니어/원형/반원형 공통 두께 토큰 `--app-progress-track-h`를 사용하며, 전체 사이즈와 관계없이 절대 두께를 유지.
+    - 컴포넌트 내부 `<style scoped>`는 사용하지 않고, 전역 SCSS에서 `.app-progress` 네임스페이스 기반으로 관리.
 
 - **AppCheckbox**
   - **파일**: `components/base/AppCheckbox.vue`

@@ -1,0 +1,183 @@
+@use "../../abstract/index" as *;
+
+.app-progress {
+    /* linear 컨트롤/표시 공통 토큰 */
+    --app-progress-track-h: 8px;
+    --app-progress-thumb: 18px;
+    --app-progress-radius: 999px;
+}
+
+.app-progress__control {
+    display: grid;
+    gap: 8px;
+}
+
+.app-progress__control-label {
+    font-size: 0.875rem;
+    color: $gray-800;
+}
+
+.app-progress__control-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: var(--app-progress-track-h);
+    border-radius: var(--app-progress-radius);
+    background: $gray-200;
+    outline: none;
+    cursor: pointer;
+}
+
+.app-progress__control-range:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.app-progress__control-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--app-progress-thumb);
+    height: var(--app-progress-thumb);
+    border-radius: var(--app-progress-radius);
+    background: $primary;
+    border: 2px solid $gray-0;
+    box-shadow: 0 0 0 1px rgba($primary, 0.25);
+    cursor: pointer;
+    /* track 높이와 thumb 크기 차이를 자동 보정 */
+    margin-top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2);
+}
+
+.app-progress__control-range::-moz-range-thumb {
+    width: var(--app-progress-thumb);
+    height: var(--app-progress-thumb);
+    border-radius: var(--app-progress-radius);
+    background: $primary;
+    border: 2px solid $gray-0;
+    box-shadow: 0 0 0 1px rgba($primary, 0.25);
+    cursor: pointer;
+}
+
+.app-progress__control-range::-moz-range-track {
+    height: var(--app-progress-track-h);
+    border-radius: var(--app-progress-radius);
+    background: $gray-200;
+}
+
+.app-progress__control-value {
+    font-size: 0.75rem;
+    color: $gray-600;
+    text-align: right;
+}
+
+.app-progress__linear {
+    display: grid;
+    gap: 0;
+}
+
+.app-progress__track {
+    height: var(--app-progress-track-h);
+    border-radius: var(--app-progress-radius);
+    background: $gray-200;
+    overflow: hidden;
+    position: relative;
+}
+
+.app-progress__bar-range {
+    position: absolute;
+    left: calc(var(--start) * 1%);
+    width: calc((var(--end) - var(--start)) * 1%);
+    height: 100%;
+    background: $primary;
+    border-radius: var(--app-progress-radius);
+    transition: none;
+}
+
+.app-progress__noui {
+    width: 100%;
+}
+
+/* noUiSlider 스타일을 기존 트랙 룩앤필에 맞춤 */
+.app-progress .noUi-target {
+    height: var(--app-progress-track-h);
+    border-radius: var(--app-progress-radius);
+    background: $gray-200;
+    border: 0;
+    box-shadow: none;
+}
+
+.app-progress .noUi-origin,
+.app-progress .noUi-connect,
+.app-progress .noUi-handle {
+    transition: none !important;
+}
+
+.app-progress .noUi-connect {
+    background: $primary;
+}
+
+.app-progress .noUi-handle {
+    width: var(--app-progress-thumb);
+    height: var(--app-progress-thumb);
+    border-radius: var(--app-progress-radius);
+    border: 2px solid $gray-0;
+    background: $primary;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
+    right: -9px;
+    top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2);
+}
+
+.app-progress .noUi-handle::before,
+.app-progress .noUi-handle::after {
+    display: none;
+}
+
+.app-progress__circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: grid;
+    place-items: center;
+}
+
+.app-progress__svg {
+    width: 80px;
+    height: 80px;
+    transform: rotate(-90deg);
+}
+
+.app-progress__circle--half {
+    height: 44px;
+    align-items: end;
+}
+
+.app-progress__svg--half {
+    height: 44px;
+    transform: rotate(180deg);
+}
+
+.app-progress__ring {
+    fill: none;
+    stroke: $gray-200;
+    stroke-width: var(--app-progress-track-h);
+    vector-effect: non-scaling-stroke;
+}
+
+.app-progress__value {
+    fill: none;
+    stroke: $primary;
+    stroke-width: var(--app-progress-track-h);
+    vector-effect: non-scaling-stroke;
+    stroke-linecap: round;
+    transition: none;
+}
+
+.app-progress__label {
+    position: absolute;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.8);
+}
+
+.app-progress__circle--half .app-progress__label {
+    bottom: 2px;
+}
+
