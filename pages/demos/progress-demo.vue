@@ -9,13 +9,13 @@
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Controls</h2>
-                    <div class="page-demo-controls">
-                        <div class="page-demo-control">
-                            <label class="page-demo-control__label">단일 값</label>
-                            <input class="page-demo-control__range" type="range" min="0" max="100" :value="value" @input="onValue" />
-                            <div class="page-demo-control__value">{{ value }}%</div>
-                        </div>
-                    </div>
+                    <AppProgress
+                        v-model:value="value"
+                        variant="linear"
+                        mode="control-single"
+                        label="단일 값"
+                        :show-label="true"
+                    />
                 </section>
 
                 <section class="page-demo-card">
@@ -44,6 +44,11 @@
                     <h2 class="page-demo-card__title">Circular</h2>
                     <AppProgress :value="value" variant="circular" :show-label="true" />
                 </section>
+
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">Half Circular</h2>
+                    <AppProgress :value="value" variant="circular" circular-type="half" :show-label="true" />
+                </section>
             </main>
 
             <aside class="page-demo-aside" aria-label="현재 값 패널">
@@ -68,10 +73,6 @@
 <script setup lang="ts">
 const value = ref(35)
 let range = reactive({ start: 20, end: 70 })
-
-function onValue(e: Event) {
-    value.value = Number((e.target as HTMLInputElement).value)
-}
 
 function randomize() {
     value.value = Math.round(Math.random() * 100)
