@@ -74,6 +74,7 @@
 <script setup lang="ts">
 import type { ColDef, GridApi, GridReadyEvent, SelectionChangedEvent } from 'ag-grid-community'
 
+// ----- 타입 -----
 type Row = {
     id: number
     name: string
@@ -81,6 +82,12 @@ type Row = {
     status: 'ACTIVE' | 'PAUSED' | 'BLOCKED'
     score: number
 }
+
+// ----- 상수 -----
+/** 그리드 고유 ID (엑셀 / 검색 타깃) */
+const GRID_ID_1 = '결과_0001'
+const GRID_ID_2 = '결과_0002'
+const EXPORT_ORIGIN = 'A1'
 
 const columnDefs: ColDef<Row>[] = [
     { field: 'id', headerName: 'ID', width: 90, checkboxSelection: true, headerCheckboxSelection: true },
@@ -96,6 +103,7 @@ const defaultColDef: ColDef<Row> = {
     resizable: true,
 }
 
+// ----- 상태 -----
 const rows1 = ref<Row[]>([
     { id: 1, name: '홍길동', department: '개발', status: 'ACTIVE', score: 88 },
     { id: 2, name: '김민수', department: '디자인', status: 'PAUSED', score: 73 },
@@ -104,6 +112,7 @@ const rows1 = ref<Row[]>([
     { id: 5, name: '최유진', department: '개발', status: 'ACTIVE', score: 82 },
     { id: 6, name: '정다은', department: '디자인', status: 'PAUSED', score: 79 },
 ])
+
 const rows2 = ref<Row[]>([
     { id: 101, name: '한소희', department: '마케팅', status: 'ACTIVE', score: 91 },
     { id: 102, name: '윤도현', department: '개발', status: 'PAUSED', score: 67 },
@@ -113,13 +122,68 @@ const rows2 = ref<Row[]>([
     { id: 106, name: '강서준', department: '디자인', status: 'PAUSED', score: 88 },
 ])
 
-/** 그리드 고유 ID (엑셀 다운로드·검색 폼 타깃으로 사용) */
-const GRID_ID_1 = '결과_0001'
-const GRID_ID_2 = '결과_0002'
-
 const apiMap = ref<Record<string, GridApi<Row>>>({})
 const selected = ref<Row[]>([])
 
+// ----- 헬퍼 -----
+function makeExportFileName(base: string) {
+    const d = new Date()
+    const pad = (n: number) => String(n).padStart(2, '0')
+    const stamp = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(
+        d.getMinutes(),
+    )}${pad(d.getSeconds())}`
+    return `${base}_${stamp}`
+}
+
+function getColumns(api: GridApi<Row>) {
+    return api.getAllDisplayedColumns().map((col) => ({
+        field: col.getColId(),
+        headerName: (col.getColDef().headerName as string) || col.getColId(),
+    }))
+}
+
+function getDisplayedRows(api: GridApi<Row>) {
+    const rows: Record<string, unknown>[] = []
+    const count = api.getDisplayedRowCount()
+    for (let i = 0; i < count; i++) {
+        const node = api.getDisplayedRowAtIndex(i)
+        if (node?.data) rows.push(node.data as Record<string, unknown>)
+    }
+    return rows
+}
+
+function getDisplayedSelectedRows(api: GridApi<Row>) {
+    const rows: Record<string, unknown>[] = []
+    const count = api.getDisplayedRowCount()
+    for (let i = 0; i < count; i++) {
+        const node = api.getDisplayedRowAtIndex(i)
+        if (node?.isSelected() && node.data) rows.push(node.data as Record<string, unknown>)
+    }
+    return rows
+}
+
+async function requestExcelDownload(payload: {
+    gridId: string
+    columns: { field: string; headerName: string }[]
+    rows: Record<string, unknown>[]
+    fileName: string
+    sheetName: string
+}) {
+    const res = await $fetch<Blob>('/api/export/excel', {
+        method: 'POST',
+        body: { ...payload, origin: EXPORT_ORIGIN },
+        responseType: 'blob',
+    })
+
+    const url = URL.createObjectURL(res)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${payload.fileName}.xlsx`
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
+// ----- 이벤트 핸들러 -----
 function onGridReady(e: GridReadyEvent<Row>) {
     const id = e.api.getGridId()
     apiMap.value[id] = e.api
@@ -132,54 +196,37 @@ function onSelectionChanged(e: SelectionChangedEvent<Row>) {
 async function exportToExcel(gridId: string) {
     const api = apiMap.value[gridId]
     if (!api) return
-    const columns = api.getAllDisplayedColumns().map((col) => ({
-        field: col.getColId(),
-        headerName: (col.getColDef().headerName as string) || col.getColId(),
-    }))
-    const rows: Record<string, unknown>[] = []
-    const count = api.getDisplayedRowCount()
-    for (let i = 0; i < count; i++) {
-        const node = api.getDisplayedRowAtIndex(i)
-        if (node?.data) rows.push(node.data as Record<string, unknown>)
-    }
-    const res = await $fetch<Blob>('/api/export/excel', {
-        method: 'POST',
-        body: { gridId, columns, rows },
-        responseType: 'blob',
+
+    const columns = getColumns(api)
+    const rows = getDisplayedRows(api)
+    if (!rows.length) return
+
+    const baseName = gridId
+    await requestExcelDownload({
+        gridId,
+        columns,
+        rows,
+        fileName: makeExportFileName(baseName),
+        sheetName: gridId,
     })
-    const url = URL.createObjectURL(res)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${gridId}.xlsx`
-    a.click()
-    URL.revokeObjectURL(url)
 }
 
 async function exportSelectedToExcel(gridId: string) {
     const api = apiMap.value[gridId]
     if (!api) return
-    const columns = api.getAllDisplayedColumns().map((col) => ({
-        field: col.getColId(),
-        headerName: (col.getColDef().headerName as string) || col.getColId(),
-    }))
-    const rows: Record<string, unknown>[] = []
-    const count = api.getDisplayedRowCount()
-    for (let i = 0; i < count; i++) {
-        const node = api.getDisplayedRowAtIndex(i)
-        if (node?.isSelected() && node.data) rows.push(node.data as Record<string, unknown>)
-    }
+
+    const columns = getColumns(api)
+    const rows = getDisplayedSelectedRows(api)
     if (!rows.length) return
-    const res = await $fetch<Blob>('/api/export/excel', {
-        method: 'POST',
-        body: { gridId: `${gridId}_selected`, columns, rows },
-        responseType: 'blob',
+
+    const baseName = `${gridId}_선택`
+    await requestExcelDownload({
+        gridId: `${gridId}_selected`,
+        columns,
+        rows,
+        fileName: makeExportFileName(baseName),
+        sheetName: baseName,
     })
-    const url = URL.createObjectURL(res)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${gridId}_selected.xlsx`
-    a.click()
-    URL.revokeObjectURL(url)
 }
 
 function shuffle() {
@@ -187,7 +234,7 @@ function shuffle() {
         const next = [...rowRef.value]
         for (let i = next.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
-                ;[next[i], next[j]] = [next[j], next[i]]
+            ;[next[i], next[j]] = [next[j], next[i]]
         }
         rowRef.value = next
     }

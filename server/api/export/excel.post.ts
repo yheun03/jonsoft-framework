@@ -8,6 +8,9 @@ interface ExportExcelBody {
     gridId: string
     columns: { field: string; headerName: string }[]
     rows: Record<string, unknown>[]
+    fileName?: string
+    sheetName?: string
+    origin?: string
 }
 
 export default defineEventHandler(async (event) => {
@@ -29,14 +32,21 @@ export default defineEventHandler(async (event) => {
         }),
     )
     const aoa = [headerRow, ...dataRows]
-    const ws = XLSX.utils.aoa_to_sheet(aoa)
+    const origin = (body.origin || 'A1').toUpperCase()
+    if (!/^[A-Z]+[1-9]\d*$/.test(origin)) {
+        throw createError({ statusCode: 400, message: 'origin 형식이 올바르지 않습니다. 예: A1, B3' })
+    }
+    const ws = XLSX.utils.aoa_to_sheet([], {})
+    XLSX.utils.sheet_add_aoa(ws, aoa, { origin })
     const wb = XLSX.utils.book_new()
-    const sheetName = (gridId || 'export').slice(0, 31)
+    const sheetName = (body.sheetName || gridId || 'export').slice(0, 31)
     XLSX.utils.book_append_sheet(wb, ws, sheetName)
-    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' }) as Buffer
+    const buffer = XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' }) as unknown
 
-    const filename = `${gridId}.xlsx`
-    setResponseHeader(event, 'Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`)
+    const baseName = (body.fileName || gridId || 'export').replace(/[\\/:*?"<>|]/g, '_')
+    const filename = baseName.toLowerCase().endsWith('.xlsx') ? baseName : `${baseName}.xlsx`
+    const encoded = encodeURIComponent(filename)
+    setResponseHeader(event, 'Content-Disposition', `attachment; filename="export.xlsx"; filename*=UTF-8''${encoded}`)
     setResponseHeader(event, 'Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     return buffer
 })
