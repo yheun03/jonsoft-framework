@@ -7,62 +7,37 @@
                     <p class="demo__desc">기본 컬럼/선택/정렬/필터 케이스와 선택 로그를 확인합니다.</p>
                 </header>
 
-                <section class="card">
-                    <h2 class="card__title">결과_0001</h2>
+                <!-- 그리드 고유 ID: 엑셀 다운로드·검색 폼 등에서 타깃으로 사용 -->
+                <section class="card" :data-grid-section="GRID_ID_1">
+                    <h2 class="card__title">{{ GRID_ID_1 }}</h2>
                     <div class="grid-actions">
-                        <AppButton
-                            variant="outline"
-                            size="small"
-                            :disabled="!apiMap['결과_0001']"
-                            @click="exportToExcel('결과_0001')"
-                        >
+                        <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_1)">
                             엑셀 다운로드
                         </AppButton>
                     </div>
                     <ClientOnly>
-                        <AppAgGrid
-                            class="grid"
-                            grid-id="결과_0001"
-                            :row-data="rows1"
-                            :column-defs="columnDefs"
-                            :default-col-def="defaultColDef"
-                            row-selection="multiple"
-                            animate-rows
-                            style="height: 320px; width: 100%"
-                            @grid-ready="makeGridReadyHandler('결과_0001')"
-                            @selection-changed="onSelectionChanged"
-                        />
+                        <AppAgGrid :grid-id="GRID_ID_1" class="grid" :row-data="rows1" :column-defs="columnDefs"
+                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
+                            style="height: 320px; width: 100%" @grid-ready="onGridReady"
+                            @selection-changed="onSelectionChanged" />
                         <template #fallback>
                             <div class="fallback">그리드 로딩 중...</div>
                         </template>
                     </ClientOnly>
                 </section>
 
-                <section class="card">
-                    <h2 class="card__title">결과_0002</h2>
+                <section class="card" :data-grid-section="GRID_ID_2">
+                    <h2 class="card__title">{{ GRID_ID_2 }}</h2>
                     <div class="grid-actions">
-                        <AppButton
-                            variant="outline"
-                            size="small"
-                            :disabled="!apiMap['결과_0002']"
-                            @click="exportToExcel('결과_0002')"
-                        >
+                        <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_2)">
                             엑셀 다운로드
                         </AppButton>
                     </div>
                     <ClientOnly>
-                        <AppAgGrid
-                            class="grid"
-                            grid-id="결과_0002"
-                            :row-data="rows2"
-                            :column-defs="columnDefs"
-                            :default-col-def="defaultColDef"
-                            row-selection="multiple"
-                            animate-rows
-                            style="height: 320px; width: 100%"
-                            @grid-ready="makeGridReadyHandler('결과_0002')"
-                            @selection-changed="onSelectionChanged"
-                        />
+                        <AppAgGrid :grid-id="GRID_ID_2" class="grid" :row-data="rows2" :column-defs="columnDefs"
+                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
+                            style="height: 320px; width: 100%" @grid-ready="onGridReady"
+                            @selection-changed="onSelectionChanged" />
                         <template #fallback>
                             <div class="fallback">그리드 로딩 중...</div>
                         </template>
@@ -115,16 +90,14 @@ const defaultColDef: ColDef<Row> = {
     resizable: true,
 }
 
-const baseRows: Row[] = [
+const rows1 = ref<Row[]>([
     { id: 1, name: '홍길동', department: '개발', status: 'ACTIVE', score: 88 },
     { id: 2, name: '김민수', department: '디자인', status: 'PAUSED', score: 73 },
     { id: 3, name: '이서연', department: '기획', status: 'ACTIVE', score: 95 },
     { id: 4, name: '박지훈', department: '운영', status: 'BLOCKED', score: 61 },
     { id: 5, name: '최유진', department: '개발', status: 'ACTIVE', score: 82 },
     { id: 6, name: '정다은', department: '디자인', status: 'PAUSED', score: 79 },
-]
-
-const rows1 = ref<Row[]>([...baseRows])
+])
 const rows2 = ref<Row[]>([
     { id: 101, name: '한소희', department: '마케팅', status: 'ACTIVE', score: 91 },
     { id: 102, name: '윤도현', department: '개발', status: 'PAUSED', score: 67 },
@@ -134,13 +107,16 @@ const rows2 = ref<Row[]>([
     { id: 106, name: '강서준', department: '디자인', status: 'PAUSED', score: 88 },
 ])
 
+/** 그리드 고유 ID (엑셀 다운로드·검색 폼 타깃으로 사용) */
+const GRID_ID_1 = '결과_0001'
+const GRID_ID_2 = '결과_0002'
+
 const apiMap = ref<Record<string, GridApi<Row>>>({})
 const selected = ref<Row[]>([])
 
-function makeGridReadyHandler(gridId: string) {
-    return (e: GridReadyEvent<Row>) => {
-        apiMap.value[gridId] = e.api
-    }
+function onGridReady(e: GridReadyEvent<Row>) {
+    const id = e.api.getGridId()
+    apiMap.value[id] = e.api
 }
 
 function onSelectionChanged(e: SelectionChangedEvent<Row>) {
@@ -176,7 +152,7 @@ function shuffle() {
         const next = [...rowRef.value]
         for (let i = next.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
-            ;[next[i], next[j]] = [next[j], next[i]]
+                ;[next[i], next[j]] = [next[j], next[i]]
         }
         rowRef.value = next
     }
@@ -299,10 +275,10 @@ const output = computed(() =>
     .demo-layout {
         grid-template-columns: 1fr;
     }
+
     .demo-aside__sticky {
         position: static;
         top: auto;
     }
 }
 </style>
-

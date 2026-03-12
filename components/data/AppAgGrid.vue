@@ -8,12 +8,12 @@ import { AgGridVue } from 'ag-grid-vue3'
 const { $agGridLocale } = useNuxtApp()
 const attrs = useAttrs()
 
-// localeText, class 제외 attrs (템플릿에서 별도 처리). gridId는 AG Grid 옵션으로 명시 전달
+// localeText, class 제외 attrs. gridId는 AG Grid 옵션으로 명시 전달 (엑셀/검색 등 타깃 지정용)
 const gridAttrs = computed(() => {
     const a = attrs as Record<string, unknown>
     const { localeText: _, class: __, 'grid-id': gridIdKebab, gridId: gridIdCamel, ...rest } = a
     const gridId = gridIdCamel ?? gridIdKebab
-    return { ...rest, ...(gridId != null && { gridId }) }
+    return { ...rest, ...(gridId != null && gridId !== '' && { gridId }) }
 })
 
 // 기본값: 한국어. 부모가 locale-text 전달 시 override

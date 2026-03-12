@@ -100,6 +100,24 @@
         }
     }
 
+    &--outline {
+        background: transparent;
+        color: $primary;
+        border: 1.5px solid $primary;
+
+        &:hover {
+            background: rgba($primary, 0.06);
+            border-color: color.adjust($primary, $lightness: -8%);
+            color: color.adjust($primary, $lightness: -8%);
+        }
+
+        &:active {
+            background: rgba($primary, 0.10);
+            border-color: color.adjust($primary, $lightness: -14%);
+            color: color.adjust($primary, $lightness: -14%);
+        }
+    }
+
     &--underline {
         background: transparent;
         color: $primary;

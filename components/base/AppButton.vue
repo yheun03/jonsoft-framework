@@ -32,7 +32,7 @@
 <script setup lang="ts">
 const attrs = useAttrs()
 
-type ButtonVariant = 'fill' | 'text' | 'underline'
+type ButtonVariant = 'fill' | 'text' | 'underline' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg' | 'custom'
 type ButtonType = 'button' | 'submit' | 'reset'
 
@@ -48,7 +48,7 @@ const props = withDefaults(
         /** 링크 새 탭 */
         newTab?: boolean
 
-        /** fill(면) | text(글자) | underline(밑줄) */
+        /** fill(면) | text(글자) | underline(밑줄) | outline(테두리) */
         variant?: ButtonVariant
         /** sm | md | lg */
         size?: ButtonSize
