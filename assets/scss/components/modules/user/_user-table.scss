@@ -1,0 +1,17 @@
+@use "../../../abstract/index" as *;
+
+.app-user-table {
+    padding: 16px;
+
+    .loading,
+    .error {
+        padding: 32px;
+        text-align: center;
+        color: $gray-600;
+    }
+
+    .error {
+        color: $status-error;
+    }
+}
+

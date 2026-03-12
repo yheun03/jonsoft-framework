@@ -1,0 +1,45 @@
+@use "../../abstract/index" as *;
+
+.app-date-picker {
+    display: grid;
+    gap: 6px;
+}
+
+.app-date-picker__label {
+    font-size: 0.875rem;
+    color: $gray-800;
+}
+
+.app-date-picker__field {
+    width: 100%;
+    border: 1px solid $gray-200;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: $gray-0;
+    color: $gray-800;
+    outline: none;
+}
+
+.app-date-picker__helper {
+    margin: 0;
+    font-size: 12px;
+    color: $gray-600;
+}
+
+.app-date-picker__error {
+    margin: 0;
+    font-size: 12px;
+    color: $status-error;
+}
+
+.is-disabled .app-date-picker__field {
+    background: $gray-100;
+    color: $gray-500;
+    cursor: not-allowed;
+}
+
+.is-error .app-date-picker__field {
+    border-color: $status-error;
+}
+

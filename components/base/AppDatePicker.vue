@@ -22,7 +22,8 @@
 
 <script setup lang="ts">
 import flatpickr from 'flatpickr'
-import type { Instance as FlatpickrInstance, Options as FlatpickrOptions } from 'flatpickr/dist/types/options'
+import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance'
+import type { Options as FlatpickrOptions } from 'flatpickr/dist/types/options'
 import 'flatpickr/dist/flatpickr.css'
 
 export type DateRangeValue = { start: string | null; end: string | null }
@@ -153,49 +154,4 @@ watch(
     { deep: true },
 )
 </script>
-
-<style scoped lang="scss">
-.app-date-picker {
-    display: grid;
-    gap: 6px;
-}
-
-.app-date-picker__label {
-    font-size: 0.875rem;
-    color: var(--text-primary, #0f172a);
-}
-
-.app-date-picker__field {
-    width: 100%;
-    border: 1px solid var(--border, #e2e8f0);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 14px;
-    background: #fff;
-    color: var(--text-primary, #0f172a);
-    outline: none;
-}
-
-.app-date-picker__helper {
-    margin: 0;
-    font-size: 12px;
-    color: var(--text-secondary, #64748b);
-}
-
-.app-date-picker__error {
-    margin: 0;
-    font-size: 12px;
-    color: var(--color-error, #ef4444);
-}
-
-.is-disabled .app-date-picker__field {
-    background: #f1f5f9;
-    color: #94a3b8;
-    cursor: not-allowed;
-}
-
-.is-error .app-date-picker__field {
-    border-color: var(--color-error, #ef4444);
-}
-</style>
 

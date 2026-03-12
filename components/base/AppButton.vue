@@ -150,5 +150,3 @@ function onClick(e: MouseEvent) {
     emit('click', e)
 }
 </script>
-
-<style scoped lang="scss"></style>

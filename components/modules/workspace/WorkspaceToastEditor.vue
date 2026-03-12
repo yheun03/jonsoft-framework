@@ -63,19 +63,3 @@ onBeforeUnmount(() => {
 })
 </script>
 
-<style scoped lang="scss">
-.toast-editor {
-    height: 100%;
-    min-height: 0;
-}
-
-:deep(.toastui-editor-defaultUI) {
-    border: 0;
-    height: 100%;
-}
-
-:deep(.toastui-editor-toolbar) {
-    border-bottom: 1px solid rgba($gray-200, 0.9);
-}
-</style>
-

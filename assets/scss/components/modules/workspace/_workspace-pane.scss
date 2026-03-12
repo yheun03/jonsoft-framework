@@ -1,0 +1,15 @@
+@use "../../../abstract/index" as *;
+
+.workspace-pane {
+    display: grid;
+    grid-template-rows: 1fr;
+    height: 100%;
+    min-height: 0;
+}
+
+.workspace-pane__body {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+

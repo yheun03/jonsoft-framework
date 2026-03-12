@@ -116,14 +116,14 @@
 }
 
 .app-progress .noUi-handle {
-    width: var(--app-progress-thumb);
-    height: var(--app-progress-thumb);
-    border-radius: var(--app-progress-radius);
-    border: 2px solid $gray-0;
-    background: $primary;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
-    right: -9px;
-    top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2);
+    width: var(--app-progress-thumb) !important;
+    height: var(--app-progress-thumb) !important;
+    border-radius: var(--app-progress-radius) !important;
+    border: 2px solid $gray-0 !important;
+    background: $primary !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18) !important;
+    right: -9px !important;
+    top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2) !important;
 }
 
 .app-progress .noUi-handle::before,
@@ -135,6 +135,7 @@
     position: relative;
     width: 80px;
     height: 80px;
+    aspect-ratio: 1 / 1;
     display: grid;
     place-items: center;
 }
@@ -142,6 +143,7 @@
 .app-progress__svg {
     width: 80px;
     height: 80px;
+    aspect-ratio: 1 / 1;
     transform: rotate(-90deg);
 }
 

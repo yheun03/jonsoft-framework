@@ -3,7 +3,7 @@
         <div class="app-chart" :class="wrapperClass" :style="{ height: `${height}px` }">
             <Line
                 v-if="type === 'line'"
-                :key="renderKey"
+                :key="`line-${renderKey}`"
                 class="app-chart__canvas"
                 :data="chartData"
                 :options="mergedOptions"
@@ -11,7 +11,7 @@
             />
             <Bar
                 v-else-if="type === 'bar'"
-                :key="renderKey"
+                :key="`bar-${renderKey}`"
                 class="app-chart__canvas"
                 :data="chartData"
                 :options="mergedOptions"
@@ -19,7 +19,7 @@
             />
             <Doughnut
                 v-else-if="type === 'doughnut'"
-                :key="renderKey"
+                :key="`doughnut-${renderKey}`"
                 class="app-chart__canvas"
                 :data="chartData"
                 :options="mergedOptions"
@@ -27,7 +27,7 @@
             />
             <Pie
                 v-else
-                :key="renderKey"
+                :key="`pie-${renderKey}`"
                 class="app-chart__canvas"
                 :data="chartData"
                 :options="mergedOptions"
@@ -94,27 +94,4 @@ const baseOptions = {
 const chartData = computed<any>(() => props.data)
 const mergedOptions = computed<any>(() => ({ ...baseOptions, ...(props.options ?? {}) }))
 </script>
-
-<style scoped lang="scss">
-.app-chart {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-.app-chart__fallback {
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    border: 1px solid rgba(226, 232, 240, 1);
-    background: #fff;
-    color: rgba(15, 23, 42, 0.7);
-    font-size: 13px;
-}
-
-.app-chart__canvas {
-    width: 100%;
-    height: 100%;
-}
-</style>
 

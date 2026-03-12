@@ -1,6 +1,7 @@
 @use "base/index" as base;
 @use "layout/index" as layout;
 @use "components/index" as components;
+@use "pages/index" as pages;
 
 /* -------------------------------------------------------
  * Demos (복사/붙여넣기 친화 공통 스타일)
@@ -47,15 +48,15 @@
 
 .page-demo__desc {
     margin: 0;
-    color: rgba(15, 23, 42, 0.7);
+    color: rgba($gray-900, 0.7);
     font-size: 13px;
 }
 
 .page-demo-card {
-    border: 1px solid rgba(226, 232, 240, 1);
+    border: 1px solid $gray-200;
     border-radius: 14px;
     padding: 14px;
-    background: #fff;
+    background: $gray-0;
     display: grid;
     gap: 12px;
 }
@@ -110,7 +111,7 @@
 
 .page-demo-control__label {
     font-size: 0.875rem;
-    color: var(--text-primary, #0f172a);
+    color: $gray-800;
 }
 
 .page-demo-control__range {
@@ -119,18 +120,18 @@
 
 .page-demo-control__value {
     font-size: 12px;
-    color: rgba(15, 23, 42, 0.7);
+    color: rgba($gray-900, 0.7);
 }
 
 .page-demo-hint {
     font-size: 12px;
-    color: rgba(15, 23, 42, 0.7);
+    color: rgba($gray-900, 0.7);
 }
 
 .page-demo-output {
     margin: 0;
     padding: 12px;
-    background: rgba(15, 23, 42, 0.04);
+    background: rgba($gray-900, 0.04);
     border-radius: 12px;
     overflow: auto;
     font-size: 12px;
@@ -147,8 +148,8 @@
 /* Chart demo */
 .page-demo-chart-box {
     border-radius: 12px;
-    border: 1px solid rgba(226, 232, 240, 1);
-    background: #fff;
+    border: 1px solid $gray-200;
+    background: $gray-0;
     padding: 8px;
 }
 
@@ -169,8 +170,8 @@
     display: grid;
     place-items: center;
     border-radius: 14px;
-    border: 1px solid rgba(226, 232, 240, 1);
-    color: rgba(15, 23, 42, 0.7);
+    border: 1px solid $gray-200;
+    color: rgba($gray-900, 0.7);
 }
 
 @media (max-width: 900px) {

@@ -27,18 +27,3 @@ const emit = defineEmits<{
 }>()
 </script>
 
-<style scoped lang="scss">
-.workspace-pane {
-    display: grid;
-    grid-template-rows: 1fr;
-    height: 100%;
-    min-height: 0;
-}
-
-.workspace-pane__body {
-    height: 100%;
-    min-height: 0;
-    overflow: hidden;
-}
-</style>
-

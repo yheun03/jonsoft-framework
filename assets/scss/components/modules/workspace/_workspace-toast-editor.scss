@@ -1,0 +1,16 @@
+@use "../../../abstract/index" as *;
+
+.toast-editor {
+    height: 100%;
+    min-height: 0;
+}
+
+.toast-editor .toastui-editor-defaultUI {
+    border: 0;
+    height: 100%;
+}
+
+.toast-editor .toastui-editor-toolbar {
+    border-bottom: 1px solid rgba($gray-200, 0.9);
+}
+

@@ -1,0 +1,55 @@
+@use "../../abstract/index" as *;
+
+.app-select {
+    display: grid;
+    gap: 6px;
+}
+
+.app-select__label {
+    font-size: 0.875rem;
+    color: $gray-800;
+}
+
+.app-select__search-input {
+    width: 100%;
+    border: 1px solid $gray-200;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    outline: none;
+}
+
+.app-select__field {
+    width: 100%;
+    border: 1px solid $gray-200;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    background: $gray-0;
+    color: $gray-800;
+    outline: none;
+}
+
+.app-select__helper {
+    margin: 0;
+    font-size: 12px;
+    color: $gray-600;
+}
+
+.app-select__error {
+    margin: 0;
+    font-size: 12px;
+    color: $status-error;
+}
+
+.is-disabled .app-select__field,
+.is-disabled .app-select__search-input {
+    background: $gray-100;
+    color: $gray-500;
+    cursor: not-allowed;
+}
+
+.is-error .app-select__field {
+    border-color: $status-error;
+}
+

@@ -55,22 +55,3 @@ onMounted(async () => {
     }
 })
 </script>
-
-<style scoped lang="scss">
-@use "abstract/variables" as *;
-
-.app-user-table {
-    padding: $spacing-md;
-
-    .loading,
-    .error {
-        padding: $spacing-xl;
-        text-align: center;
-        color: var(--text-secondary);
-    }
-
-    .error {
-        color: var(--color-error, #ef4444);
-    }
-}
-</style>
