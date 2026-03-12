@@ -14,6 +14,9 @@
                         <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_1)">
                             엑셀 다운로드
                         </AppButton>
+                        <AppButton variant="outline" size="sm" @click="exportSelectedToExcel(GRID_ID_1)">
+                            선택만 엑셀
+                        </AppButton>
                     </div>
                     <ClientOnly>
                         <AppAgGrid :grid-id="GRID_ID_1" class="grid" :row-data="rows1" :column-defs="columnDefs"
@@ -31,6 +34,9 @@
                     <div class="grid-actions">
                         <AppButton variant="outline" size="sm" @click="exportToExcel(GRID_ID_2)">
                             엑셀 다운로드
+                        </AppButton>
+                        <AppButton variant="outline" size="sm" @click="exportSelectedToExcel(GRID_ID_2)">
+                            선택만 엑셀
                         </AppButton>
                     </div>
                     <ClientOnly>
@@ -131,9 +137,11 @@ async function exportToExcel(gridId: string) {
         headerName: (col.getColDef().headerName as string) || col.getColId(),
     }))
     const rows: Record<string, unknown>[] = []
-    api.forEachNodeAfterFilterAndSort((node) => {
-        if (node.data) rows.push(node.data as Record<string, unknown>)
-    })
+    const count = api.getDisplayedRowCount()
+    for (let i = 0; i < count; i++) {
+        const node = api.getDisplayedRowAtIndex(i)
+        if (node?.data) rows.push(node.data as Record<string, unknown>)
+    }
     const res = await $fetch<Blob>('/api/export/excel', {
         method: 'POST',
         body: { gridId, columns, rows },
@@ -143,6 +151,33 @@ async function exportToExcel(gridId: string) {
     const a = document.createElement('a')
     a.href = url
     a.download = `${gridId}.xlsx`
+    a.click()
+    URL.revokeObjectURL(url)
+}
+
+async function exportSelectedToExcel(gridId: string) {
+    const api = apiMap.value[gridId]
+    if (!api) return
+    const columns = api.getAllDisplayedColumns().map((col) => ({
+        field: col.getColId(),
+        headerName: (col.getColDef().headerName as string) || col.getColId(),
+    }))
+    const rows: Record<string, unknown>[] = []
+    const count = api.getDisplayedRowCount()
+    for (let i = 0; i < count; i++) {
+        const node = api.getDisplayedRowAtIndex(i)
+        if (node?.isSelected() && node.data) rows.push(node.data as Record<string, unknown>)
+    }
+    if (!rows.length) return
+    const res = await $fetch<Blob>('/api/export/excel', {
+        method: 'POST',
+        body: { gridId: `${gridId}_selected`, columns, rows },
+        responseType: 'blob',
+    })
+    const url = URL.createObjectURL(res)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${gridId}_selected.xlsx`
     a.click()
     URL.revokeObjectURL(url)
 }
