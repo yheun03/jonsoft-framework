@@ -17,6 +17,7 @@ export const MENUS = [
     { id: 'MENU_020500', depth: 2, order: 5, label: '프로그레스 데모', to: '/demos/progress-demo', newTab: false },
     { id: 'MENU_020600', depth: 2, order: 6, label: '데이트피커 데모', to: '/demos/datepicker-demo', newTab: false },
     { id: 'MENU_020700', depth: 2, order: 7, label: '셀렉트 데모', to: '/demos/select-demo', newTab: false },
+    { id: 'MENU_020800', depth: 2, order: 8, label: '선택 컴포넌트 데모', to: '/demos/choice-demo', newTab: false },
 ] as const
 
 /**
