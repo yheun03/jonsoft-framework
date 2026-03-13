@@ -1,8 +1,8 @@
 <template>
     <ClientOnly>
         <div class="app-user-table">
-            <div v-if="loading" class="loading">로딩 중...</div>
-            <div v-else-if="error" class="error">{{ error }}</div>
+            <div v-if="loading" class="app-user-table__loading">로딩 중...</div>
+            <div v-else-if="error" class="app-user-table__error">{{ error }}</div>
             <AppAgGrid
                 v-else
                 :row-data="users"
@@ -14,7 +14,7 @@
             />
         </div>
         <template #fallback>
-            <div class="loading">테이블 로딩 중...</div>
+            <div class="app-user-table__loading">테이블 로딩 중...</div>
         </template>
     </ClientOnly>
 </template>

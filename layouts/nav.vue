@@ -1,6 +1,6 @@
 <template>
     <nav class="layout-nav" aria-label="Sidebar navigation">
-        <div class="layout-nav-header">
+        <div class="layout-nav__header">
             <div class="nav-logo" aria-hidden="true">
                 <i class="app-icon" v-html="logoSvg" />
             </div>
@@ -67,9 +67,9 @@
             </div>
         </div>
 
-        <div class="layout-nav-body">
-            <div class="nav-list-wrap">
-                <ul class="nav-list" role="menubar" aria-label="Main navigation">
+        <div class="layout-nav__body">
+            <div class="layout-nav__list-wrap">
+                <ul class="layout-nav__list" role="menubar" aria-label="Main navigation">
                     <PatternNavItem
                         v-for="menu in menuTree"
                         :key="menu.id"
@@ -80,7 +80,7 @@
             </div>
         </div>
 
-        <div class="layout-nav-footer">
+        <div class="layout-nav__footer">
             <AppButton variant="text" size="custom" :custom-size="{ width: 28 }" ariaLabel="테마 변경">
                 <template #iconLeft>
                     <span class="nav-action-icon" aria-hidden="true" v-html="ThemeIconSvg" />

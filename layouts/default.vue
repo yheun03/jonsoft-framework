@@ -1,9 +1,9 @@
 <template>
-    <div class="layout-container">
-        <LayoutNav class="layout-nav"/>
-        <main class="layout-main">
-            <RouteTabsBar class="layout-route-tabs" />
-            <div class="layout-main-content">
+    <div class="layout">
+        <LayoutNav class="layout__nav" />
+        <main class="layout__main">
+            <RouteTabsBar class="layout__tabs" />
+            <div class="layout__content">
                 <slot />
             </div>
         </main>

@@ -1,16 +1,22 @@
 <template>
     <ClientOnly>
         <div class="app-user-purchases">
-            <div v-if="loading" class="loading">로딩 중...</div>
-            <div v-else-if="error" class="error">{{ error }}</div>
-            <div v-else class="user-list">
-                <section v-for="user in usersWithPurchases" :key="user.id" class="user-section">
-                    <h2 class="user-name">{{ user.name }}의 구매이력</h2>
-                    <p class="user-meta">{{ user.email }} · {{ user.department }}</p>
-                    <div v-if="user.purchases.length === 0" class="empty">구매 이력이 없습니다.</div>
+            <div v-if="loading" class="app-user-purchases__loading">로딩 중...</div>
+            <div v-else-if="error" class="app-user-purchases__error">{{ error }}</div>
+            <div v-else class="app-user-purchases__list">
+                <section
+                    v-for="user in usersWithPurchases"
+                    :key="user.id"
+                    class="app-user-purchases__section"
+                >
+                    <h2 class="app-user-purchases__name">{{ user.name }}의 구매이력</h2>
+                    <p class="app-user-purchases__meta">{{ user.email }} · {{ user.department }}</p>
+                    <div v-if="user.purchases.length === 0" class="app-user-purchases__empty">
+                        구매 이력이 없습니다.
+                    </div>
                     <AppAgGrid
                         v-else
-                        class="purchase-grid"
+                        class="app-user-purchases__grid"
                         :row-data="user.purchases"
                         :column-defs="purchaseColumnDefs"
                         :default-col-def="defaultColDef"
@@ -22,7 +28,7 @@
             </div>
         </div>
         <template #fallback>
-            <div class="loading">로딩 중...</div>
+            <div class="app-user-purchases__loading">로딩 중...</div>
         </template>
     </ClientOnly>
 </template>

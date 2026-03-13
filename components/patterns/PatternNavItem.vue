@@ -1,14 +1,19 @@
 <template>
-    <li class="nav-item" role="none" :class="[
-        `nav-depth-${item.depth}`,
-        { 'nav-has-children': hasChildren }
-    ]" :style="{ '--indent': `${(item.depth - 1) * 20}px` }">
-        <div class="nav-row">
+    <li
+        class="layout-nav__item"
+        role="none"
+        :class="[
+            `layout-nav__item--depth-${item.depth}`,
+            { 'layout-nav__item--has-children': hasChildren }
+        ]"
+        :style="{ '--indent': `${(item.depth - 1) * 20}px` }"
+    >
+        <div class="layout-nav__row">
 
             <!-- 토글(펼침/닫힘) -->
             <AppButton
                 v-if="hasChildren"
-                class="nav-toggle"
+                class="layout-nav__toggle"
                 variant="text"
                 size="custom"
                 :custom-size="{
@@ -22,7 +27,7 @@
             >
                 <template #iconLeft>
                     <i
-                        class="icon nav-toggle-icon"
+                        class="icon layout-nav__toggle-icon"
                         :class="{ 'is-open': open }"
                         aria-hidden="true"
                         v-html="ChevronRightSvg"
@@ -33,7 +38,7 @@
             <component
                 :is="hasTo ? (item.newTab ? 'a' : NuxtLinkComp) : 'button'"
                 v-bind="hasTo ? linkProps(item) : { type: 'button' }"
-                class="nav-link"
+                class="layout-nav__link"
                 role="menuitem"
                 :aria-haspopup="hasChildren ? true : undefined"
                 :aria-expanded="hasChildren ? open : undefined"
@@ -45,7 +50,7 @@
                     aria-hidden="true"
                     v-html="getIconSvg(item.icon)"
                 />
-                <span class="nav-label">{{ item.label }}</span>
+                <span class="layout-nav__label">{{ item.label }}</span>
             </component>
         </div>
 
@@ -53,7 +58,7 @@
         <ul
             v-if="hasChildren"
             :id="submenuId"
-            class="nav-sublist"
+            class="layout-nav__sublist"
             role="menu"
             v-show="open"
             :aria-label="`${item.label} submenu`"

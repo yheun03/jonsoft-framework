@@ -129,16 +129,14 @@
   ---------------------------------------- */
 
     &-grid {
-
         display: grid;
-
         grid-template-columns: repeat(3, minmax(0, 1fr));
-
         gap: 12px;
-
         /* AG Grid token */
-
         --ag-border-radius: 12px;
+        & > [class*="ag-"] {
+            grid-column: span 3;
+        }
 
     }
 
