@@ -9,13 +9,8 @@
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Controls</h2>
-                    <AppProgress
-                        v-model:value="value"
-                        variant="linear"
-                        mode="control-single"
-                        label="단일 값"
-                        :show-label="true"
-                    />
+                    <AppProgress v-model:value="value" variant="linear" mode="control-single" label="단일 값"
+                        :show-label="true" />
                 </section>
 
                 <section class="page-demo-card">
@@ -25,29 +20,14 @@
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Linear (범위)</h2>
-                    <AppProgress
-                        :value="range.end"
-                        variant="linear"
-                        :range="range"
-                        :range-selectable="true"
+                    <AppProgress :value="range.end" variant="linear" :range="range" :range-selectable="true"
                         @update:range="(v) => {
                             range.start = v.start
                             range.end = v.end
-                        }"
-                    />
+                        }" />
                     <div class="page-demo-hint">
                         드래그로 범위 선택: {{ Math.min(range.start, range.end) }}% ~ {{ Math.max(range.start, range.end) }}%
                     </div>
-                </section>
-
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Circular</h2>
-                    <AppProgress :value="value" variant="circular" :show-label="true" />
-                </section>
-
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Half Circular</h2>
-                    <AppProgress :value="value" variant="circular" circular-type="half" :show-label="true" />
                 </section>
             </main>
 
@@ -101,4 +81,3 @@ const output = computed(() =>
 </script>
 
 <!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
-

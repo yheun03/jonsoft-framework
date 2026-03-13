@@ -1,7 +1,6 @@
 @use "../../abstract/index" as *;
 
 .app-progress {
-    /* linear 컨트롤/표시 공통 토큰 */
     --app-progress-track-h: 8px;
     --app-progress-thumb: 18px;
     --app-progress-radius: 999px;
@@ -17,52 +16,6 @@
     color: $gray-800;
 }
 
-.app-progress__control-range {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: var(--app-progress-track-h);
-    border-radius: var(--app-progress-radius);
-    background: $gray-200;
-    outline: none;
-    cursor: pointer;
-}
-
-.app-progress__control-range:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.app-progress__control-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: var(--app-progress-thumb);
-    height: var(--app-progress-thumb);
-    border-radius: var(--app-progress-radius);
-    background: $primary;
-    border: 2px solid $gray-0;
-    box-shadow: 0 0 0 1px rgba($primary, 0.25);
-    cursor: pointer;
-    /* track 높이와 thumb 크기 차이를 자동 보정 */
-    margin-top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2);
-}
-
-.app-progress__control-range::-moz-range-thumb {
-    width: var(--app-progress-thumb);
-    height: var(--app-progress-thumb);
-    border-radius: var(--app-progress-radius);
-    background: $primary;
-    border: 2px solid $gray-0;
-    box-shadow: 0 0 0 1px rgba($primary, 0.25);
-    cursor: pointer;
-}
-
-.app-progress__control-range::-moz-range-track {
-    height: var(--app-progress-track-h);
-    border-radius: var(--app-progress-radius);
-    background: $gray-200;
-}
-
 .app-progress__control-value {
     font-size: 0.75rem;
     color: $gray-600;
@@ -75,11 +28,11 @@
 }
 
 .app-progress__track {
+    position: relative;
     height: var(--app-progress-track-h);
     border-radius: var(--app-progress-radius);
     background: $gray-200;
     overflow: hidden;
-    position: relative;
 }
 
 .app-progress__bar-range {
@@ -96,7 +49,6 @@
     width: 100%;
 }
 
-/* noUiSlider 스타일을 기존 트랙 룩앤필에 맞춤 */
 .app-progress .noUi-target {
     height: var(--app-progress-track-h);
     border-radius: var(--app-progress-radius);
@@ -131,55 +83,60 @@
     display: none;
 }
 
+/* circular */
 .app-progress__circle {
     position: relative;
     width: 80px;
     height: 80px;
-    aspect-ratio: 1 / 1;
     display: grid;
     place-items: center;
+}
+
+.app-progress__circle--half {
+    width: 80px;
+    height: 44px;
+    align-items: end;
 }
 
 .app-progress__svg {
     width: 80px;
     height: 80px;
-    aspect-ratio: 1 / 1;
-    transform: rotate(180deg);
+    overflow: visible;
 }
 
-.app-progress__circle--half {
-    height: 44px;
-    align-items: end;
+.app-progress__svg:not(.app-progress__svg--half) {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
 }
 
 .app-progress__svg--half {
+    width: 80px;
     height: 44px;
-    transform: rotate(180deg);
+}
+
+.app-progress__ring,
+.app-progress__value {
+    fill: none;
+    stroke-width: var(--app-progress-track-h);
+    vector-effect: non-scaling-stroke;
 }
 
 .app-progress__ring {
-    fill: none;
     stroke: $gray-200;
-    stroke-width: var(--app-progress-track-h);
-    vector-effect: non-scaling-stroke;
 }
 
 .app-progress__value {
-    fill: none;
     stroke: $primary;
-    stroke-width: var(--app-progress-track-h);
-    vector-effect: non-scaling-stroke;
     stroke-linecap: round;
-    transition: none;
 }
 
 .app-progress__label {
     position: absolute;
     font-size: 12px;
+    line-height: 1;
     color: rgba(15, 23, 42, 0.8);
 }
 
 .app-progress__circle--half .app-progress__label {
     bottom: 2px;
 }
-
