@@ -7,23 +7,67 @@
                     <p class="page-demo__desc">기본 컬럼/선택/정렬/필터 케이스와 선택 로그를 확인합니다.</p>
                 </header>
 
-                <AppAgGridExportSection
-                    :grid-id="GRID_ID_1"
-                    :row-data="rows1"
-                    :column-defs="columnDefs"
-                    :default-col-def="defaultColDef"
-                    @grid-ready="({ event }) => onGridReady(event)"
-                    @selection-changed="({ event }) => onSelectionChanged(event)"
-                />
+                <section class="page-demo-card" :data-grid-section="GRID_ID_1">
+                    <h2 class="page-demo-card__title">{{ GRID_ID_1 }}</h2>
 
-                <AppAgGridExportSection
-                    :grid-id="GRID_ID_2"
-                    :row-data="rows2"
-                    :column-defs="columnDefs"
-                    :default-col-def="defaultColDef"
-                    @grid-ready="({ event }) => onGridReady(event)"
-                    @selection-changed="({ event }) => onSelectionChanged(event)"
-                />
+                    <div class="page-demo-grid-actions">
+                        <AppButton variant="outline" size="sm" @click="onExportAll(GRID_ID_1)">
+                            엑셀 다운로드
+                        </AppButton>
+                        <AppButton variant="outline" size="sm" @click="onExportSelected(GRID_ID_1)">
+                            선택만 엑셀
+                        </AppButton>
+                    </div>
+
+                    <ClientOnly>
+                        <AppAgGrid
+                            :grid-id="GRID_ID_1"
+                            class="page-demo-grid"
+                            :row-data="rows1"
+                            :column-defs="columnDefs"
+                            :default-col-def="defaultColDef"
+                            row-selection="multiple"
+                            animate-rows
+                            :style="{ height: '320px', width: '100%' }"
+                            @grid-ready="onGridReady"
+                            @selection-changed="onSelectionChanged"
+                        />
+                        <template #fallback>
+                            <div class="page-demo-fallback">그리드 로딩 중...</div>
+                        </template>
+                    </ClientOnly>
+                </section>
+
+                <section class="page-demo-card" :data-grid-section="GRID_ID_2">
+                    <h2 class="page-demo-card__title">{{ GRID_ID_2 }}</h2>
+
+                    <div class="page-demo-grid-actions">
+                        <AppButton variant="outline" size="sm" @click="onExportAll(GRID_ID_2)">
+                            엑셀 다운로드
+                        </AppButton>
+                        <AppButton variant="outline" size="sm" @click="onExportSelected(GRID_ID_2)">
+                            선택만 엑셀
+                        </AppButton>
+                    </div>
+
+                    <ClientOnly>
+                        <AppAgGrid
+                            :grid-id="GRID_ID_2"
+                            class="page-demo-grid"
+                            :row-data="rows2"
+                            :column-defs="columnDefs"
+                            :default-col-def="defaultColDef"
+                            row-selection="multiple"
+                            animate-rows
+                            :style="{ height: '320px', width: '100%' }"
+                            @grid-ready="onGridReady"
+                            @selection-changed="onSelectionChanged"
+                        />
+                        <template #fallback>
+                            <div class="page-demo-fallback">그리드 로딩 중...</div>
+                        </template>
+                    </ClientOnly>
+                </section>
             </main>
 
             <aside class="page-demo-aside" aria-label="현재 값 패널">
@@ -98,6 +142,8 @@ const rows2 = ref<Row[]>([
 const apiMap = ref<Record<string, GridApi<Row>>>({})
 const selected = ref<Row[]>([])
 
+const { exportDisplayed, exportDisplayedSelected } = useAgGridExcelExport({ origin: 'A1' })
+
 // ----- 이벤트 핸들러 -----
 function onGridReady(e: GridReadyEvent<Row>) {
     const id = e.api.getGridId()
@@ -106,6 +152,18 @@ function onGridReady(e: GridReadyEvent<Row>) {
 
 function onSelectionChanged(e: SelectionChangedEvent<Row>) {
     selected.value = e.api.getSelectedRows()
+}
+
+async function onExportAll(gridId: string) {
+    const api = apiMap.value[gridId]
+    if (!api) return
+    await exportDisplayed(gridId, api)
+}
+
+async function onExportSelected(gridId: string) {
+    const api = apiMap.value[gridId]
+    if (!api) return
+    await exportDisplayedSelected(gridId, api)
 }
 
 function shuffle() {
