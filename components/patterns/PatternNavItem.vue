@@ -93,7 +93,9 @@ const props = defineProps<{
 }>()
 
 const NuxtLinkComp = resolveComponent('NuxtLink')
-const open = ref(false)
+
+// 1뎁스 부모(open 기본 true), 아니면 false
+const open = ref(props.item.depth === 1 && !!props.item.children?.length)
 
 const hasChildren = computed(() => !!props.item.children?.length)
 const submenuId = computed(() => `submenu-${props.item.id}`)
