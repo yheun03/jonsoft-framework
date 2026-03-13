@@ -8,7 +8,7 @@
                 </header>
 
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Checkbox</h2>
+                    <h2 class="page-demo-card__title">Checkbox (기본)</h2>
                     <div class="page-demo-stack">
                         <AppChoice type="checkbox" v-model="checkA" label="알림 수신" helper="이메일로 알림을 받습니다." />
                         <AppChoice type="checkbox" v-model="checkB" label="마케팅 동의" />
@@ -17,11 +17,34 @@
                 </section>
 
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Radio</h2>
+                    <h2 class="page-demo-card__title">Radio (기본)</h2>
                     <div class="page-demo-stack">
                         <AppChoice type="radio" v-model="radioValue" name="plan" value="basic" label="Basic" helper="기본 요금제" />
                         <AppChoice type="radio" v-model="radioValue" name="plan" value="pro" label="Pro" helper="확장 요금제" />
                         <AppChoice type="radio" v-model="radioValue" name="plan" value="enterprise" label="Enterprise" helper="엔터프라이즈" />
+                    </div>
+                </section>
+
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">Chip Variants</h2>
+                    <div class="page-demo-stack">
+                        <div class="page-demo-row">
+                            <AppChoice type="checkbox" variant="chip" v-model="chipDev" label="개발" />
+                            <AppChoice type="checkbox" variant="chip" v-model="chipDesign" label="디자인" />
+                            <AppChoice type="checkbox" variant="chip" v-model="chipPlan" label="기획" />
+                        </div>
+                        <div class="page-demo-row">
+                            <AppChoice type="checkbox" variant="chip-outline" v-model="chipOutlineA" label="Chip Outline A" />
+                            <AppChoice type="checkbox" variant="chip-outline" v-model="chipOutlineB" label="Chip Outline B" />
+                        </div>
+                        <div class="page-demo-row">
+                            <AppChoice type="checkbox" variant="fill" v-model="chipFillA" label="Fill A" />
+                            <AppChoice type="checkbox" variant="fill" v-model="chipFillB" label="Fill B" />
+                        </div>
+                        <div class="page-demo-row">
+                            <AppChoice type="checkbox" variant="ghost" v-model="chipGhostA" label="Ghost A" />
+                            <AppChoice type="checkbox" variant="ghost" v-model="chipGhostB" label="Ghost B" />
+                        </div>
                     </div>
                 </section>
 
@@ -52,11 +75,33 @@ const checkDisabled = ref(false)
 
 const radioValue = ref<string | null>('basic')
 
+const chipDev = ref(false)
+const chipDesign = ref(false)
+const chipPlan = ref(false)
+
+const chipOutlineA = ref(false)
+const chipOutlineB = ref(false)
+
+const chipFillA = ref(false)
+const chipFillB = ref(false)
+
+const chipGhostA = ref(false)
+const chipGhostB = ref(false)
+
 function reset() {
     checkA.value = false
     checkB.value = false
     checkDisabled.value = false
     radioValue.value = 'basic'
+    chipDev.value = false
+    chipDesign.value = false
+    chipPlan.value = false
+    chipOutlineA.value = false
+    chipOutlineB.value = false
+    chipFillA.value = false
+    chipFillB.value = false
+    chipGhostA.value = false
+    chipGhostB.value = false
 }
 
 const output = computed(() =>
@@ -64,6 +109,17 @@ const output = computed(() =>
         {
             checkbox: { checkA: checkA.value, checkB: checkB.value, checkDisabled: checkDisabled.value },
             radio: radioValue.value,
+            chips: {
+                dev: chipDev.value,
+                design: chipDesign.value,
+                plan: chipPlan.value,
+                outlineA: chipOutlineA.value,
+                outlineB: chipOutlineB.value,
+                fillA: chipFillA.value,
+                fillB: chipFillB.value,
+                ghostA: chipGhostA.value,
+                ghostB: chipGhostB.value,
+            },
         },
         null,
         2,

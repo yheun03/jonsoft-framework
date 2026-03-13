@@ -149,5 +149,133 @@
 
     }
 
+    /* ----------------------------------------
+     Variant: Chip / Chip Outline / Fill / Ghost
+  ---------------------------------------- */
+
+    /* 공통 칩 레이아웃 */
+    &--chip,
+    &--chip-outline,
+    &--fill,
+    &--ghost {
+
+        align-items: center;
+        gap: 6px;
+        padding: 4px 12px;
+        border-radius: 999px;
+
+        border: 1px solid transparent;
+        background-color: transparent;
+
+        @include font(b4, rg);
+
+        /* 칩 전체가 클릭 영역 */
+        position: relative;
+
+        &__control {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        &__input {
+            inset: 0;
+        }
+
+        &__visual {
+            display: none;
+        }
+
+        &__body {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__label {
+            color: $gray-700;
+        }
+
+        &__helper {
+            display: none;
+        }
+
+    }
+
+    /* chip: 기본 배경 + 선택 시 진한 primary */
+    &--chip {
+
+        background-color: $gray-50;
+        border-color: $gray-200;
+
+        &.is-checked {
+            background-color: $primary;
+            border-color: $primary;
+
+            .app-choice__label {
+                color: $gray-0;
+            }
+        }
+
+    }
+
+    /* chip-outline: 얇은 테두리, 선택 시 primary 테두리 + 옅은 배경 */
+    &--chip-outline {
+
+        background-color: $gray-0;
+        border-color: $gray-300;
+
+        &.is-checked {
+            border-color: $primary;
+            background-color: $primary-50;
+
+            .app-choice__label {
+                color: $primary-700;
+            }
+        }
+
+    }
+
+    /* fill: pill 보다는 버튼 느낌 */
+    &--fill {
+
+        border-radius: 8px;
+        padding-inline: 10px;
+
+        background-color: $gray-50;
+        border-color: $gray-50;
+
+        &.is-checked {
+            background-color: $primary;
+            border-color: $primary;
+
+            .app-choice__label {
+                color: $gray-0;
+            }
+        }
+
+    }
+
+    /* ghost: 평상시 텍스트만, 선택 시 옅은 배경 */
+    &--ghost {
+
+        border-color: transparent;
+        background-color: transparent;
+
+        .app-choice__label {
+            color: $gray-600;
+        }
+
+        &.is-checked {
+            background-color: $primary-100;
+            border-color: $primary-100;
+
+            .app-choice__label {
+                color: $primary-700;
+            }
+        }
+
+    }
+
 }
 

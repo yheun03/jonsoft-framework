@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 type ChoiceType = 'checkbox' | 'radio'
+type ChoiceVariant = 'chip' | 'chip-outline' | 'fill' | 'ghost'
 
 const props = withDefaults(
     defineProps<{
@@ -41,6 +42,8 @@ const props = withDefaults(
         error?: string
         disabled?: boolean
         id?: string
+        /** 시각적 스타일: chip, chip-outline, fill, ghost */
+        variant?: ChoiceVariant
     }>(),
     {
         type: 'checkbox',
@@ -75,8 +78,13 @@ const isChecked = computed(() => {
 const choiceClasses = computed(() => ({
     'app-choice--checkbox': props.type === 'checkbox',
     'app-choice--radio': props.type === 'radio',
+    'app-choice--chip': props.variant === 'chip',
+    'app-choice--chip-outline': props.variant === 'chip-outline',
+    'app-choice--fill': props.variant === 'fill',
+    'app-choice--ghost': props.variant === 'ghost',
     'is-disabled': props.disabled,
     'is-error': !!props.error,
+    'is-checked': isChecked.value,
 }))
 
 function onChange(e: Event) {
