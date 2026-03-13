@@ -2,24 +2,29 @@
 
 /* =========================================
    Component: AppChoice
-   설명: checkbox / radio 통합 선택 컴포넌트
+   설명: checkbox / radio / chip 계열 통합 선택 컴포넌트
    구조: BEM (Block / Element / Modifier)
+   지원 타입:
+   - 기본 선택형: checkbox / radio
+   - 칩형 선택형: chip / chip-outline / fill / ghost
 ========================================= */
 
 .app-choice {
-
+    /* ----------------------------------------
+     Base
+     - 기본 선택형(checkbox / radio) 공통 래퍼
+  ---------------------------------------- */
     display: inline-flex;
     align-items: flex-start;
     gap: 8px;
-
     cursor: pointer;
 
     @include font(b3, rg);
 
     /* ----------------------------------------
      Element: Control
+     - 실제 input + visual 래퍼
   ---------------------------------------- */
-
     &__control {
         position: relative;
         flex: 0 0 auto;
@@ -27,63 +32,58 @@
 
     /* ----------------------------------------
      Element: Input
+     - 실제 선택 input
+     - visual 요소와 인접 형제로 연결
   ---------------------------------------- */
-
     &__input {
-
         position: absolute;
         inset: 0;
-
         margin: 0;
         opacity: 0;
-
         cursor: inherit;
 
         /* checked 상태 (checkbox / radio 공통) */
-        &:checked + .app-choice__visual {
-
+        &:checked+.app-choice__visual {
             border-color: $primary;
             background: $primary;
 
             .app-choice__inner {
                 background: $gray-0;
             }
-
         }
 
-        /* focus 접근성 */
-        &:focus-visible + .app-choice__visual {
+        /* 접근성 focus */
+        &:focus-visible+.app-choice__visual {
             outline: 2px solid $primary-300;
             outline-offset: 2px;
         }
-
     }
 
     /* ----------------------------------------
      Element: Visual
+     - checkbox / radio 외형 박스
   ---------------------------------------- */
-
     &__visual {
-
         width: 18px;
         height: 18px;
 
         display: grid;
         place-items: center;
 
-        border-radius: 4px;
-
         border: 1px solid $gray-300;
+        border-radius: 4px;
         background: $gray-0;
 
         transition:
             border-color .12s ease,
             background-color .12s ease;
-
     }
 
+    /* ----------------------------------------
+     Element: Inner
+     - 선택 시 내부 표시 요소
+  ---------------------------------------- */
     &__inner {
-
         width: 10px;
         height: 10px;
 
@@ -91,120 +91,102 @@
         background: transparent;
 
         transition: background-color .12s ease;
-
-    }
-
-    /* radio 모드에서 원형으로 보이게 */
-    &--radio {
-
-        .app-choice__visual {
-            border-radius: 999px;
-        }
-
-        .app-choice__inner {
-            border-radius: 999px;
-        }
-
     }
 
     /* ----------------------------------------
-     Element: Body / Label / Helper / Error
+     Modifier: Radio
+     - radio 타입일 때 원형 처리
   ---------------------------------------- */
+    &--radio {
 
+        .app-choice__visual,
+        .app-choice__inner {
+            border-radius: 999px;
+        }
+    }
+
+    /* ----------------------------------------
+     Element: Body
+     - 텍스트 영역
+  ---------------------------------------- */
     &__body {
         display: grid;
         gap: 2px;
     }
 
+    /* ----------------------------------------
+     Element: Label
+  ---------------------------------------- */
     &__label {
         color: $gray-800;
     }
 
+    /* ----------------------------------------
+     Element: Helper
+  ---------------------------------------- */
     &__helper {
         @include font(c2, rg);
         color: $gray-600;
     }
 
+    /* ----------------------------------------
+     Element: Error
+  ---------------------------------------- */
     &__error {
         @include font(c2, rg);
         color: $status-error;
     }
 
     /* ----------------------------------------
-     State
+     State: Disabled
   ---------------------------------------- */
-
     &.is-disabled {
-
         cursor: not-allowed;
         opacity: .6;
-
-    }
-
-    &.is-error {
-
-        .app-choice__visual {
-            border-color: $status-error;
-        }
-
     }
 
     /* ----------------------------------------
-     Variant: Chip / Chip Outline / Fill / Ghost
+     State: Error
+     - control형 선택 UI 에러 테두리
   ---------------------------------------- */
+    &.is-error {
+        .app-choice__visual {
+            border-color: $status-error;
+        }
+    }
 
-    /* 공통 칩 레이아웃 */
+    /* ----------------------------------------
+     Variant Group: Chip 계열 공통
+     - 기본 체크 비주얼 숨김
+     - pill/button 형태 선택 UI
+  ---------------------------------------- */
     &--chip,
     &--chip-outline,
     &--fill,
     &--ghost {
-
         align-items: center;
         gap: 6px;
+
         padding: 4px 12px;
-        border-radius: 999px;
 
         border: 1px solid transparent;
+        border-radius: 999px;
         background-color: transparent;
 
         @include font(b4, rg);
 
-        /* 칩 전체가 클릭 영역 */
-        position: relative;
-
-        &__control {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        &__input {
-            inset: 0;
-        }
-
-        &__visual {
+        /* chip 계열에서는 기본 control 숨김 */
+        .app-choice__control {
             display: none;
         }
-
-        &__body {
-            position: relative;
-            z-index: 1;
-        }
-
-        &__label {
-            color: $gray-700;
-        }
-
-        &__helper {
-            display: none;
-        }
-
     }
 
-    /* chip: 기본 배경 + 선택 시 진한 primary */
+    /* ----------------------------------------
+     Variant: Chip
+     - 기본 배경형 chip
+     - 선택 시 primary fill
+  ---------------------------------------- */
     &--chip {
-
         background-color: $gray-50;
         border-color: $gray-200;
 
@@ -216,12 +198,14 @@
                 color: $gray-0;
             }
         }
-
     }
 
-    /* chip-outline: 얇은 테두리, 선택 시 primary 테두리 + 옅은 배경 */
+    /* ----------------------------------------
+     Variant: Chip Outline
+     - 테두리 강조형 chip
+     - 선택 시 연한 primary tone
+  ---------------------------------------- */
     &--chip-outline {
-
         background-color: $gray-0;
         border-color: $gray-300;
 
@@ -233,14 +217,15 @@
                 color: $primary-700;
             }
         }
-
     }
 
-    /* fill: pill 보다는 버튼 느낌 */
+    /* ----------------------------------------
+     Variant: Fill
+     - 버튼형에 가까운 선택 UI
+  ---------------------------------------- */
     &--fill {
-
-        border-radius: 8px;
         padding-inline: 10px;
+        border-radius: 8px;
 
         background-color: $gray-50;
         border-color: $gray-50;
@@ -253,12 +238,14 @@
                 color: $gray-0;
             }
         }
-
     }
 
-    /* ghost: 평상시 텍스트만, 선택 시 옅은 배경 */
+    /* ----------------------------------------
+     Variant: Ghost
+     - 기본은 텍스트만 보이게
+     - 선택 시 연한 배경 강조
+  ---------------------------------------- */
     &--ghost {
-
         border-color: transparent;
         background-color: transparent;
 
@@ -274,8 +261,5 @@
                 color: $primary-700;
             }
         }
-
     }
-
 }
-
