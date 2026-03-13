@@ -2,110 +2,133 @@
 
 /* =========================================
    Component: AppChoice
-   설명: 선택형 버튼 (Chip / Toggle / Tag)
-   사용 위치: 필터, 옵션 선택 UI
+   설명: checkbox / radio 통합 선택 컴포넌트
    구조: BEM (Block / Element / Modifier)
 ========================================= */
 
 .app-choice {
 
-    /* ----------------------------------------
-     Base
-  ---------------------------------------- */
-
-    @include font(b4, rg);
-
     display: inline-flex;
-    align-items: center;
-    gap: 6px;
-
-    padding: 6px 12px;
-
-    border-radius: 999px;
-    border: 1px solid transparent;
-
-    background: transparent;
-    color: $gray-800;
+    align-items: flex-start;
+    gap: 8px;
 
     cursor: pointer;
-    outline: none;
 
-    transition:
-        background-color .12s ease,
-        border-color .12s ease,
-        color .12s ease,
-        opacity .12s ease;
-
+    @include font(b3, rg);
 
     /* ----------------------------------------
-     Element
+     Element: Control
   ---------------------------------------- */
 
-    &__icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    &__control {
+        position: relative;
+        flex: 0 0 auto;
     }
 
-
     /* ----------------------------------------
-     Variant: Chip
+     Element: Input
   ---------------------------------------- */
 
-    &--chip {
+    &__input {
 
-        border-color: rgba($gray-400, .5);
+        position: absolute;
+        inset: 0;
+
+        margin: 0;
+        opacity: 0;
+
+        cursor: inherit;
+
+        /* checked 상태 (checkbox / radio 공통) */
+        &:checked + .app-choice__visual {
+
+            border-color: $primary;
+            background: $primary;
+
+            .app-choice__inner {
+                background: $gray-0;
+            }
+
+        }
+
+        /* focus 접근성 */
+        &:focus-visible + .app-choice__visual {
+            outline: 2px solid $primary-300;
+            outline-offset: 2px;
+        }
+
+    }
+
+    /* ----------------------------------------
+     Element: Visual
+  ---------------------------------------- */
+
+    &__visual {
+
+        width: 18px;
+        height: 18px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 4px;
+
+        border: 1px solid $gray-300;
         background: $gray-0;
 
-        &:hover {
-            border-color: $primary-300;
-        }
-
-        &.is-selected {
-            border-color: $primary;
-            background: rgba($primary, .05);
-            color: $primary;
-        }
+        transition:
+            border-color .12s ease,
+            background-color .12s ease;
 
     }
 
+    &__inner {
+
+        width: 10px;
+        height: 10px;
+
+        border-radius: 2px;
+        background: transparent;
+
+        transition: background-color .12s ease;
+
+    }
+
+    /* radio 모드에서 원형으로 보이게 */
+    &--radio {
+
+        .app-choice__visual {
+            border-radius: 999px;
+        }
+
+        .app-choice__inner {
+            border-radius: 999px;
+        }
+
+    }
 
     /* ----------------------------------------
-     Variant: Fill
+     Element: Body / Label / Helper / Error
   ---------------------------------------- */
 
-    &--fill {
-
-        border-color: transparent;
-        background: rgba($gray-900, .06);
-
-        &:hover {
-            background: rgba($gray-900, .10);
-        }
-
-        &.is-selected {
-            background: $primary;
-            color: $gray-0;
-        }
-
+    &__body {
+        display: grid;
+        gap: 2px;
     }
 
-
-    /* ----------------------------------------
-     Modifier: Icon Only
-  ---------------------------------------- */
-
-    &--icon-only {
-
-        padding: 6px;
-        gap: 0;
-
-        .app-choice__icon {
-            font-size: 16px;
-        }
-
+    &__label {
+        color: $gray-800;
     }
 
+    &__helper {
+        @include font(c2, rg);
+        color: $gray-600;
+    }
+
+    &__error {
+        @include font(c2, rg);
+        color: $status-error;
+    }
 
     /* ----------------------------------------
      State
@@ -114,9 +137,17 @@
     &.is-disabled {
 
         cursor: not-allowed;
-        opacity: .5;
-        pointer-events: none;
+        opacity: .6;
+
+    }
+
+    &.is-error {
+
+        .app-choice__visual {
+            border-color: $status-error;
+        }
 
     }
 
 }
+
