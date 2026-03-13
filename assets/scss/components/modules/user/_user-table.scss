@@ -1,17 +1,47 @@
 @use "../../../abstract/index" as *;
 
+/* =========================================
+   Component: AppUserTable
+   설명: 사용자 테이블 (AG Grid wrapper)
+   구조: BEM (Block / Element / State)
+========================================= */
+
 .app-user-table {
+
     padding: 16px;
 
-    .loading,
-    .error {
+
+    /* ----------------------------------------
+     Loading State
+  ---------------------------------------- */
+
+    &__loading {
+
         padding: 32px;
+
         text-align: center;
+
+        @include font(b3, rg);
+
         color: $gray-600;
+
     }
 
-    .error {
+
+    /* ----------------------------------------
+     Error State
+  ---------------------------------------- */
+
+    &__error {
+
+        padding: 32px;
+
+        text-align: center;
+
+        @include font(b3, rg);
+
         color: $status-error;
-    }
-}
 
+    }
+
+}

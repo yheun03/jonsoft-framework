@@ -1,45 +1,111 @@
 @use "../../abstract/index" as *;
 
+/* =========================================
+   Component: AppDatePicker
+   설명: 날짜 입력 필드 컴포넌트
+   사용: Form / Filter / Date 선택 UI
+========================================= */
+
 .app-date-picker {
+
+    /* ----------------------------------------
+     Base
+  ---------------------------------------- */
+
     display: grid;
     gap: 6px;
-}
 
-.app-date-picker__label {
-    font-size: 0.875rem;
-    color: $gray-800;
-}
 
-.app-date-picker__field {
-    width: 100%;
-    border: 1px solid $gray-200;
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 14px;
-    background: $gray-0;
-    color: $gray-800;
-    outline: none;
-}
+    /* ----------------------------------------
+     Element: Label
+  ---------------------------------------- */
 
-.app-date-picker__helper {
-    margin: 0;
-    font-size: 12px;
-    color: $gray-600;
-}
+    &__label {
+        @include font(b3, rg);
+        color: $gray-800;
+    }
 
-.app-date-picker__error {
-    margin: 0;
-    font-size: 12px;
-    color: $status-error;
-}
 
-.is-disabled .app-date-picker__field {
-    background: $gray-100;
-    color: $gray-500;
-    cursor: not-allowed;
-}
+    /* ----------------------------------------
+     Element: Field (input)
+  ---------------------------------------- */
 
-.is-error .app-date-picker__field {
-    border-color: $status-error;
-}
+    &__field {
 
+        @include font(b3, rg);
+
+        width: 100%;
+
+        padding: 10px 12px;
+
+        border: 1px solid $gray-200;
+        border-radius: 10px;
+
+        background: $gray-0;
+        color: $gray-800;
+
+        outline: none;
+
+        transition:
+            border-color .12s ease,
+            background-color .12s ease;
+
+
+        /* focus 상태 */
+        &:focus-visible {
+            border-color: $primary;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Element: Helper Text
+  ---------------------------------------- */
+
+    &__helper {
+        margin: 0;
+        @include font(c2, rg);
+        color: $gray-600;
+    }
+
+
+    /* ----------------------------------------
+     Element: Error Text
+  ---------------------------------------- */
+
+    &__error {
+        margin: 0;
+        @include font(c2, rg);
+        color: $status-error;
+    }
+
+
+    /* ----------------------------------------
+     State: Disabled
+  ---------------------------------------- */
+
+    &.is-disabled {
+
+        .app-date-picker__field {
+            background: $gray-100;
+            color: $gray-500;
+            cursor: not-allowed;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     State: Error
+  ---------------------------------------- */
+
+    &.is-error {
+
+        .app-date-picker__field {
+            border-color: $status-error;
+        }
+
+    }
+
+}

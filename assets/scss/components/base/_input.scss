@@ -1,13 +1,35 @@
 @use "../../abstract/index" as *;
 
+/* =========================================
+   Component: AppInput
+   설명: 공통 텍스트 입력 필드
+   사용: Form / Search / Filter
+   구조: BEM (Block / Element / Modifier)
+========================================= */
+
 .app-input {
+
+    /* ----------------------------------------
+     Base
+  ---------------------------------------- */
+
     display: grid;
     gap: 6px;
 
+
+    /* ----------------------------------------
+     Element: Label
+  ---------------------------------------- */
+
     &__label {
-        font-size: 0.875rem;
+        @include font(b3, rg);
         color: $gray-800;
     }
+
+
+    /* ----------------------------------------
+     Element: Control
+  ---------------------------------------- */
 
     &__control {
         position: relative;
@@ -15,78 +37,156 @@
         align-items: center;
     }
 
+
+    /* ----------------------------------------
+     Element: Field
+  ---------------------------------------- */
+
     &__field {
+
+        @include font(b3, rg);
+
         width: 100%;
+        padding: 10px 12px;
+
         border: 1px solid $gray-200;
         border-radius: 10px;
-        padding: 10px 12px;
-        font-size: 14px;
+
         background: $gray-0;
         color: $gray-800;
-        outline: none;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
 
-        &:focus {
+        outline: none;
+
+        transition:
+            border-color .15s ease,
+            box-shadow .15s ease;
+
+        /* focus 접근성 */
+
+        &:focus-visible {
             border-color: $primary;
-            box-shadow: 0 0 0 3px rgba($primary, 0.15);
+            box-shadow: 0 0 0 3px rgba($primary, .15);
         }
+
+        /* placeholder */
 
         &::placeholder {
             color: $gray-600;
         }
+
     }
 
+
+    /* ----------------------------------------
+     Element: Clear Button
+  ---------------------------------------- */
+
     &__clear {
+
         position: absolute;
         right: 10px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
         border: 0;
         background: transparent;
+
         cursor: pointer;
+
         color: $gray-600;
+
         font-size: 18px;
         line-height: 1;
+
         padding: 2px 6px;
+
     }
+
+
+    /* ----------------------------------------
+     Element: Helper
+  ---------------------------------------- */
 
     &__helper {
         margin: 0;
-        font-size: 12px;
+        @include font(c2, rg);
         color: $gray-600;
     }
 
+
+    /* ----------------------------------------
+     Element: Error
+  ---------------------------------------- */
+
     &__error {
         margin: 0;
-        font-size: 12px;
+        @include font(c2, rg);
         color: $status-error;
     }
 
-    &.is-disabled &__field {
-        background: $gray-100;
-        color: $gray-500;
-        cursor: not-allowed;
+
+    /* ----------------------------------------
+     State: Disabled
+  ---------------------------------------- */
+
+    &.is-disabled {
+
+        .app-input__field {
+            background: $gray-100;
+            color: $gray-500;
+            cursor: not-allowed;
+        }
+
     }
 
-    &.is-error &__field {
-        border-color: $status-error;
+
+    /* ----------------------------------------
+     State: Error
+  ---------------------------------------- */
+
+    &.is-error {
+
+        .app-input__field {
+            border-color: $status-error;
+        }
+
     }
 
-    /* sizes */
-    &--sm &__field {
-        padding: 8px 10px;
-        font-size: 13px;
-        border-radius: 8px;
+
+    /* ----------------------------------------
+     Size Modifiers
+  ---------------------------------------- */
+
+    &--sm {
+
+        .app-input__field {
+            padding: 8px 10px;
+            border-radius: 8px;
+            @include font(b4, rg);
+        }
+
     }
 
-    &--md &__field {
-        padding: 10px 12px;
-        font-size: 14px;
-        border-radius: 10px;
+    &--md {
+
+        .app-input__field {
+            padding: 10px 12px;
+            border-radius: 10px;
+            @include font(b3, rg);
+        }
+
     }
 
-    &--lg &__field {
-        padding: 12px 14px;
-        font-size: 15px;
-        border-radius: 12px;
+    &--lg {
+
+        .app-input__field {
+            padding: 12px 14px;
+            border-radius: 12px;
+            @include font(b2, rg);
+        }
+
     }
+
 }
-

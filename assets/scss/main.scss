@@ -1,188 +1,301 @@
+@use "abstract/index" as *;
 @use "base/index" as base;
 @use "layout/index" as layout;
 @use "components/index" as components;
 @use "pages/index" as pages;
 
-/* -------------------------------------------------------
- * Demos (복사/붙여넣기 친화 공통 스타일)
- * - 충돌 방지를 위해 .page-demo-### 네임스페이스 사용
- * ----------------------------------------------------- */
+/* =========================================
+   Demo Page Styles
+   설명: 컴포넌트 데모 페이지 전용 스타일
+   네임스페이스: .page-demo
+========================================= */
+
 .page-demo {
+
     padding: 16px;
     max-width: 1120px;
+
+    /* ----------------------------------------
+     Header
+  ---------------------------------------- */
+
+    &__header {
+        display: grid;
+        gap: 6px;
+    }
+
+    &__title {
+        @include font(t5, rg);
+        margin: 0;
+    }
+
+    &__desc {
+        @include font(b4, rg);
+        margin: 0;
+        color: rgba($gray-900, .7);
+    }
+
+    /* ----------------------------------------
+     Layout
+  ---------------------------------------- */
+
+    &-layout {
+
+        display: grid;
+
+        grid-template-columns: minmax(0, 1fr) 360px;
+
+        gap: 16px;
+
+        align-items: start;
+
+    }
+
+    &-main {
+        display: grid;
+        gap: 16px;
+        min-width: 0;
+    }
+
+    &-aside {
+        min-width: 0;
+
+        &__sticky {
+            position: sticky;
+            top: 16px;
+            display: grid;
+            gap: 16px;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Card
+  ---------------------------------------- */
+
+    &-card {
+
+        border: 1px solid $gray-200;
+        border-radius: 14px;
+
+        padding: 14px;
+
+        background: $gray-0;
+
+        display: grid;
+        gap: 12px;
+
+        &__title {
+            margin: 0;
+            @include font(b3, rg);
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Layout Utilities
+  ---------------------------------------- */
+
+    &-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    &-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    &-stack {
+        display: grid;
+        gap: 8px;
+    }
+
+    &-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+
+    /* ----------------------------------------
+     Grid
+  ---------------------------------------- */
+
+    &-grid {
+
+        display: grid;
+
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        gap: 12px;
+
+        /* AG Grid token */
+
+        --ag-border-radius: 12px;
+
+    }
+
+
+    /* ----------------------------------------
+     Controls
+  ---------------------------------------- */
+
+    &-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+    }
+
+    &-control {
+
+        display: grid;
+        gap: 6px;
+
+        &__label {
+            @include font(b3, rg);
+            color: $gray-800;
+        }
+
+        &__range {
+            width: 100%;
+        }
+
+        &__value {
+            @include font(c2, rg);
+            color: rgba($gray-900, .7);
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Hint
+  ---------------------------------------- */
+
+    &-hint {
+        @include font(c2, rg);
+        color: rgba($gray-900, .7);
+    }
+
+
+    /* ----------------------------------------
+     Output
+  ---------------------------------------- */
+
+    &-output {
+
+        margin: 0;
+
+        padding: 12px;
+
+        background: rgba($gray-900, .04);
+
+        border-radius: 12px;
+
+        overflow: auto;
+
+        @include font(c2, rg);
+
+        max-height: calc(100dvh - 220px);
+
+    }
+
+
+    /* ----------------------------------------
+     Icon Utility
+  ---------------------------------------- */
+
+    &-icon {
+
+        display: inline-flex;
+
+        width: 16px;
+        height: 16px;
+
+    }
+
+
+    /* ----------------------------------------
+     Chart Demo
+  ---------------------------------------- */
+
+    &-chart-box {
+
+        border-radius: 12px;
+
+        border: 1px solid $gray-200;
+
+        background: $gray-0;
+
+        padding: 8px;
+
+    }
+
+
+    /* ----------------------------------------
+     Grid Actions
+  ---------------------------------------- */
+
+    &-grid-actions {
+
+        display: flex;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        align-items: center;
+
+    }
+
+
+    /* ----------------------------------------
+     Fallback
+  ---------------------------------------- */
+
+    &-fallback {
+
+        height: 320px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 14px;
+
+        border: 1px solid $gray-200;
+
+        color: rgba($gray-900, .7);
+
+    }
+
 }
 
-.page-demo-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: 16px;
-    align-items: start;
-}
 
-.page-demo-main {
-    display: grid;
-    gap: 16px;
-    min-width: 0;
-}
-
-.page-demo-aside {
-    min-width: 0;
-}
-
-.page-demo-aside__sticky {
-    position: sticky;
-    top: 16px;
-    display: grid;
-    gap: 16px;
-}
-
-.page-demo__header {
-    display: grid;
-    gap: 6px;
-}
-
-.page-demo__title {
-    font-size: 18px;
-    margin: 0;
-}
-
-.page-demo__desc {
-    margin: 0;
-    color: rgba($gray-900, 0.7);
-    font-size: 13px;
-}
-
-.page-demo-card {
-    border: 1px solid $gray-200;
-    border-radius: 14px;
-    padding: 14px;
-    background: $gray-0;
-    display: grid;
-    gap: 12px;
-}
-
-.page-demo-card__title {
-    margin: 0;
-    font-size: 14px;
-}
-
-.page-demo-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-}
-
-.page-demo-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-}
-
-.page-demo-stack {
-    display: grid;
-    gap: 8px;
-}
-
-.page-demo-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
-.page-demo-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.page-demo-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-}
-
-.page-demo-control {
-    display: grid;
-    gap: 6px;
-}
-
-.page-demo-control__label {
-    font-size: 0.875rem;
-    color: $gray-800;
-}
-
-.page-demo-control__range {
-    width: 100%;
-}
-
-.page-demo-control__value {
-    font-size: 12px;
-    color: rgba($gray-900, 0.7);
-}
-
-.page-demo-hint {
-    font-size: 12px;
-    color: rgba($gray-900, 0.7);
-}
-
-.page-demo-output {
-    margin: 0;
-    padding: 12px;
-    background: rgba($gray-900, 0.04);
-    border-radius: 12px;
-    overflow: auto;
-    font-size: 12px;
-    max-height: calc(100dvh - 220px);
-}
-
-/* 개별 데모에서 자주 쓰는 작은 유틸 */
-.page-demo-icon {
-    display: inline-flex;
-    width: 16px;
-    height: 16px;
-}
-
-/* Chart demo */
-.page-demo-chart-box {
-    border-radius: 12px;
-    border: 1px solid $gray-200;
-    background: $gray-0;
-    padding: 8px;
-}
-
-/* AG Grid demo / 공통 grid wrapper */
-.page-demo-grid {
-    --ag-border-radius: 12px;
-}
-
-.page-demo-grid-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-}
-
-.page-demo-fallback {
-    height: 320px;
-    display: grid;
-    place-items: center;
-    border-radius: 14px;
-    border: 1px solid $gray-200;
-    color: rgba($gray-900, 0.7);
-}
+/* =========================================
+   Responsive
+========================================= */
 
 @media (max-width: 900px) {
+
     .page-demo-layout {
         grid-template-columns: 1fr;
     }
+
     .page-demo-aside__sticky {
         position: static;
         top: auto;
     }
+
     .page-demo-grid {
         grid-template-columns: 1fr;
     }
+
 }

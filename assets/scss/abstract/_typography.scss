@@ -1,120 +1,96 @@
-@use "../abstract/variables" as *;
+@use "./variables" as *;
+@use "sass:map";
+
+/* =========================================
+   Jonsoft Framework
+   Typography Token System
+========================================= */
 
 /* ----------------------------------------
- * Weight
- * ---------------------------------------- */
-$w_sb: 600;
-$w_rg: 400;
-$w_lt: 300;
+   Font Weight Token
+---------------------------------------- */
+$font-weight: (
+    sb: 600,
+    rg: 400,
+    lt: 300
+);
 
 /* ----------------------------------------
- * Letter Spacing
- * ---------------------------------------- */
-$ls_tight: -0.025em;
+   Letter Spacing Token
+---------------------------------------- */
+$letter-spacing: -0.025em;
 
 /* ----------------------------------------
- * Base font token
- * ---------------------------------------- */
-@mixin font_token($size, $lh, $weight) {
-    font: #{$weight} #{$size}/#{$lh} #{$font-family-base};
-    letter-spacing: $ls_tight;
+   Typography Scale
+---------------------------------------- */
+
+$typography-scale: (
+    /* Display */
+    d1: (size: 96px, lh: 120px),
+    d2: (size: 88px, lh: 114px),
+    d3: (size: 80px, lh: 100px),
+    d4: (size: 72px, lh: 90px),
+    d5: (size: 64px, lh: 80px),
+    d6: (size: 56px, lh: 72px),
+
+    /* Headline */
+    h1: (size: 48px, lh: 62px),
+    h2: (size: 40px, lh: 52px),
+    h3: (size: 32px, lh: 42px),
+    h4: (size: 28px, lh: 38px),
+    h5: (size: 24px, lh: 34px),
+    h6: (size: 20px, lh: 28px),
+
+    /* Title */
+    t1: (size: 32px, lh: 42px),
+    t2: (size: 28px, lh: 38px),
+    t3: (size: 24px, lh: 34px),
+    t4: (size: 20px, lh: 28px),
+    t5: (size: 18px, lh: 26px),
+
+    /* Body */
+    b1: (size: 16px, lh: 24px),
+    b2: (size: 15px, lh: 22px),
+    b3: (size: 14px, lh: 20px),
+    b4: (size: 13px, lh: 18px),
+
+    /* Caption */
+    c1: (size: 13px, lh: 18px),
+    c2: (size: 12px, lh: 18px),
+    c3: (size: 11px, lh: 16px),
+
+    /* Button */
+    btn1: (size: 16px, lh: 24px),
+    btn2: (size: 14px, lh: 20px),
+    btn3: (size: 13px, lh: 18px),
+    btn4: (size: 12px, lh: 18px)
+);
+
+/* ----------------------------------------
+   Helpers / Mixins
+---------------------------------------- */
+
+@function typography-scale($key) {
+    $value: map.get($typography-scale, $key);
+    @if $value == null {
+        @error "Unknown typography token `#{$key}`.";
+    }
+    @return $value;
 }
 
-/* ----------------------------------------
- * Display
- * ---------------------------------------- */
-@mixin d1_sb { @include font_token(96px, 120px, $w_sb); }
-@mixin d1_rg { @include font_token(96px, 120px, $w_rg); }
-@mixin d1_lt { @include font_token(96px, 120px, $w_lt); }
-@mixin d2_sb { @include font_token(88px, 114px, $w_sb); }
-@mixin d2_rg { @include font_token(88px, 114px, $w_rg); }
-@mixin d2_lt { @include font_token(88px, 114px, $w_lt); }
-@mixin d3_sb { @include font_token(80px, 100px, $w_sb); }
-@mixin d3_rg { @include font_token(80px, 100px, $w_rg); }
-@mixin d3_lt { @include font_token(80px, 100px, $w_lt); }
-@mixin d4_sb { @include font_token(72px, 90px, $w_sb); }
-@mixin d4_rg { @include font_token(72px, 90px, $w_rg); }
-@mixin d4_lt { @include font_token(72px, 90px, $w_lt); }
-@mixin d5_sb { @include font_token(64px, 80px, $w_sb); }
-@mixin d5_rg { @include font_token(64px, 80px, $w_rg); }
-@mixin d5_lt { @include font_token(64px, 80px, $w_lt); }
-@mixin d6_sb { @include font_token(56px, 72px, $w_sb); }
-@mixin d6_rg { @include font_token(56px, 72px, $w_rg); }
-@mixin d6_lt { @include font_token(56px, 72px, $w_lt); }
-/* ----------------------------------------
- * Headline
- * ---------------------------------------- */
-@mixin h1_sb { @include font_token(48px, 62px, $w_sb); }
-@mixin h1_rg { @include font_token(48px, 62px, $w_rg); }
-@mixin h1_lt { @include font_token(48px, 62px, $w_lt); }
-@mixin h2_sb { @include font_token(40px, 52px, $w_sb); }
-@mixin h2_rg { @include font_token(40px, 52px, $w_rg); }
-@mixin h2_lt { @include font_token(40px, 52px, $w_lt); }
-@mixin h3_sb { @include font_token(32px, 42px, $w_sb); }
-@mixin h3_rg { @include font_token(32px, 42px, $w_rg); }
-@mixin h3_lt { @include font_token(32px, 42px, $w_lt); }
-@mixin h4_sb { @include font_token(28px, 38px, $w_sb); }
-@mixin h4_rg { @include font_token(28px, 38px, $w_rg); }
-@mixin h4_lt { @include font_token(28px, 38px, $w_lt); }
-@mixin h5_sb { @include font_token(24px, 34px, $w_sb); }
-@mixin h5_rg { @include font_token(24px, 34px, $w_rg); }
-@mixin h5_lt { @include font_token(24px, 34px, $w_lt); }
-@mixin h6_sb { @include font_token(20px, 28px, $w_sb); }
-@mixin h6_rg { @include font_token(20px, 28px, $w_rg); }
-@mixin h6_lt { @include font_token(20px, 28px, $w_lt); }
-/* ----------------------------------------
- * Title
- * ---------------------------------------- */
-@mixin t1_sb { @include font_token(32px, 42px, $w_sb); }
-@mixin t1_rg { @include font_token(32px, 42px, $w_rg); }
-@mixin t1_lt { @include font_token(32px, 42px, $w_lt); }
-@mixin t2_sb { @include font_token(28px, 38px, $w_sb); }
-@mixin t2_rg { @include font_token(28px, 38px, $w_rg); }
-@mixin t2_lt { @include font_token(28px, 38px, $w_lt); }
-@mixin t3_sb { @include font_token(24px, 34px, $w_sb); }
-@mixin t3_rg { @include font_token(24px, 34px, $w_rg); }
-@mixin t3_lt { @include font_token(24px, 34px, $w_lt); }
-@mixin t4_sb { @include font_token(20px, 28px, $w_sb); }
-@mixin t4_rg { @include font_token(20px, 28px, $w_rg); }
-@mixin t4_lt { @include font_token(20px, 28px, $w_lt); }
-@mixin t5_sb { @include font_token(18px, 26px, $w_sb); }
-@mixin t5_rg { @include font_token(18px, 26px, $w_rg); }
-@mixin t5_lt { @include font_token(18px, 26px, $w_lt); }
-/* ----------------------------------------
- * Body
- * ---------------------------------------- */
-@mixin b1_sb { @include font_token(16px, 24px, $w_sb); }
-@mixin b1_rg { @include font_token(16px, 24px, $w_rg); }
-@mixin b1_lt { @include font_token(16px, 24px, $w_lt); }
-@mixin b2_sb { @include font_token(15px, 22px, $w_sb); }
-@mixin b2_rg { @include font_token(15px, 22px, $w_rg); }
-@mixin b2_lt { @include font_token(15px, 22px, $w_lt); }
-@mixin b3_sb { @include font_token(14px, 20px, $w_sb); }
-@mixin b3_rg { @include font_token(14px, 20px, $w_rg); }
-@mixin b3_lt { @include font_token(14px, 20px, $w_lt); }
-@mixin b4_sb { @include font_token(13px, 18px, $w_sb); }
-@mixin b4_rg { @include font_token(13px, 18px, $w_rg); }
-@mixin b4_lt { @include font_token(13px, 18px, $w_lt); }
-/* ----------------------------------------
- * Caption
- * ---------------------------------------- */
-@mixin c1_sb { @include font_token(13px, 18px, $w_sb); }
-@mixin c1_rg { @include font_token(13px, 18px, $w_rg); }
-@mixin c1_lt { @include font_token(13px, 18px, $w_lt); }
-@mixin c2_sb { @include font_token(12px, 18px, $w_sb); }
-@mixin c2_rg { @include font_token(12px, 18px, $w_rg); }
-@mixin c2_lt { @include font_token(12px, 18px, $w_lt); }
-@mixin c3_sb { @include font_token(11px, 16px, $w_sb); }
-@mixin c3_rg { @include font_token(11px, 16px, $w_rg); }
-@mixin c3_lt { @include font_token(11px, 16px, $w_lt); }
-/* ----------------------------------------
- * Button
- * ---------------------------------------- */
-@mixin btn1_sb { @include font_token(16px, 24px, $w_sb); }
-@mixin btn1_rg { @include font_token(16px, 24px, $w_rg); }
-@mixin btn2_sb { @include font_token(14px, 20px, $w_sb); }
-@mixin btn2_rg { @include font_token(14px, 20px, $w_rg); }
-@mixin btn3_sb { @include font_token(13px, 18px, $w_sb); }
-@mixin btn3_rg { @include font_token(13px, 18px, $w_rg); }
-@mixin btn4_sb { @include font_token(12px, 18px, $w_sb); }
-@mixin btn4_rg { @include font_token(12px, 18px, $w_rg); }
+@mixin font($token, $weight-key) {
+    $scale: typography-scale($token);
+    $size: map.get($scale, size);
+    $lh: map.get($scale, lh);
+    $weight: map.get($font-weight, $weight-key);
+
+    @if $weight == null {
+        @error "Unknown font-weight token `#{$weight-key}`.";
+    }
+
+    font-family: $font-family-base;
+    font-size: $size;
+    line-height: $lh;
+    font-weight: $weight;
+    letter-spacing: $letter-spacing;
+}

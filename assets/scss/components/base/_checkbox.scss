@@ -1,79 +1,173 @@
 @use "../../abstract/index" as *;
 
+/* =========================================
+   Component: AppCheckbox
+   설명: 공통 체크박스 컴포넌트
+   구조: BEM (Block / Element / Modifier)
+========================================= */
+
 .app-checkbox {
+
+    /* ----------------------------------------
+     Base
+  ---------------------------------------- */
+
     display: inline-flex;
-    gap: 8px;
     align-items: flex-start;
-    font-size: 14px;
+    gap: 8px;
+
     cursor: pointer;
-}
 
-.app-checkbox__control {
-    position: relative;
-    flex: 0 0 auto;
-}
+    @include font(b3, rg);
 
-.app-checkbox__input {
-    position: absolute;
-    inset: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: inherit;
-}
 
-.app-checkbox__box {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    border: 1px solid $gray-300;
-    background: $gray-0;
-    display: grid;
-    place-items: center;
-    transition: background-color 0.12s ease, border-color 0.12s ease;
-}
+    /* ----------------------------------------
+     Element: Control
+  ---------------------------------------- */
 
-.app-checkbox__check {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    background: transparent;
-    transition: background-color 0.12s ease;
-}
+    &__control {
+        position: relative;
+        flex: 0 0 auto;
+    }
 
-.app-checkbox__input:checked + .app-checkbox__box {
-    border-color: $primary;
-    background: $primary;
-}
 
-.app-checkbox__input:checked + .app-checkbox__box .app-checkbox__check {
-    background: #fff;
-}
+    /* ----------------------------------------
+     Element: Input
+  ---------------------------------------- */
 
-.app-checkbox__body {
-    display: grid;
-    gap: 2px;
-}
+    &__input {
 
-.app-checkbox__label {
-    color: $gray-800;
-}
+        position: absolute;
+        inset: 0;
 
-.app-checkbox__helper {
-    font-size: 12px;
-    color: $gray-600;
-}
+        margin: 0;
+        opacity: 0;
 
-.app-checkbox__error {
-    font-size: 12px;
-    color: $status-error;
-}
+        cursor: inherit;
 
-.is-disabled {
-    cursor: not-allowed;
-    opacity: 0.6;
-}
+        /* checked 상태 */
+        &:checked+.app-checkbox__box {
 
-.is-error .app-checkbox__box {
-    border-color: $status-error;
-}
+            border-color: $primary;
+            background: $primary;
 
+            .app-checkbox__check {
+                background: $gray-0;
+            }
+
+        }
+
+        /* focus 접근성 */
+        &:focus-visible+.app-checkbox__box {
+            outline: 2px solid $primary-300;
+            outline-offset: 2px;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Element: Box
+  ---------------------------------------- */
+
+    &__box {
+
+        width: 18px;
+        height: 18px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 4px;
+
+        border: 1px solid $gray-300;
+        background: $gray-0;
+
+        transition:
+            border-color .12s ease,
+            background-color .12s ease;
+
+    }
+
+
+    /* ----------------------------------------
+     Element: Check Indicator
+  ---------------------------------------- */
+
+    &__check {
+
+        width: 10px;
+        height: 10px;
+
+        border-radius: 2px;
+        background: transparent;
+
+        transition: background-color .12s ease;
+
+    }
+
+
+    /* ----------------------------------------
+     Element: Body
+  ---------------------------------------- */
+
+    &__body {
+        display: grid;
+        gap: 2px;
+    }
+
+
+    /* ----------------------------------------
+     Element: Label
+  ---------------------------------------- */
+
+    &__label {
+        color: $gray-800;
+    }
+
+
+    /* ----------------------------------------
+     Element: Helper
+  ---------------------------------------- */
+
+    &__helper {
+        @include font(c2, rg);
+        color: $gray-600;
+    }
+
+
+    /* ----------------------------------------
+     Element: Error
+  ---------------------------------------- */
+
+    &__error {
+        @include font(c2, rg);
+        color: $status-error;
+    }
+
+
+    /* ----------------------------------------
+     State: Disabled
+  ---------------------------------------- */
+
+    &.is-disabled {
+
+        cursor: not-allowed;
+        opacity: .6;
+
+    }
+
+
+    /* ----------------------------------------
+     State: Error
+  ---------------------------------------- */
+
+    &.is-error {
+
+        .app-checkbox__box {
+            border-color: $status-error;
+        }
+
+    }
+
+}

@@ -1,53 +1,122 @@
 @use "../../abstract/index" as *;
 
+/* =========================================
+   Component: AppChoice
+   설명: 선택형 버튼 (Chip / Toggle / Tag)
+   사용 위치: 필터, 옵션 선택 UI
+   구조: BEM (Block / Element / Modifier)
+========================================= */
+
 .app-choice {
-    border-radius: 999px;
-    border: 1px solid transparent;
-    padding: 6px 12px;
-    font-size: 13px;
+
+    /* ----------------------------------------
+     Base
+  ---------------------------------------- */
+
+    @include font(b4, rg);
+
     display: inline-flex;
     align-items: center;
     gap: 6px;
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+    border: 1px solid transparent;
+
     background: transparent;
     color: $gray-800;
+
     cursor: pointer;
     outline: none;
-    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-}
 
-.app-choice--chip {
-    border-color: rgba($gray-400, 0.5);
-    background: $gray-0;
-}
+    transition:
+        background-color .12s ease,
+        border-color .12s ease,
+        color .12s ease,
+        opacity .12s ease;
 
-.app-choice--chip.is-selected {
-    border-color: $primary;
-    background: rgba($primary, 0.05);
-    color: $primary;
-}
 
-.app-choice--fill {
-    border-color: transparent;
-    background: rgba($gray-900, 0.06);
-}
+    /* ----------------------------------------
+     Element
+  ---------------------------------------- */
 
-.app-choice--fill.is-selected {
-    background: $primary;
-    color: #fff;
-}
+    &__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.app-choice__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
 
-.app-choice--icon-only {
-    padding: 6px;
-}
+    /* ----------------------------------------
+     Variant: Chip
+  ---------------------------------------- */
 
-.is-disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
+    &--chip {
 
+        border-color: rgba($gray-400, .5);
+        background: $gray-0;
+
+        &:hover {
+            border-color: $primary-300;
+        }
+
+        &.is-selected {
+            border-color: $primary;
+            background: rgba($primary, .05);
+            color: $primary;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Variant: Fill
+  ---------------------------------------- */
+
+    &--fill {
+
+        border-color: transparent;
+        background: rgba($gray-900, .06);
+
+        &:hover {
+            background: rgba($gray-900, .10);
+        }
+
+        &.is-selected {
+            background: $primary;
+            color: $gray-0;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     Modifier: Icon Only
+  ---------------------------------------- */
+
+    &--icon-only {
+
+        padding: 6px;
+        gap: 0;
+
+        .app-choice__icon {
+            font-size: 16px;
+        }
+
+    }
+
+
+    /* ----------------------------------------
+     State
+  ---------------------------------------- */
+
+    &.is-disabled {
+
+        cursor: not-allowed;
+        opacity: .5;
+        pointer-events: none;
+
+    }
+
+}

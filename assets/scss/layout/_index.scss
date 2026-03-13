@@ -1,43 +1,93 @@
 @use "../abstract/index" as *;
 @use "nav";
 
-// 필요할 때만 추가
+// 필요 시 확장
 // @forward "header";
 // @forward "footer";
 
-.layout-container {
+/* =========================================
+   Layout
+   설명: 애플리케이션 기본 레이아웃
+   구조: Header / Sidebar / Main
+========================================= */
+
+.layout {
+
+    /* ----------------------------------------
+     Container
+  ---------------------------------------- */
+
     display: grid;
+
     height: 100dvh;
+
     grid-template-rows: auto 1fr;
     grid-template-columns: var(--width-sidebar) 1fr;
+
     grid-template-areas:
         "header header"
         "nav main";
-}
 
-.layout-header {
-    grid-area: header;
-}
 
-.layout-nav {
-    grid-area: nav;
-}
+    /* ----------------------------------------
+     Header
+  ---------------------------------------- */
 
-.layout-main {
-    grid-area: main;
-    min-height: 0;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    overflow: hidden;
-}
+    &__header {
+        grid-area: header;
+    }
 
-.layout-route-tabs {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
 
-.layout-main-content {
-    min-height: 0;
-    overflow: auto;
+    /* ----------------------------------------
+     Sidebar
+  ---------------------------------------- */
+
+    &__nav {
+        grid-area: nav;
+    }
+
+
+    /* ----------------------------------------
+     Main
+  ---------------------------------------- */
+
+    &__main {
+
+        grid-area: main;
+
+        min-height: 0;
+
+        display: grid;
+        grid-template-rows: auto 1fr;
+
+        overflow: hidden;
+
+    }
+
+
+    /* ----------------------------------------
+     Route Tabs
+  ---------------------------------------- */
+
+    &__tabs {
+
+        position: sticky;
+        top: 0;
+
+        z-index: 10;
+
+    }
+
+
+    /* ----------------------------------------
+     Content
+  ---------------------------------------- */
+
+    &__content {
+
+        min-height: 0;
+        overflow: auto;
+
+    }
+
 }

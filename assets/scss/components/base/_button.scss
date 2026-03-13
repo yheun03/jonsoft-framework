@@ -2,42 +2,59 @@
 @use "sass:color";
 @use "icon";
 
+/* =========================================
+   Component: AppButton
+   설명: 공통 버튼 컴포넌트
+   구조: BEM (Block / Element / Modifier)
+   사용: CTA / Form / Action Button
+========================================= */
+
 .app-button {
-    @include btn2_rg;
+
+    /* ----------------------------------------
+     Base
+  ---------------------------------------- */
+
+    @include font(btn2, rg);
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 8px;
+    padding: 0 16px;
+
     border: 1px solid transparent;
-    cursor: pointer;
-    user-select: none;
+    border-radius: 10px;
+
     text-decoration: none;
     white-space: nowrap;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
-    flex-shrink: 0;
+
+    user-select: none;
     cursor: pointer;
+    flex-shrink: 0;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        opacity .15s ease;
+
+    /* custom 버튼 override 허용 */
     &:not([class*="app-button--custom"]) {
         border-radius: 10px;
     }
 
+    /* 접근성 */
     &:focus-visible {
         outline: 2px solid $primary-300;
         outline-offset: 2px;
     }
 
-    &.is-block {
-        width: 100%;
-    }
 
-    &.is-disabled {
-        opacity: 0.45;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-    &.is-loading {
-        cursor: progress;
-    }
+    /* ----------------------------------------
+     Element
+  ---------------------------------------- */
 
     &__icon {
         @extend .app-icon;
@@ -48,85 +65,143 @@
         align-items: center;
     }
 
-    /* sizes */
+
+    /* ----------------------------------------
+     State
+  ---------------------------------------- */
+
+    &.is-block {
+        width: 100%;
+    }
+
+    &.is-disabled {
+        opacity: .45;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    &.is-loading {
+        cursor: progress;
+    }
+
+
+    /* ----------------------------------------
+     Size Modifiers
+  ---------------------------------------- */
+
     &--sm {
         height: 32px;
         padding: 0 12px;
-        border-radius: 8px;
         gap: 6px;
-        @include btn3_rg;
+
+        @include font(btn3, rg);
     }
 
     &--md {
         height: 40px;
         padding: 0 16px;
-        border-radius: 10px;
         gap: 8px;
-        @include btn2_rg;
+
+        @include font(btn2, rg);
     }
 
     &--lg {
         height: 48px;
         padding: 0 20px;
-        border-radius: 12px;
         gap: 10px;
-        @include btn1_rg;
+
+        @include font(btn1, rg);
     }
 
-    /* variants */
+
+    /* ----------------------------------------
+     Variant: Fill
+  ---------------------------------------- */
+
     &--fill {
+
+        $hover: color.adjust($primary, $lightness: -6%);
+        $active: color.adjust($primary, $lightness: -10%);
+
         background: $primary;
         color: $gray-0;
 
         &:hover {
-            background: color.adjust($primary, $lightness: -6%);
+            background: $hover;
         }
 
         &:active {
-            background: color.adjust($primary, $lightness: -10%);
+            background: $active;
         }
+
     }
 
+
+    /* ----------------------------------------
+     Variant: Text
+  ---------------------------------------- */
+
     &--text {
+
         background: transparent;
         color: $primary;
 
         &:hover {
-            background: rgba($primary, 0.10);
+            background: rgba($primary, .10);
         }
 
         &:active {
-            background: rgba($primary, 0.16);
+            background: rgba($primary, .16);
         }
+
     }
 
+
+    /* ----------------------------------------
+     Variant: Outline
+  ---------------------------------------- */
+
     &--outline {
+
+        $hover: color.adjust($primary, $lightness: -8%);
+        $active: color.adjust($primary, $lightness: -14%);
+
         background: transparent;
         color: $primary;
         border: 1.5px solid $primary;
 
         &:hover {
-            background: rgba($primary, 0.06);
-            border-color: color.adjust($primary, $lightness: -8%);
-            color: color.adjust($primary, $lightness: -8%);
+            background: rgba($primary, .06);
+            border-color: $hover;
+            color: $hover;
         }
 
         &:active {
-            background: rgba($primary, 0.10);
-            border-color: color.adjust($primary, $lightness: -14%);
-            color: color.adjust($primary, $lightness: -14%);
+            background: rgba($primary, .10);
+            border-color: $active;
+            color: $active;
         }
+
     }
 
+
+    /* ----------------------------------------
+     Variant: Underline
+  ---------------------------------------- */
+
     &--underline {
+
         background: transparent;
         color: $primary;
+
+        padding-left: 0;
+        padding-right: 0;
+
+        border-radius: 0;
+
         text-decoration: underline;
         text-underline-offset: 3px;
         text-decoration-thickness: 1px;
-        padding-left: 0;
-        padding-right: 0;
-        border-radius: 0;
 
         &:hover {
             color: color.adjust($primary, $lightness: -8%);
@@ -135,10 +210,16 @@
         &:active {
             color: color.adjust($primary, $lightness: -12%);
         }
+
     }
 
-    /* icon-only */
+
+    /* ----------------------------------------
+     Modifier: Icon Only
+  ---------------------------------------- */
+
     &--icon-only {
+
         padding: 0;
         gap: 0;
 
@@ -153,5 +234,7 @@
         &.app-button--lg {
             width: 48px;
         }
+
     }
+
 }

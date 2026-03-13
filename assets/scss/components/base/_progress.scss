@@ -1,142 +1,232 @@
 @use "../../abstract/index" as *;
 
+/* =========================================
+   Component: AppProgress
+   설명: Linear / Range / Circular Progress
+   구조: BEM (Block / Element / Modifier)
+========================================= */
+
 .app-progress {
+
+    /* ----------------------------------------
+     CSS Tokens
+  ---------------------------------------- */
+
     --app-progress-track-h: 8px;
     --app-progress-thumb: 18px;
     --app-progress-radius: 999px;
-}
 
-.app-progress__control {
-    display: grid;
-    gap: 8px;
-}
 
-.app-progress__control-label {
-    font-size: 0.875rem;
-    color: $gray-800;
-}
+    /* ----------------------------------------
+     Control
+  ---------------------------------------- */
 
-.app-progress__control-value {
-    font-size: 0.75rem;
-    color: $gray-600;
-    text-align: right;
-}
+    &__control {
+        display: grid;
+        gap: 8px;
+    }
 
-.app-progress__linear {
-    display: grid;
-    gap: 0;
-}
+    &__control-label {
+        @include font(b3, rg);
+        color: $gray-800;
+    }
 
-.app-progress__track {
-    position: relative;
-    height: var(--app-progress-track-h);
-    border-radius: var(--app-progress-radius);
-    background: $gray-200;
-    overflow: hidden;
-}
+    &__control-value {
+        @include font(c2, rg);
+        color: $gray-600;
+        text-align: right;
+    }
 
-.app-progress__bar-range {
-    position: absolute;
-    left: calc(var(--start) * 1%);
-    width: calc((var(--end) - var(--start)) * 1%);
-    height: 100%;
-    background: $primary;
-    border-radius: var(--app-progress-radius);
-    transition: none;
-}
 
-.app-progress__noui {
-    width: 100%;
-}
+    /* ----------------------------------------
+     Linear Progress
+  ---------------------------------------- */
 
-.app-progress .noUi-target {
-    height: var(--app-progress-track-h);
-    border-radius: var(--app-progress-radius);
-    background: $gray-200;
-    border: 0;
-    box-shadow: none;
-}
+    &__linear {
+        display: grid;
+        gap: 0;
+    }
 
-.app-progress .noUi-origin,
-.app-progress .noUi-connect,
-.app-progress .noUi-handle {
-    transition: none !important;
-}
+    &__track {
 
-.app-progress .noUi-connect {
-    background: $primary;
-}
+        position: relative;
 
-.app-progress .noUi-handle {
-    width: var(--app-progress-thumb) !important;
-    height: var(--app-progress-thumb) !important;
-    border-radius: var(--app-progress-radius) !important;
-    border: 2px solid $gray-0 !important;
-    background: $primary !important;
-    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18) !important;
-    right: -9px !important;
-    top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2) !important;
-}
+        height: var(--app-progress-track-h);
 
-.app-progress .noUi-handle::before,
-.app-progress .noUi-handle::after {
-    display: none;
-}
+        border-radius: var(--app-progress-radius);
 
-/* circular */
-.app-progress__circle {
-    position: relative;
-    width: 80px;
-    height: 80px;
-    display: grid;
-    place-items: center;
-}
+        background: $gray-200;
+        overflow: hidden;
 
-.app-progress__circle--half {
-    width: 80px;
-    height: 44px;
-    align-items: end;
-}
+    }
 
-.app-progress__svg {
-    width: 80px;
-    height: 80px;
-    overflow: visible;
-}
+    &__bar-range {
 
-.app-progress__svg:not(.app-progress__svg--half) {
-    transform: rotate(-90deg);
-    transform-origin: 50% 50%;
-}
+        position: absolute;
 
-.app-progress__svg--half {
-    width: 80px;
-    height: 44px;
-}
+        left: calc(var(--start) * 1%);
+        width: calc((var(--end) - var(--start)) * 1%);
+        height: 100%;
 
-.app-progress__ring,
-.app-progress__value {
-    fill: none;
-    stroke-width: var(--app-progress-track-h);
-    vector-effect: non-scaling-stroke;
-}
+        background: $primary;
+        border-radius: var(--app-progress-radius);
 
-.app-progress__ring {
-    stroke: $gray-200;
-}
+        transition: none;
 
-.app-progress__value {
-    stroke: $primary;
-    stroke-linecap: round;
-}
+    }
 
-.app-progress__label {
-    position: absolute;
-    font-size: 12px;
-    line-height: 1;
-    color: rgba(15, 23, 42, 0.8);
-}
+    &__noui {
+        width: 100%;
+    }
 
-.app-progress__circle--half .app-progress__label {
-    bottom: 2px;
+
+    /* ----------------------------------------
+     noUiSlider Override
+  ---------------------------------------- */
+
+    .noUi-target {
+
+        height: var(--app-progress-track-h);
+
+        border-radius: var(--app-progress-radius);
+
+        background: $gray-200;
+
+        border: 0;
+        box-shadow: none;
+
+    }
+
+    .noUi-origin,
+    .noUi-connect,
+    .noUi-handle {
+        transition: none !important;
+    }
+
+    .noUi-connect {
+        background: $primary;
+    }
+
+    .noUi-handle {
+
+        width: var(--app-progress-thumb) !important;
+        height: var(--app-progress-thumb) !important;
+
+        border-radius: var(--app-progress-radius) !important;
+
+        border: 2px solid $gray-0 !important;
+
+        background: $primary !important;
+
+        box-shadow: 0 2px 10px rgba(15, 23, 42, .18) !important;
+
+        right: -9px !important;
+
+        top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2) !important;
+
+    }
+
+    .noUi-handle::before,
+    .noUi-handle::after {
+        display: none;
+    }
+
+
+    /* ----------------------------------------
+     Circular Progress
+  ---------------------------------------- */
+
+    &__circle {
+
+        position: relative;
+
+        width: 80px;
+        height: 80px;
+
+        display: grid;
+        place-items: center;
+
+    }
+
+    &__circle--half {
+
+        width: 80px;
+        height: 44px;
+
+        align-items: end;
+
+    }
+
+    &__svg {
+
+        width: 80px;
+        height: 80px;
+
+        overflow: visible;
+
+    }
+
+    &__svg:not(&__svg--half) {
+
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+
+    }
+
+    &__svg--half {
+
+        width: 80px;
+        height: 44px;
+
+    }
+
+
+    /* ----------------------------------------
+     Ring
+  ---------------------------------------- */
+
+    &__ring,
+    &__value {
+
+        fill: none;
+
+        stroke-width: var(--app-progress-track-h);
+
+        vector-effect: non-scaling-stroke;
+
+    }
+
+    &__ring {
+        stroke: $gray-200;
+    }
+
+    &__value {
+
+        stroke: $primary;
+
+        stroke-linecap: round;
+
+    }
+
+
+    /* ----------------------------------------
+     Label
+  ---------------------------------------- */
+
+    &__label {
+
+        position: absolute;
+
+        @include font(c2, rg);
+
+        line-height: 1;
+
+        color: rgba(15, 23, 42, .8);
+
+    }
+
+    &__circle--half &__label {
+        bottom: 2px;
+    }
+
 }

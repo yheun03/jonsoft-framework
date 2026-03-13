@@ -1,58 +1,68 @@
 @use "../abstract/index" as *;
 
-/* 기본(라이트 배경) 스크롤바 */
-* {
+/* =========================================
+   Scrollbar System
+   설명: 공통 스크롤바 스타일
+   - 기본(light background)
+   - dark background (LNB 등)
+========================================= */
+
+
+/* ----------------------------------------
+   Scrollbar Mixin
+---------------------------------------- */
+
+@mixin scrollbar($thumb, $hover) {
+
     scrollbar-width: thin;
-    scrollbar-color: rgba($gray-700, 0.5) transparent;
+    scrollbar-color: $thumb transparent;
+
+    &::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+
+        background-color: $thumb;
+
+        border-radius: 999px;
+
+        border: 2px solid transparent;
+
+        background-clip: padding-box;
+
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: $hover;
+    }
+
 }
 
-*::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+
+/* =========================================
+   Default Scrollbar (Light UI)
+========================================= */
+
+* {
+    @include scrollbar(rgba($gray-700, .45),
+        rgba($gray-700, .7));
 }
 
-*::-webkit-scrollbar-track {
-    background: transparent;
-}
 
-*::-webkit-scrollbar-thumb {
-    background-color: rgba($gray-700, 0.45);
-    border-radius: 999px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-}
+/* =========================================
+   Dark Scrollbar (Sidebar / Dark UI)
+========================================= */
 
-*::-webkit-scrollbar-thumb:hover {
-    background-color: rgba($gray-700, 0.7);
-}
-
-/* 다크 배경(LNB 등)용 스크롤바 */
 .layout-nav,
 .layout-nav * {
-    scrollbar-color: rgba($gray-0, 0.5) transparent;
-}
 
-.layout-nav::-webkit-scrollbar,
-.layout-nav *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
+    @include scrollbar(rgba($gray-0, .35),
+        rgba($gray-0, .6));
 
-.layout-nav::-webkit-scrollbar-track,
-.layout-nav *::-webkit-scrollbar-track {
-    background: transparent;
 }
-
-.layout-nav::-webkit-scrollbar-thumb,
-.layout-nav *::-webkit-scrollbar-thumb {
-    background-color: rgba($gray-0, 0.35);
-    border-radius: 999px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-}
-
-.layout-nav::-webkit-scrollbar-thumb:hover,
-.layout-nav *::-webkit-scrollbar-thumb:hover {
-    background-color: rgba($gray-0, 0.6);
-}
-
