@@ -23,3 +23,4 @@ const localeText = computed<GridOptions['localeText']>(() => {
     return (attrs.localeText as GridOptions['localeText']) ?? $agGridLocale
 })
 </script>
+
