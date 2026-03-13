@@ -12,8 +12,9 @@ const attrs = useAttrs()
 const gridAttrs = computed(() => {
     const a = attrs as Record<string, unknown>
     const { localeText: _, class: __, 'grid-id': gridIdKebab, gridId: gridIdCamel, ...rest } = a
-    const gridId = gridIdCamel ?? gridIdKebab
-    return { ...rest, ...(gridId != null && gridId !== '' && { gridId }) }
+    const gridIdRaw = gridIdCamel ?? gridIdKebab
+    const gridId = typeof gridIdRaw === 'string' && gridIdRaw.trim() !== '' ? gridIdRaw : undefined
+    return { ...rest, ...(gridId ? { gridId } : {}) }
 })
 
 // 기본값: 한국어. 부모가 locale-text 전달 시 override

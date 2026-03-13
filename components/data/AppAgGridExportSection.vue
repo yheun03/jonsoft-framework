@@ -22,7 +22,7 @@
                 animate-rows
                 :style="{ height, width: '100%' }"
                 @grid-ready="handleGridReady"
-                @selection-changed="(e) => emit('selection-changed', { gridId, event: e })"
+                @selection-changed="(e: SelectionChangedEvent<TData>) => emit('selection-changed', { gridId, event: e })"
             />
             <template #fallback>
                 <div class="page-demo-fallback">그리드 로딩 중...</div>
@@ -75,6 +75,3 @@ async function onExportSelected() {
     await exportDisplayedSelected(props.gridId, api.value)
 }
 </script>
-
-<!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
-
