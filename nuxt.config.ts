@@ -2,13 +2,17 @@ export default defineNuxtConfig({
     devtools: { enabled: true },
     experimental: { appManifest: false },
     features: { inlineStyles: false },
+
+    app: {
+        baseURL: '/jonsoft-framework/',
+    },
+
     modules: ['@pinia/nuxt'],
     css: ['~/assets/scss/main.scss'],
 
     components: [
         { path: '~/components/base' },
         { path: '~/components/data' },
-        // { path: '~/components/patterns', prefix: 'Pattern' },
         { path: '~/components/modules', pathPrefix: false },
     ],
 
@@ -17,7 +21,6 @@ export default defineNuxtConfig({
             cssCodeSplit: false,
         },
         server: {
-            // macOS에서 fs watcher 한도(EMFILE) 이슈가 발생할 때 폴링으로 우회
             watch: {
                 usePolling: true,
                 interval: 250,
@@ -34,6 +37,8 @@ export default defineNuxtConfig({
     },
 
     runtimeConfig: {
-        public: { apiBase: '/api' },
+        public: {
+            apiBase: '/api',
+        },
     },
 })
