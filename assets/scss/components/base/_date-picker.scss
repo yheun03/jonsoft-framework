@@ -12,8 +12,7 @@
      Base
   ---------------------------------------- */
 
-    display: grid;
-    gap: 6px;
+    @include app-field-wrapper;
 
 
     /* ----------------------------------------
@@ -21,8 +20,7 @@
   ---------------------------------------- */
 
     &__label {
-        @include font(b3, rg);
-        color: $gray-800;
+        @include app-field-label;
     }
 
 
@@ -32,29 +30,7 @@
 
     &__field {
 
-        @include font(b3, rg);
-
-        width: 100%;
-
-        padding: 10px 12px;
-
-        border: 1px solid $gray-200;
-        border-radius: 10px;
-
-        background: $gray-0;
-        color: $gray-800;
-
-        outline: none;
-
-        transition:
-            border-color .12s ease,
-            background-color .12s ease;
-
-
-        /* focus 상태 */
-        &:focus-visible {
-            border-color: $primary;
-        }
+        @include app-field-box;
 
     }
 
@@ -64,9 +40,7 @@
   ---------------------------------------- */
 
     &__helper {
-        margin: 0;
-        @include font(c2, rg);
-        color: $gray-600;
+        @include app-field-helper;
     }
 
 
@@ -75,9 +49,7 @@
   ---------------------------------------- */
 
     &__error {
-        margin: 0;
-        @include font(c2, rg);
-        color: $status-error;
+        @include app-field-error;
     }
 
 
@@ -87,11 +59,7 @@
 
     &.is-disabled {
 
-        .app-date-picker__field {
-            background: $gray-100;
-            color: $gray-500;
-            cursor: not-allowed;
-        }
+        @include app-field-disabled(".app-date-picker__field");
 
     }
 
@@ -102,9 +70,7 @@
 
     &.is-error {
 
-        .app-date-picker__field {
-            border-color: $status-error;
-        }
+        @include app-field-error-border(".app-date-picker__field");
 
     }
 

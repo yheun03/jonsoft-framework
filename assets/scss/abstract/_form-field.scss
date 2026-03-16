@@ -1,0 +1,66 @@
+@use "variables" as *;
+@use "typography" as *;
+
+// 공통 폼 필드 래퍼 (라벨 + 필드 + 헬퍼/에러)
+@mixin app-field-wrapper {
+    display: grid;
+    gap: 6px;
+}
+
+@mixin app-field-label {
+    @include font(b3, rg);
+    color: $gray-800;
+}
+
+@mixin app-field-helper {
+    margin: 0;
+    @include font(c2, rg);
+    color: $gray-600;
+}
+
+@mixin app-field-error {
+    margin: 0;
+    @include font(c2, rg);
+    color: $status-error;
+}
+
+// 공통 필드 박스 (Input / Select / DatePicker 공통)
+@mixin app-field-box {
+
+    @include font(b3, rg);
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid $gray-200;
+    border-radius: 10px;
+    background: $gray-0;
+    color: $gray-800;
+    outline: none;
+    box-sizing: border-box;
+    transition:
+        border-color .15s ease,
+        background-color .15s ease;
+
+    &::placeholder {
+        color: $gray-600;
+    }
+
+    &:focus-visible {
+        border-color: $primary;
+    }
+}
+
+// 비활성/에러 상태를 각 컴포넌트에서 selector 문자열로 넘겨서 사용
+@mixin app-field-disabled($field-selector) {
+    #{$field-selector} {
+        background: $gray-100;
+        color: $gray-500;
+        cursor: not-allowed;
+    }
+}
+
+@mixin app-field-error-border($field-selector) {
+    #{$field-selector} {
+        border-color: $status-error;
+    }
+}
+
