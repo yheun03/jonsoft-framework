@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import PatternNavItem from '@/components/patterns/PatternNavItem.vue'
+import PatternNavItem from '@/components/PatternNavItem.vue'
 import { MENUS } from '~/server/utils/menu-data'
 import TempIconSvg from '@/assets/icons/temp.svg?raw'
 import LogoIconSvg from '@/assets/icons/logo.svg?raw'

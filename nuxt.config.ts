@@ -11,9 +11,8 @@ export default defineNuxtConfig({
     css: ['~/assets/scss/main.scss'],
 
     components: [
-        { path: '~/components/base' },
-        { path: '~/components/data' },
-        { path: '~/components/modules', pathPrefix: false },
+        // 모든 전역 컴포넌트를 components 루트에서 자동 등록
+        { path: '~/components', pathPrefix: false },
     ],
 
     vite: {

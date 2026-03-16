@@ -1,4 +1,3 @@
-@use "route-tabs/index" as routeTabs;
-@use "user/index" as user;
+// route-tabs, user 모듈 SCSS는 제거되었고,
+// 현재는 workspace 관련 모듈 SCSS만 사용합니다.
 @use "workspace/index" as workspace;
-

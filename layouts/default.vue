@@ -12,5 +12,5 @@
 
 <script setup lang="ts">
 import LayoutNav from '~/layouts/nav.vue';
-import RouteTabsBar from '~/components/modules/route-tabs/RouteTabsBar.vue'
+import RouteTabsBar from '~/components/RouteTabsBar.vue'
 </script>
