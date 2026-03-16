@@ -124,6 +124,8 @@
 
         top: calc((var(--app-progress-track-h) - var(--app-progress-thumb)) / 2) !important;
 
+        cursor: col-resize;
+
     }
 
     .noUi-handle::before,
