@@ -59,8 +59,10 @@ export const useWorkspaceStore = defineStore('workspace', () => {
         if (!fallback) return
 
         if (activeTabId.value === id) activeTabId.value = fallback
-        ; (['left', 'right'] as const).forEach((pane) => {
-            if (activeTabIdByPane.value[pane] === id) activeTabIdByPane.value[pane] = fallback
+        ;['left', 'right'].forEach((pane) => {
+            if (activeTabIdByPane.value[pane as PaneId] === id) {
+                activeTabIdByPane.value[pane as PaneId] = fallback
+            }
         })
     }
 
@@ -86,7 +88,6 @@ export const useWorkspaceStore = defineStore('workspace', () => {
     function toggleSplit() {
         split.value = !split.value
         if (!split.value) {
-            // split off -> mirror left
             activeTabIdByPane.value.right = activeTabIdByPane.value.left
         }
     }

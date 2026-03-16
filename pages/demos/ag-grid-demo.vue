@@ -92,6 +92,7 @@
 
 <script setup lang="ts">
 import type { ColDef, GridApi, GridReadyEvent, SelectionChangedEvent } from 'ag-grid-community'
+import { useAgGridExcelExport } from '~/core/composables/useAgGridExcelExport'
 
 // ----- 타입 -----
 type Row = {

@@ -10,6 +10,14 @@ export default defineNuxtConfig({
     modules: ['@pinia/nuxt'],
     css: ['~/assets/scss/main.scss'],
 
+    imports: {
+        dirs: ['~/core/composables'],
+    },
+
+    pinia: {
+        storesDirs: ['~/core/stores'],
+    },
+
     components: [
         // 모든 전역 컴포넌트를 components 루트에서 자동 등록
         { path: '~/components', pathPrefix: false },

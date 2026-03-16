@@ -11,7 +11,9 @@ export const useRouteTabsStore = defineStore('route-tabs', () => {
     const tabs = ref<RouteTab[]>([])
     const activeKey = ref<string | null>(null)
 
-    const activeTab = computed(() => (activeKey.value ? tabs.value.find((t) => t.key === activeKey.value) : null) ?? null)
+    const activeTab = computed(
+        () => (activeKey.value ? tabs.value.find((t) => t.key === activeKey.value) : null) ?? null,
+    )
 
     function visit(tab: { key: string; path: string; title: string }, opts?: { activate?: boolean }) {
         const existing = tabs.value.find((t) => t.key === tab.key)

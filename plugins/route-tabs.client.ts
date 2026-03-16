@@ -1,5 +1,5 @@
 import { MENUS } from '~/server/utils/menu-data'
-import { useRouteTabsStore } from '~/stores/route-tabs'
+import { useRouteTabsStore } from '~/core/stores/route-tabs'
 import type { RouteLocationNormalized } from 'vue-router'
 
 const MENU_TITLE_BY_PATH: Record<string, string> = Object.fromEntries(

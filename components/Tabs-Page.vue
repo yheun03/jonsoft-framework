@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import XmarkSvg from '~/assets/icons/12/ic-xmark.svg?raw'
-import { useRouteTabsStore } from '~/stores/route-tabs'
+import { useRouteTabsStore } from '~/core/stores/route-tabs'
 
 const router = useRouter()
 const route = useRoute()
