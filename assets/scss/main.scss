@@ -1,8 +1,8 @@
-@use "abstract/index" as *;
-@use "base/index" as base;
-@use "layout/index" as layout;
-@use "components/index" as components;
-@use "pages/index" as pages;
+@use "abstract" as *;
+@use "base" as base;
+@use "layout" as layout;
+@use "components" as components;
+@use "pages" as pages;
 
 /* =========================================
    Demo Page Styles
