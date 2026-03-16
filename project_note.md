@@ -62,17 +62,20 @@ jonsoft-framework/
 ├─ app.vue
 ├─ nuxt.config.ts
 ├─ package.json
+├─ package-lock.json
+├─ tsconfig.json
 ├─ project_note.md
-├─ .nvmrc, .env.example, .gitignore, tsconfig.json
+├─ .env.example
+├─ .gitignore
 ├─ assets/
 ├─ components/
-├─ composables/
+├─ core/
 ├─ layouts/
 ├─ pages/
 ├─ plugins/
 ├─ server/
-├─ stores/
-└─ types/
+├─ dist/
+└─ node_modules/
 ```
 
 ### 2.2 app.vue
@@ -229,9 +232,9 @@ jonsoft-framework/
 
 ---
 
-### 2.8 composables/
+### 2.8 core/composables/
 
-#### 2.8.1 composables/useApi.ts
+#### 2.8.1 core/composables/useApi.ts
 
 - **역할**: `$api` (Axios 인스턴스) 래퍼.
 - 구현:
@@ -257,7 +260,7 @@ const { data } = await get<User[]>('/users')   // 결국 /api/users 호출
 await post('/users', payload)
 ```
 
-#### 2.8.2 composables/useAgGridExcelExport.ts
+#### 2.8.2 core/composables/useAgGridExcelExport.ts
 
 - **역할**: AG Grid 현재 표시 데이터(필터/정렬 반영)를 서버에 보내 엑셀 파일 다운로드.
 - 주요 함수:
@@ -312,9 +315,9 @@ await post('/users', payload)
 
 ---
 
-### 2.10 stores/
+### 2.10 core/stores/
 
-#### 2.10.1 stores/route-tabs.ts
+#### 2.10.1 core/stores/route-tabs.ts
 
 - **역할**: 상단 경로 탭 상태 관리.
 - 상태:
@@ -335,7 +338,7 @@ await post('/users', payload)
   - `plugins/route-tabs.client.ts` (방문 기록).
   - `components/RouteTabsBar.vue` (탭 UI).
 
-#### 2.10.2 stores/workspace.ts
+#### 2.10.2 core/stores/workspace.ts
 
 - **역할**: 옵시디언 스타일 워크스페이스 탭/분할 상태 관리.
 - 상태:
@@ -389,15 +392,15 @@ await post('/users', payload)
 
 ---
 
-### 2.12 types/
+### 2.12 core/types/
 
-- `types/api/menu.ts`, `types/api/user.ts`
+- `core/types/api/menu.ts`, `core/types/api/user.ts`
   - 메뉴/사용자 API용 타입 정의 (예제/확장용).
-- `types/global/axios.d.ts`
+- `core/types/global/axios.d.ts`
   - `$api` 등 Axios 관련 전역 타입 보완.
-- `types/global/ag-grid.d.ts`
+- `core/types/global/ag-grid.d.ts`
   - AG Grid 타입 정의 보완.
-- `types/toast-ui-editor.d.ts`
+- `core/types/toast-ui-editor.d.ts`
   - Toast UI Editor 타입 보완.
 
 ---
@@ -791,32 +794,38 @@ npm run preview # 빌드 결과 미리보기
 
 ```
 assets/scss/
-├── abstract/           # 디자인 토큰/함수/믹스인
+├── abstract/               # 디자인 토큰/타이포그래피
 │   ├── _variables.scss
-│   ├── _mixins.scss
-│   ├── _functions.scss
 │   ├── _typography.scss
 │   └── _index.scss
-├── base/               # reset, fonts, 유틸 클래스
+├── base/                   # reset, fonts, 기본 스타일
 │   ├── _reset.scss
 │   ├── _fonts.scss
-│   ├── _utilities.scss
 │   ├── _scrollbar.scss
 │   └── _index.scss
-├── layout/             # 레이아웃(그리드, 헤더, 푸터, 네비)
-│   ├── _grid.scss
-│   ├── _header.scss
-│   ├── _footer.scss
+├── layout/                 # 레이아웃(네비 등)
 │   ├── _nav.scss
 │   └── _index.scss
-├── components/         # 전역 컴포넌트/데모 스타일
-│   ├── base/           # AppButton, AppProgress 등 기본 UI
+├── components/             # 전역 컴포넌트/데모 스타일
+│   ├── base/               # AppButton, AppInput 등 기본 UI
 │   │   ├── _button.scss
+│   │   ├── _chart.scss
+│   │   ├── _checkbox.scss
+│   │   ├── _choice.scss
+│   │   ├── _date-picker.scss
 │   │   ├── _icon.scss
+│   │   ├── _index.scss
+│   │   ├── _input.scss
 │   │   ├── _progress.scss
-│   │   └── _index.scss
+│   │   ├── _radio.scss
+│   │   ├── _select.scss
+│   │   ├── _tabs-page.scss
+│   │   └── _workspace-pane.scss
 │   └── _index.scss
-└── main.scss           # 진입점 (base, layout, components 순)
+├── pages/                  # 페이지 전용 스타일
+│   ├── _home.scss
+│   └── _index.scss
+└── main.scss               # 진입점 (abstract, base, layout, components, pages 순)
 ```
 
 ### 변수 사용
