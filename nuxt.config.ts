@@ -8,7 +8,11 @@ export default defineNuxtConfig({
     },
 
     modules: ['@pinia/nuxt'],
-    css: ['~/assets/scss/main.scss'],
+    css: [
+        // AG Grid 테마 CSS는 전역 link 로드로 고정 (dev 인라인 주입 최소화)
+        'ag-grid-community/styles/ag-theme-quartz.css',
+        '~/assets/scss/main.scss',
+    ],
 
     imports: {
         dirs: ['~/core/composables'],
@@ -40,6 +44,14 @@ export default defineNuxtConfig({
                     additionalData: `@use "abstract/index" as *;`,
                 },
             },
+        },
+    },
+
+    // macOS 등에서 fs watcher 한도(EMFILE) 이슈 완화
+    watchers: {
+        chokidar: {
+            usePolling: true,
+            interval: 250,
         },
     },
 
