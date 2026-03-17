@@ -147,6 +147,7 @@ const defaultColDef: ColDef = {
 import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
 import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
 import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
+import AppGridCellImage from '~/components/AppGrid/Cell/Image.vue'
 
 const columns1: ColDef[] = [
 
@@ -325,6 +326,13 @@ const columns3: ColDef[] = [
     },
 
     {
+        field: 'productImage',
+        headerName: '상품이미지',
+        width: 80,
+        cellRenderer: AppGridCellImage,
+    },
+
+    {
         field: 'product',
         headerName: '상품명'
     },
@@ -375,6 +383,7 @@ const rows3 = [
 
     {
         productId: 'P-001',
+        productImage: 'https://picsum.photos/80',
         product: '노트북',
         category: '전자기기',
         price: 1200000,
@@ -384,6 +393,7 @@ const rows3 = [
 
     {
         productId: 'P-002',
+        productImage: 'https://picsum.photos/80',
         product: '키보드',
         category: '주변기기',
         price: 120000,
@@ -393,6 +403,7 @@ const rows3 = [
 
     {
         productId: 'P-003',
+        productImage: 'https://picsum.photos/80',
         product: '마우스',
         category: '주변기기',
         price: 35000,
@@ -402,6 +413,7 @@ const rows3 = [
 
     {
         productId: 'P-004',
+        productImage: 'https://picsum.photos/80',
         product: '모니터',
         category: '전자기기',
         price: 420000,
@@ -411,6 +423,7 @@ const rows3 = [
 
     {
         productId: 'P-005',
+        productImage: 'https://picsum.photos/80',
         product: '태블릿',
         category: '전자기기',
         price: 780000,
