@@ -21,7 +21,7 @@
             :aria-describedby="describedBy"
             @change="onChange"
         >
-            <option v-if="placeholder" value="" :disabled="required">{{ placeholder }}</option>
+            <option v-if="placeholder" value="" :disabled="required" hidden>{{ placeholder }}</option>
             <option v-for="opt in filteredOptions" :key="opt.value" :value="opt.value" :disabled="opt.disabled">
                 {{ opt.label }}
             </option>

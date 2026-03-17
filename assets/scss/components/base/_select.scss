@@ -32,6 +32,7 @@
     &__field {
 
         @include app-field-box;
+        cursor: pointer;
 
     }
 
