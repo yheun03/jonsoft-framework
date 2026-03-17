@@ -1,19 +1,16 @@
 <template>
     <div ref="root" class="app-grid-search" @keydown.enter.prevent="applySearch">
         <slot />
-
-        <AppButton size="sm" variant="outline" @click="applySearch">
-            검색
-        </AppButton>
+        <AppButton size="sm" variant="outline" @click="applySearch">검색</AppButton>
+        <AppButton size="sm" variant="outline" @click="resetGrid">초기화</AppButton>
     </div>
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useAgGridRegistry } from '~/core/composables/useAgGridRegistry'
 
-const props = defineProps<{
-    target: string
-}>()
+const target = inject<string>('appGridTarget')
 
 const root = ref<HTMLElement | null>(null)
 
@@ -21,23 +18,36 @@ const { getApi } = useAgGridRegistry()
 
 function applySearch() {
 
-    const api = getApi(props.target)
+    if (!target) return
 
-    if (!api) {
-        console.warn('Grid not found:', props.target)
-        return
-    }
+    const api = getApi(target)
+    if (!api) return
 
-    const inputs = root.value?.querySelectorAll<HTMLInputElement>('[name]')
-
+    const inputs = root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
     if (!inputs) return
 
     const filterModel: Record<string, any> = {}
 
-    inputs.forEach((input) => {
+    inputs.forEach((input: any) => {
 
         const field = input.name
-        const value = input.value?.trim()
+        let value = ''
+
+        if (input.type === 'radio') {
+
+            if (!input.checked) return
+            value = input.value
+
+        } else if (input.type === 'checkbox') {
+
+            if (!input.checked) return
+            value = input.value
+
+        } else {
+
+            value = input.value?.trim()
+
+        }
 
         if (!value) return
 
@@ -50,5 +60,39 @@ function applySearch() {
 
     api.setFilterModel(filterModel)
     api.onFilterChanged()
+
+}
+
+function resetGrid() {
+
+    if (!target) return
+
+    const api = getApi(target)
+    if (!api) return
+
+    /* grid reset */
+
+    api.setFilterModel(null)
+    api.deselectAll()
+
+    /* UI reset */
+
+    const inputs = root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
+    if (!inputs) return
+
+    inputs.forEach((input: any) => {
+
+        if (input.type === 'radio' || input.type === 'checkbox') {
+
+            input.checked = false
+
+        } else {
+
+            input.value = ''
+
+        }
+
+    })
+
 }
 </script>

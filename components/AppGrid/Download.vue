@@ -6,32 +6,43 @@
         </AppButton>
 
         <AppButton size="sm" variant="outline" @click="downloadSelected">
-            선택만 엑셀
+            선택 엑셀
         </AppButton>
 
     </div>
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useAgGridRegistry } from '~/core/composables/useAgGridRegistry'
 import { useAgGridExcelExport } from '~/core/composables/useAgGridExcelExport'
 
-const props = defineProps<{
-    target: string
-}>()
+const target = inject<string>('appGridTarget')
 
 const { getApi } = useAgGridRegistry()
 const { exportDisplayed, exportDisplayedSelected } = useAgGridExcelExport()
 
 async function downloadAll() {
-    const api = getApi(props.target)
+
+    if (!target) return
+
+    const api = getApi(target)
+
     if (!api) return
-    await exportDisplayed(props.target, api)
+
+    await exportDisplayed(target, api)
+
 }
 
 async function downloadSelected() {
-    const api = getApi(props.target)
+
+    if (!target) return
+
+    const api = getApi(target)
+
     if (!api) return
-    await exportDisplayedSelected(props.target, api)
+
+    await exportDisplayedSelected(target, api)
+
 }
 </script>
