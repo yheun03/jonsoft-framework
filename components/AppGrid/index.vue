@@ -44,6 +44,7 @@ const gridAttrs = computed(() => {
     return {
         overlayLoadingTemplate: '<span class="ag-overlay-loading">로딩중...</span>',
         overlayNoRowsTemplate: '<span class="ag-overlay-no-rows">검색된 결과가 없습니다</span>',
+        rowHeight: 100,
 
         onFilterChanged(params: FilterChangedEvent) {
 

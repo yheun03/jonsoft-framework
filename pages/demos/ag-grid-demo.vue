@@ -74,6 +74,32 @@
 
                 </section>
 
+                <!-- GRID 3 -->
+                <section class="page-demo-card">
+
+                    <h2 class="page-demo-card__title">상품 조회 (단순 그리드)</h2>
+
+                    <AppGridToolbar target="grid3">
+
+                        <AppGridSearch>
+
+                            <AppInput v-model="search3.product" name="product" placeholder="상품 검색" />
+
+                        </AppGridSearch>
+
+                        <AppGridDownload />
+
+                    </AppGridToolbar>
+
+                    <ClientOnly>
+
+                        <AppGrid grid-id="grid3" class="page-demo-grid" :row-data="rows3" :column-defs="columns3"
+                            :default-col-def="defaultColDef" animate-rows :style="{ height: '320px', width: '100%' }" />
+
+                    </ClientOnly>
+
+                </section>
+
             </main>
         </div>
     </div>
@@ -99,6 +125,10 @@ const search2 = reactive({
     status: null as string | null
 })
 
+const search3 = reactive({
+    product: ''
+})
+
 
 
 /* 기본 column 옵션 */
@@ -114,6 +144,9 @@ const defaultColDef: ColDef = {
 
 
 /* GRID 1 column */
+import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
+import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
+import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
 
 const columns1: ColDef[] = [
 
@@ -132,7 +165,7 @@ const columns1: ColDef[] = [
 
     {
         field: 'department',
-        headerName: '부서'
+        headerName: '부서',
     },
 
     {
@@ -281,4 +314,109 @@ const rows2 = [
 
 ]
 
+
+/* GRID 3 data */
+const columns3: ColDef[] = [
+
+    {
+        field: 'productId',
+        headerName: '상품코드',
+        width: 120
+    },
+
+    {
+        field: 'product',
+        headerName: '상품명'
+    },
+
+    {
+        field: 'category',
+        headerName: '카테고리',
+        cellRenderer: AppGridCellSelect,
+        cellRendererParams: {
+            options: [
+                { label: '전자기기', value: '전자기기' },
+                { label: '주변기기', value: '주변기기' }
+            ]
+        }
+    },
+
+    {
+        field: 'price',
+        headerName: '가격',
+    },
+
+    {
+        field: 'stock',
+        headerName: '재고',
+        cellRenderer: AppGridCellInput,
+        cellRendererParams: {
+            type: 'number',
+            min: 0,
+            max: 100
+        }
+    },
+
+    {
+        field: 'state',
+        headerName: '상태',
+        cellRenderer: AppGridCellChoice,
+        cellRendererParams: {
+            type: 'radio',
+            options: [
+                { label: '판매중', value: '판매중' },
+                { label: '품절', value: '품절' }
+            ]
+        }
+    }
+
+]
+const rows3 = [
+
+    {
+        productId: 'P-001',
+        product: '노트북',
+        category: '전자기기',
+        price: 1200000,
+        stock: 12,
+        state: '품절'
+    },
+
+    {
+        productId: 'P-002',
+        product: '키보드',
+        category: '주변기기',
+        price: 120000,
+        stock: 34,
+        state: '품절'
+    },
+
+    {
+        productId: 'P-003',
+        product: '마우스',
+        category: '주변기기',
+        price: 35000,
+        stock: 50,
+        state: '판매중'
+    },
+
+    {
+        productId: 'P-004',
+        product: '모니터',
+        category: '전자기기',
+        price: 420000,
+        stock: 7,
+        state: '품절'
+    },
+
+    {
+        productId: 'P-005',
+        product: '태블릿',
+        category: '전자기기',
+        price: 780000,
+        stock: 9,
+        state: '판매중'
+    }
+
+]
 </script>
