@@ -20,7 +20,7 @@ export default defineNuxtConfig({
 
     components: [
         // 모든 전역 컴포넌트를 components 루트에서 자동 등록
-        { path: '~/components', pathPrefix: false },
+        { path: '~/components', pathPrefix: true },
     ],
 
     vite: {
