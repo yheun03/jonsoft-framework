@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { AgGridVue } from 'ag-grid-vue3'
-import type { GridOptions, GridReadyEvent } from 'ag-grid-community'
+import type { GridOptions, GridReadyEvent, FilterChangedEvent } from 'ag-grid-community'
 import { useAgGridRegistry } from '~/core/composables/useAgGridRegistry'
 
 const { register } = useAgGridRegistry()
@@ -42,8 +42,23 @@ const gridAttrs = computed(() => {
     const id = gridId ?? gridIdKebab
 
     return {
+        overlayLoadingTemplate: '<span class="ag-overlay-loading">로딩중...</span>',
+        overlayNoRowsTemplate: '<span class="ag-overlay-no-rows">검색된 결과가 없습니다</span>',
+
+        onFilterChanged(params: FilterChangedEvent) {
+
+            const api = params.api
+
+            if (api.getDisplayedRowCount() === 0) {
+                api.showNoRowsOverlay()
+            } else {
+                api.hideOverlay()
+            }
+
+        },
+
         ...rest,
-        'grid-id': id
+        gridId: id
     }
 
 })
