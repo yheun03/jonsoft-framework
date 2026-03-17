@@ -1,11 +1,12 @@
 // 전역 컴포넌트 스타일이 필요할 때만 추가
-@use "icon";
+@use "ag-grid";
 @use "button";
-@use "input";
-@use "select";
+@use "chart";
 @use "choice";
 @use "date-picker";
+@use "icon";
+@use "input";
 @use "progress";
-@use "chart";
+@use "select";
 @use "tabs-page";
-@use "ag-grid";
+@use "workspace-pane";

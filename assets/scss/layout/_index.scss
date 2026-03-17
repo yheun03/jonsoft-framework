@@ -12,18 +12,13 @@
 ========================================= */
 
 .layout {
-
     /* ----------------------------------------
      Container
   ---------------------------------------- */
-
     display: grid;
-
     height: 100dvh;
-
     grid-template-rows: auto 1fr;
     grid-template-columns: var(--width-sidebar) 1fr;
-
     grid-template-areas:
         "header header"
         "nav main";
@@ -32,7 +27,6 @@
     /* ----------------------------------------
      Header
   ---------------------------------------- */
-
     &__header {
         grid-area: header;
     }
@@ -41,7 +35,6 @@
     /* ----------------------------------------
      Sidebar
   ---------------------------------------- */
-
     &__nav {
         grid-area: nav;
     }
@@ -50,16 +43,11 @@
     /* ----------------------------------------
      Main
   ---------------------------------------- */
-
     &__main {
-
         grid-area: main;
-
         min-height: 0;
-
         display: grid;
         grid-template-rows: auto 1fr;
-
         overflow: hidden;
 
     }
@@ -68,12 +56,9 @@
     /* ----------------------------------------
      Route Tabs
   ---------------------------------------- */
-
     &__tabs {
-
         position: sticky;
         top: 0;
-
         z-index: 10;
 
     }
@@ -82,9 +67,7 @@
     /* ----------------------------------------
      Content
   ---------------------------------------- */
-
     &__content {
-
         min-height: 0;
         overflow: auto;
 
