@@ -1,5 +1,5 @@
 <template>
-    <div ref="root" class="app-grid-search" @keydown.enter.prevent="applySearch">
+    <div ref="root" class="app-grid-search" @keydown.enter.prevent="applySearch" @change="handleAutoSearch">
         <slot />
         <AppButton size="sm" variant="outline" @click="applySearch">검색</AppButton>
         <AppButton size="sm" variant="outline" @click="resetGrid">초기화</AppButton>
@@ -16,6 +16,22 @@ const root = ref<HTMLElement | null>(null)
 
 const { getApi } = useAgGridRegistry()
 
+function handleAutoSearch(e: Event) {
+
+    const el = e.target as HTMLInputElement | HTMLSelectElement
+    if (!el) return
+
+    const isAuto =
+        el.type === 'radio' ||
+        el.type === 'checkbox' ||
+        el.tagName === 'SELECT'
+
+    if (!isAuto) return
+
+    applySearch()
+
+}
+
 function applySearch() {
 
     if (!target) return
@@ -23,7 +39,9 @@ function applySearch() {
     const api = getApi(target)
     if (!api) return
 
-    const inputs = root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
+    const inputs =
+        root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
+
     if (!inputs) return
 
     const filterModel: Record<string, any> = {}
@@ -38,11 +56,6 @@ function applySearch() {
             if (!input.checked) return
             value = input.value
 
-        } else if (input.type === 'checkbox') {
-
-            if (!input.checked) return
-            value = input.value
-
         } else {
 
             value = input.value?.trim()
@@ -51,8 +64,12 @@ function applySearch() {
 
         if (!value) return
 
+        const isExact =
+            input.type === 'radio' ||
+            input.tagName === 'SELECT'
+
         filterModel[field] = {
-            type: 'contains',
+            type: isExact ? 'equals' : 'contains',
             filter: value
         }
 
@@ -70,14 +87,12 @@ function resetGrid() {
     const api = getApi(target)
     if (!api) return
 
-    /* grid reset */
-
     api.setFilterModel(null)
     api.deselectAll()
 
-    /* UI reset */
+    const inputs =
+        root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
 
-    const inputs = root.value?.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[name]')
     if (!inputs) return
 
     inputs.forEach((input: any) => {
