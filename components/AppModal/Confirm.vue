@@ -1,11 +1,6 @@
 <template>
-    <AppModal
-        v-model="open"
-        :title="title"
-        :closable="closable"
-        :close-on-backdrop="closeOnBackdrop"
-        :close-on-esc="closeOnEsc"
-    >
+    <AppModal v-model="open" :title="title" :closable="closable" :close-on-backdrop="closeOnBackdrop"
+        :close-on-esc="closeOnEsc">
         <div class="app-confirm-modal__message">
             <slot>{{ message }}</slot>
         </div>
@@ -58,7 +53,9 @@ const open = computed({
 
 function onCancel() {
     emit('cancel')
-    if (props.autoClose) open.value = false
+    // UX 관점에서 "취소"는 항상 닫히는 것이 자연스럽습니다.
+    // autoClose는 confirm(확인) 동작에만 적용합니다.
+    open.value = false
 }
 
 function onConfirm() {
@@ -66,4 +63,3 @@ function onConfirm() {
     if (props.autoClose) open.value = false
 }
 </script>
-

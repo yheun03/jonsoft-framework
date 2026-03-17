@@ -1,5 +1,6 @@
 <template>
-    <AppModal v-model="open" :title="title" :closable="closable" :close-on-backdrop="closeOnBackdrop" :close-on-esc="closeOnEsc">
+    <AppModal v-model="open" :title="title" :closable="closable" :close-on-backdrop="closeOnBackdrop"
+        :close-on-esc="closeOnEsc">
         <div class="app-alert-modal__message">
             <slot>{{ message }}</slot>
         </div>
@@ -48,4 +49,3 @@ function onOk() {
     open.value = false
 }
 </script>
-

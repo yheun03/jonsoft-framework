@@ -38,31 +38,16 @@
         </div>
     </div>
 
-    <AppAlertModal v-model="alertOpen" title="안내" :message="alertMessage" @ok="lastAction = 'alert:ok'" />
+    <AppModalAlert v-model="alertOpen" title="안내" :message="alertMessage" @ok="lastAction = 'alert:ok'" />
 
-    <AppConfirmModal
-        v-model="confirmOpen"
-        title="확인"
-        message="정말 진행할까요?"
-        @confirm="onConfirm"
-        @cancel="lastAction = 'confirm:cancel'"
-    />
+    <AppModalConfirm v-model="confirmOpen" title="확인" message="정말 진행할까요?" @confirm="onConfirm"
+        @cancel="lastAction = 'confirm:cancel'" />
 
-    <AppConfirmModal
-        v-model="confirmNestedOpen"
-        title="중첩 테스트"
-        message="이 Confirm 위에 Alert를 하나 더 열어보세요."
-        :auto-close="false"
-        @confirm="openAlertFromConfirm"
-        @cancel="lastAction = 'nested:cancel'"
-    />
+    <AppModalConfirm v-model="confirmNestedOpen" title="중첩 테스트" message="이 Confirm 위에 Alert를 하나 더 열어보세요."
+        :auto-close="false" @confirm="openAlertFromConfirm" @cancel="lastAction = 'nested:cancel'" />
 
-    <AppAlertModal
-        v-model="nestedAlertOpen"
-        title="최상단 Alert"
-        message="이 모달이 최상단입니다. ESC/배경/X는 이 모달만 닫혀야 합니다."
-        @ok="lastAction = 'nestedAlert:ok'"
-    />
+    <AppModalAlert v-model="nestedAlertOpen" title="최상단 Alert" message="이 모달이 최상단입니다. ESC/배경/X는 이 모달만 닫혀야 합니다."
+        @ok="lastAction = 'nestedAlert:ok'" />
 </template>
 
 <script setup lang="ts">
@@ -118,4 +103,3 @@ const output = computed(() =>
     ),
 )
 </script>
-

@@ -205,7 +205,7 @@ jonsoft-framework/
 - `pages/demos/select-demo.vue` → `AppSelect`.
 - `pages/demos/choice-demo.vue` → `AppChoice` (checkbox/radio/chip).
 - `pages/demos/image-field-demo.vue` → `AppImageField`.
-- `pages/demos/modal-demo.vue` → `AppModal` + `AppAlertModal` + `AppConfirmModal` (모달 스택 동작 포함).
+- `pages/demos/modal-demo.vue` → `AppModal` + `AppModalAlert` + `AppModalConfirm` (모달 스택 동작 포함).
 
 실제 컴포넌트 사용 시 **데모 페이지의 `<script setup>` 부분을 그대로 참고하면 패턴 이해가 빠릅니다.**
 
@@ -237,9 +237,10 @@ components/
 ├─ AppProgress.vue
 ├─ AppChart.vue
 ├─ AppImageField.vue
-├─ AppModal.vue
-├─ AppAlertModal.vue
-├─ AppConfirmModal.vue
+├─ AppModal/
+│  ├─ index.vue
+│  ├─ Alert.vue
+│  └─ Confirm.vue
 ├─ AppGrid/
 │  ├─ index.vue
 │  ├─ Toolbar.vue
@@ -282,7 +283,7 @@ components/
   - `components/AppGrid/Download.vue`: 표시 데이터/선택 데이터 엑셀 다운로드
   - `components/AppGrid/Cell/*.vue`: 컬럼 `cellRenderer`로 쓰는 셀 컴포넌트(Choice/Input/Select/Image)
 
-#### 2.7.4 components/AppModal.vue / AppAlertModal.vue / AppConfirmModal.vue
+#### 2.7.4 components/AppModal/*
 
 - **역할**: Alert/Confirm을 포함한 공통 모달 패턴 제공(중첩 가능).
 - **핵심 요구사항 대응**
@@ -290,14 +291,14 @@ components/
   - **닫기 동작**: ESC/배경 클릭은 **최상단 모달만** 닫히도록 처리합니다. (중첩 시 하위 모달은 유지)
   - **X 버튼**: 해당 모달의 close 요청으로 닫힙니다.
 - **구성**
-  - `AppModal.vue`: Teleport(`body`) + backdrop + dialog + header/footer 슬롯 + ESC 처리
-  - `AppAlertModal.vue`: 확인 버튼 1개(OK) 패턴
-  - `AppConfirmModal.vue`: 확인/취소 버튼 패턴
+  - `components/AppModal/index.vue` → `<AppModal>`: Teleport(`body`) + backdrop + dialog + header/footer 슬롯 + ESC 처리
+  - `components/AppModal/Alert.vue` → `<AppModalAlert>`: 확인 버튼 1개(OK) 패턴
+  - `components/AppModal/Confirm.vue` → `<AppModalConfirm>`: 확인/취소 버튼 패턴
 - **사용 예 (중첩)**
 
 ```vue
-<AppConfirmModal v-model="confirmOpen" title="중첩 테스트" :auto-close="false" @confirm="nestedAlertOpen = true" />
-<AppAlertModal v-model="nestedAlertOpen" title="최상단 Alert" message="Confirm 위에 떠야 합니다." />
+<AppModalConfirm v-model="confirmOpen" title="중첩 테스트" :auto-close="false" @confirm="nestedAlertOpen = true" />
+<AppModalAlert v-model="nestedAlertOpen" title="최상단 Alert" message="Confirm 위에 떠야 합니다." />
 ```
 
 - **참고 데모**

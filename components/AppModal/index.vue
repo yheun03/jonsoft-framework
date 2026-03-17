@@ -3,13 +3,7 @@
         <div v-if="modelValue" class="app-modal" :style="{ zIndex: String(zIndexValue) }">
             <div class="app-modal__backdrop" @click="onBackdropClick" />
 
-            <div
-                class="app-modal__dialog"
-                role="dialog"
-                aria-modal="true"
-                :aria-label="ariaLabel"
-                @click.stop
-            >
+            <div class="app-modal__dialog" role="dialog" aria-modal="true" :aria-label="ariaLabel" @click.stop>
                 <header v-if="title || $slots.header" class="app-modal__header">
                     <div class="app-modal__header-left">
                         <slot name="header">
@@ -17,15 +11,8 @@
                         </slot>
                     </div>
 
-                    <AppButton
-                        v-if="closable"
-                        class="app-modal__close"
-                        variant="text"
-                        size="custom"
-                        :custom-size="{ width: 34, height: 34 }"
-                        aria-label="닫기"
-                        @click="requestClose('close')"
-                    >
+                    <AppButton v-if="closable" class="app-modal__close" variant="text" size="custom"
+                        :custom-size="{ width: 34, height: 34 }" aria-label="닫기" @click="requestClose('close')">
                         <template #iconLeft>
                             <span class="app-modal__close-icon" aria-hidden="true" v-html="XmarkSvg" />
                         </template>
@@ -119,4 +106,3 @@ onBeforeUnmount(() => {
     close()
 })
 </script>
-
