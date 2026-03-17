@@ -14,45 +14,50 @@
         @drop.prevent="onDrop"
     >
 
-        <div class="app-image-field__preview">
+        <button
+            type="button"
+            class="app-image-field__preview"
+            :disabled="disabled"
+            :aria-label="modelValue ? '이미지 변경' : '이미지 선택'"
+            @click="openFile"
+            @keydown.enter.prevent="openFile"
+            @keydown.space.prevent="openFile"
+        >
             <img v-if="modelValue" :src="modelValue" :alt="previewAlt" />
             <div v-else class="app-image-field__empty">
                 {{ emptyText }}
             </div>
-        </div>
-
-        <div v-if="showActions" class="app-image-field__actions">
-
-            <input
-                ref="fileInput"
-                type="file"
-                :name="name"
-                :accept="accept"
-                hidden
-                :disabled="disabled"
-                @change="onFileChange"
-            />
-
-            <AppButton size="sm" variant="outline" :disabled="disabled" @click="openFile">
-                {{ changeText }}
-            </AppButton>
 
             <AppButton
                 v-if="removable && modelValue"
-                size="sm"
+                class="app-image-field__remove"
                 variant="text"
-                :disabled="disabled"
-                @click="removeImage"
+                size="custom"
+                :custom-size="{ width: 22, height: 22 }"
+                :aria-label="removeText"
+                @click.stop="removeImage"
             >
-                {{ removeText }}
+                <template #iconLeft>
+                    <span class="app-image-field__remove-icon" aria-hidden="true" v-html="XmarkSvg" />
+                </template>
             </AppButton>
+        </button>
 
-        </div>
+        <input
+            ref="fileInput"
+            type="file"
+            :name="name"
+            :accept="accept"
+            hidden
+            :disabled="disabled"
+            @change="onFileChange"
+        />
 
     </div>
 </template>
 
 <script setup lang="ts">
+import XmarkSvg from '@/assets/icons/12/ic-xmark.svg?raw'
 
 type ReadMode = 'dataUrl' | 'objectUrl'
 

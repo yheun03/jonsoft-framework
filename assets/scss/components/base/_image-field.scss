@@ -22,11 +22,19 @@
     height: var(--aif-size);
     border: 1px solid $gray-200;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     background: $gray-0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 2px solid rgba($primary, .5);
+        outline-offset: 2px;
+    }
 }
 
 .app-image-field__preview img {
@@ -40,10 +48,34 @@
     color: rgba($gray-900, .45);
 }
 
-.app-image-field__actions {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
+.app-image-field__remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    opacity: 0;
+    transform: scale(.96);
+    transition: opacity .12s ease, transform .12s ease;
+}
+
+.app-image-field__preview:hover .app-image-field__remove {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.app-image-field__remove:focus-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.app-image-field__remove-icon {
+    width: 12px;
+    height: 12px;
+    display: inline-flex;
+
+    :deep(svg) {
+        width: 12px;
+        height: 12px;
+        display: block;
+    }
 }
 

@@ -6,7 +6,6 @@
  */
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
 import { AG_GRID_LOCALE_KR } from '@ag-grid-community/locale'
-import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 
 ModuleRegistry.registerModules([AllCommunityModule])
