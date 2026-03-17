@@ -10,19 +10,36 @@
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Line Variants</h2>
                     <div class="page-demo-grid">
-                        <AppChart class="page-demo-chart-box" type="line" :data="lineData" :options="lineOptions" />
-                        <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData" :options="steppedLineOptions" />
-                        <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="line" :data="lineData" :options="lineOptions" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData" :options="steppedLineOptions" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                        </client-only>
                     </div>
                 </section>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Bar / Doughnut / Pie</h2>
                     <div class="page-demo-grid">
-                        <AppChart class="page-demo-chart-box" type="bar" :data="barData" :options="barOptions" />
-                        <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData" :options="doughnutOptions" :height="220" />
-                        <AppChart class="page-demo-chart-box" type="doughnut" :data="halfDoughnutData" :options="doughnutOptions" :height="220" />
-                        <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :options="pieOptions" :height="220" />
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="bar" :data="barData" :options="barOptions" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData" :options="doughnutOptions" :height="220" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="doughnut" :data="halfDoughnutData" :options="doughnutOptions" :height="220" />
+                        </client-only>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :options="pieOptions" :height="220" />
+                        </client-only>
                     </div>
                 </section>
 
