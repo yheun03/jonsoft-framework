@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <div class="login login--forgot">
         <section class="login__hero" aria-label="브랜드 이미지 영역">
             <div class="login__hero-inner">
                 <div class="login__brand">
@@ -13,28 +13,23 @@
             </div>
         </section>
 
-        <main class="login__panel" aria-label="로그인 폼">
+        <main class="login__panel" aria-label="비밀번호 찾기 폼">
             <div class="login__panel-inner">
                 <header class="login__header">
-                    <h1 class="login__title">로그인</h1>
-                    <p class="login__desc">계정 정보를 입력해 주세요.</p>
+                    <h1 class="login__title">비밀번호 찾기</h1>
+                    <p class="login__desc">가입한 이메일로 재설정 링크를 보내드릴게요.</p>
                 </header>
 
                 <form class="login__form" @submit.prevent="onSubmit">
                     <AppInput v-model="email" name="email" type="email" label="이메일" placeholder="name@company.com" />
-                    <AppInput v-model="password" name="password" type="password" label="비밀번호" placeholder="비밀번호 입력" />
-
-                    <div class="login__row">
-                        <AppChoice v-model="rememberMe" type="checkbox" label="로그인 상태 유지" />
-                        <NuxtLink class="login__link" to="/forgot-password">비밀번호를 잊으셨나요?</NuxtLink>
-                    </div>
 
                     <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
-                        로그인
+                        재설정 링크 보내기
                     </AppButton>
 
-                    <div class="login__footer">
-                        <span class="login__footer-text">계정이 없으신가요?</span>
+                    <div class="login__helper">
+                        <NuxtLink class="login__link" to="/login">로그인으로 돌아가기</NuxtLink>
+                        <span class="login__helper-sep" aria-hidden="true">·</span>
                         <NuxtLink class="login__link" to="/signup">가입하기</NuxtLink>
                     </div>
                 </form>
@@ -51,15 +46,11 @@ definePageMeta({
 })
 
 const email = ref('')
-const password = ref('')
-const rememberMe = ref(false)
 
-const canSubmit = computed(() => {
-    return email.value.trim().length > 0 && password.value.trim().length > 0
-})
+const canSubmit = computed(() => email.value.trim().length > 0)
 
 function onSubmit() {
-    // 데모 페이지: 실제 로그인 연동 전까지는 이동만 처리
-    navigateTo('/')
+    // 데모: 실제 메일 발송 연동 전까지는 안내 화면 대신 로그인으로 이동
+    navigateTo('/login')
 }
 </script>
