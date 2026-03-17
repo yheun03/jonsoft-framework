@@ -330,6 +330,7 @@ const columns3: ColDef[] = [
         headerName: '상품이미지',
         width: 80,
         cellRenderer: AppGridCellImage,
+        autoHeight: true,
     },
 
     {
@@ -346,7 +347,8 @@ const columns3: ColDef[] = [
                 { label: '전자기기', value: '전자기기' },
                 { label: '주변기기', value: '주변기기' }
             ]
-        }
+        },
+        autoHeight: true
     },
 
     {
