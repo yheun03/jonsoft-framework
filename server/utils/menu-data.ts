@@ -19,4 +19,5 @@ export const MENUS = [
     { id: 'MENU_020700', depth: 2, order: 7, label: '셀렉트 데모', to: '/demos/select-demo', newTab: false },
     { id: 'MENU_020800', depth: 2, order: 8, label: '선택 컴포넌트 데모', to: '/demos/choice-demo', newTab: false },
     { id: 'MENU_020900', depth: 2, order: 9, label: '이미지 필드 데모', to: '/demos/image-field-demo', newTab: false },
+    { id: 'MENU_021000', depth: 2, order: 10, label: '모달 데모', to: '/demos/modal-demo', newTab: false },
 ] as const

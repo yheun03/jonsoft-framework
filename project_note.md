@@ -122,7 +122,7 @@ jonsoft-framework/
 - `assets/scss/layout/*`
   - `_nav.scss`: 좌측 네비게이션 레이아웃 스타일.
 - `assets/scss/components/base/*`
-  - `_button.scss`, `_input.scss`, `_select.scss`, `_date-picker.scss`, `_progress.scss`, `_radio.scss`, `_checkbox.scss`, `_workspace-pane.scss`, `_chart.scss`, `_tabs-page.scss` 등.
+  - `_button.scss`, `_input.scss`, `_select.scss`, `_date-picker.scss`, `_progress.scss`, `_modal.scss`, `_radio.scss`, `_checkbox.scss`, `_workspace-pane.scss`, `_chart.scss`, `_tabs-page.scss` 등.
   - `components/`에 있는 공통 UI 컴포넌트들의 스타일을 전역으로 관리.
 - `assets/scss/pages/*`
   - `_home.scss`, `_index.scss` 등 페이지 전용 스타일.
@@ -204,8 +204,20 @@ jonsoft-framework/
 - `pages/demos/datepicker-demo.vue` → `AppDatePicker`.
 - `pages/demos/select-demo.vue` → `AppSelect`.
 - `pages/demos/choice-demo.vue` → `AppChoice` (checkbox/radio/chip).
+- `pages/demos/image-field-demo.vue` → `AppImageField`.
+- `pages/demos/modal-demo.vue` → `AppModal` + `AppAlertModal` + `AppConfirmModal` (모달 스택 동작 포함).
 
 실제 컴포넌트 사용 시 **데모 페이지의 `<script setup>` 부분을 그대로 참고하면 패턴 이해가 빠릅니다.**
+
+#### 2.6.3 pages/login.vue / pages/signup.vue / pages/forgot-password.vue
+
+- **역할**: 인증 화면(로그인/가입/비밀번호 찾기) 데모 페이지.
+- **레이아웃**
+  - `definePageMeta({ layout: false })`로 기본 레이아웃(`layouts/default.vue`)을 사용하지 않고 **단독 화면**으로 노출합니다.
+  - `app.vue`에서 `route.meta.layout === false`인 경우 `<NuxtLayout>`을 건너뛰도록 처리되어 있습니다.
+- **스타일**
+  - 페이지 스타일은 `assets/scss/pages/_login.scss`에 모아 관리합니다. (login/signup/forgot 공통 톤 유지)
+  - `assets/scss/pages/_index.scss`에서 `@use "login";`로 포함됩니다.
 
 ---
 
@@ -225,6 +237,9 @@ components/
 ├─ AppProgress.vue
 ├─ AppChart.vue
 ├─ AppImageField.vue
+├─ AppModal.vue
+├─ AppAlertModal.vue
+├─ AppConfirmModal.vue
 ├─ AppGrid/
 │  ├─ index.vue
 │  ├─ Toolbar.vue
@@ -266,6 +281,27 @@ components/
   - `components/AppGrid/Search.vue`: 툴바 내부 검색(폼 입력 → ag-grid `filterModel` 생성/적용)
   - `components/AppGrid/Download.vue`: 표시 데이터/선택 데이터 엑셀 다운로드
   - `components/AppGrid/Cell/*.vue`: 컬럼 `cellRenderer`로 쓰는 셀 컴포넌트(Choice/Input/Select/Image)
+
+#### 2.7.4 components/AppModal.vue / AppAlertModal.vue / AppConfirmModal.vue
+
+- **역할**: Alert/Confirm을 포함한 공통 모달 패턴 제공(중첩 가능).
+- **핵심 요구사항 대응**
+  - **모달 스택(z-index)**: 마지막에 열린 모달이 가장 위에 오도록 `useModalStack` 기반으로 z-index를 계산합니다.
+  - **닫기 동작**: ESC/배경 클릭은 **최상단 모달만** 닫히도록 처리합니다. (중첩 시 하위 모달은 유지)
+  - **X 버튼**: 해당 모달의 close 요청으로 닫힙니다.
+- **구성**
+  - `AppModal.vue`: Teleport(`body`) + backdrop + dialog + header/footer 슬롯 + ESC 처리
+  - `AppAlertModal.vue`: 확인 버튼 1개(OK) 패턴
+  - `AppConfirmModal.vue`: 확인/취소 버튼 패턴
+- **사용 예 (중첩)**
+
+```vue
+<AppConfirmModal v-model="confirmOpen" title="중첩 테스트" :auto-close="false" @confirm="nestedAlertOpen = true" />
+<AppAlertModal v-model="nestedAlertOpen" title="최상단 Alert" message="Confirm 위에 떠야 합니다." />
+```
+
+- **참고 데모**
+  - `pages/demos/modal-demo.vue`
 
 ---
 
@@ -318,6 +354,15 @@ await post('/users', payload)
   - `getApi(id)`: `AppGridSearch`, `AppGridDownload` 등에서 대상 그리드 API 접근
   - `unregister(id)`: 필요 시 정리(확장 포인트)
 
+#### 2.8.4 core/composables/useModalStack.ts
+
+- **역할**: 모달의 “열린 순서(스택)”를 관리해 z-index 및 최상단 판별(ESC/배경 닫기)을 제공.
+- **제공 기능**
+  - `open()` / `close()`로 스택 등록/해제
+  - `isTop()`으로 최상단 여부 확인
+  - `zIndex(base, step)`로 모달별 z-index 계산
+  - 모달이 하나 이상 열리면 `documentElement` 스크롤을 lock(overflow hidden)하고, 스크롤바 폭만큼 padding을 보정해 레이아웃 점프를 완화합니다.
+
 ---
 
 ### 2.9 plugins/
@@ -355,8 +400,8 @@ await post('/users', payload)
 
 - **역할**: dev 환경에서 `main.scss` 가 `<link>` + `<style>` 로 중복 주입되는 버그 방지.
 - 방식:
-  - `document.head` 에서 `style[data-vite-dev-id*="main.scss"]` 를 모은 뒤, 2개 이상이면 여분을 제거.
-  - `DOMContentLoaded` 시 1회 실행.
+  - `<link rel="stylesheet">`로 로드된 CSS와 동일한 `data-vite-dev-id` 인라인 `<style>`이 있으면 **인라인을 제거**해 link만 남깁니다.
+  - dev에서 head가 갱신되는 경우를 고려해 MutationObserver로 재주입 케이스를 정리합니다.
 
 ---
 
