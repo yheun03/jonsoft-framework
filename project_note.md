@@ -123,7 +123,7 @@ jonsoft-framework/
   - `_nav.scss`: 좌측 네비게이션 레이아웃 스타일.
 - `assets/scss/components/base/*`
   - `_button.scss`, `_input.scss`, `_select.scss`, `_date-picker.scss`, `_progress.scss`, `_radio.scss`, `_checkbox.scss`, `_workspace-pane.scss`, `_chart.scss`, `_tabs-page.scss` 등.
-  - `components/base` 컴포넌트들의 스타일을 전역으로 관리.
+  - `components/`에 있는 공통 UI 컴포넌트들의 스타일을 전역으로 관리.
 - `assets/scss/pages/*`
   - `_home.scss`, `_index.scss` 등 페이지 전용 스타일.
 
@@ -194,11 +194,11 @@ jonsoft-framework/
 
 #### 2.6.2 pages/demos/*
 
-각 데모 페이지는 base/data 컴포넌트들의 **사용 예시 + 상태 표시**를 보여줍니다.
+각 데모 페이지는 공통 UI 컴포넌트 및 `AppGrid` 패턴의 **사용 예시 + 상태 표시**를 보여줍니다.
 
 - `pages/demos/button-demo.vue` → `AppButton` 데모.
 - `pages/demos/input-demo.vue` → `AppInput` 데모.
-- `pages/demos/ag-grid-demo.vue` → `AppAgGrid` + `useAgGridExcelExport`.
+- `pages/demos/ag-grid-demo.vue` → `AppGrid` + `AppGridToolbar/Search/Download` + `useAgGridExcelExport`.
 - `pages/demos/chart-demo.vue` → `AppChart` + Chart.js.
 - `pages/demos/progress-demo.vue` → `AppProgress`.
 - `pages/demos/datepicker-demo.vue` → `AppDatePicker`.
@@ -212,6 +212,33 @@ jonsoft-framework/
 ### 2.7 components/
 
 > `nuxt.config.ts` 의 `components` 설정으로, `components/` 하위 모든 `.vue` 파일은 **자동 전역 컴포넌트**입니다.
+
+#### 2.7.0 components/ 빠른 구조
+
+```
+components/
+├─ AppButton.vue
+├─ AppInput.vue
+├─ AppSelect.vue
+├─ AppChoice.vue
+├─ AppDatePicker.vue
+├─ AppProgress.vue
+├─ AppChart.vue
+├─ AppImageField.vue
+├─ AppGrid/
+│  ├─ index.vue
+│  ├─ Toolbar.vue
+│  ├─ Search.vue
+│  ├─ Download.vue
+│  ├─ Reset.vue
+│  └─ Cell/
+│     ├─ Choice.vue
+│     ├─ Input.vue
+│     ├─ Select.vue
+│     └─ Image.vue
+├─ PatternNavItem.vue
+└─ Tabs-Page.vue
+```
 
 #### 2.7.1 components/RouteTabsBar.vue
 
@@ -228,7 +255,17 @@ jonsoft-framework/
 
 #### 2.7.2 그 외 base/data 컴포넌트
 
-실제 구현은 `components/base/*.vue`, `components/data/*.vue` 에 있으며, 아래 **4. 핵심 컴포넌트와 사용 방법**에서 사용 관점으로 정리합니다.
+실제 구현은 `components/*.vue` 와 기능별 폴더(`components/AppGrid/*` 등)에 있으며, 아래 **4. 핵심 컴포넌트와 사용 방법**에서 사용 관점으로 정리합니다.
+
+#### 2.7.3 components/AppGrid/*
+
+- **역할**: AG Grid를 “한 가지 UI/동작 패턴”으로 고정하기 위한 구성(그리드 본체 + 툴바 + 검색/다운로드 + 셀 컴포넌트).
+- **구성 파일**
+  - `components/AppGrid/index.vue`: `AgGridVue` 래퍼(기본 오버레이/행높이/필터 UX) + `gridId` 기반 registry 등록
+  - `components/AppGrid/Toolbar.vue`: 툴바 컨테이너(`target`을 provide)
+  - `components/AppGrid/Search.vue`: 툴바 내부 검색(폼 입력 → ag-grid `filterModel` 생성/적용)
+  - `components/AppGrid/Download.vue`: 표시 데이터/선택 데이터 엑셀 다운로드
+  - `components/AppGrid/Cell/*.vue`: 컬럼 `cellRenderer`로 쓰는 셀 컴포넌트(Choice/Input/Select/Image)
 
 ---
 
@@ -273,6 +310,14 @@ await post('/users', payload)
 - 사용처:
   - `pages/demos/ag-grid-demo.vue` 의 `onExportAll`, `onExportSelected`.
 
+#### 2.8.3 core/composables/useAgGridRegistry.ts
+
+- **역할**: 여러 그리드 인스턴스를 `gridId`로 찾아 쓰기 위한 registry.
+- **제공 함수**
+  - `register(id, api)`: `AppGrid`가 `grid-ready` 시점에 자동 등록
+  - `getApi(id)`: `AppGridSearch`, `AppGridDownload` 등에서 대상 그리드 API 접근
+  - `unregister(id)`: 필요 시 정리(확장 포인트)
+
 ---
 
 ### 2.9 plugins/
@@ -304,7 +349,7 @@ await post('/users', payload)
 - **역할**: AG Grid 모듈 등록 + 한국어 로케일 제공.
 - 구현:
   - `ModuleRegistry.registerModules([AllCommunityModule])`.
-  - `nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR)`.
+  - `nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR)` → 컴포넌트에서 `$agGridLocale`로 접근.
 
 #### 2.9.4 plugins/global-css-no-inline.client.ts
 
@@ -451,7 +496,7 @@ await post('/users', payload)
   - 대용량/복합 그리드 (정렬/필터/그룹/가상 스크롤 등) 구현.
 - **사용처**:
   - `plugins/ag-grid.client.ts` → 모듈 등록 + 한국어 로케일 제공.
-  - `components/data/AppAgGrid.vue` → Vue 래퍼.
+  - `components/AppGrid/index.vue` → Vue 래퍼 + 공통 옵션/registry 등록.
   - `pages/demos/ag-grid-demo.vue` → 실제 데모, 엑셀 내보내기 등.
 
 ### 3.6 Chart.js + vue-chartjs
@@ -459,7 +504,7 @@ await post('/users', payload)
 - **이유**:
   - 다양한 차트 타입과 잘 정의된 옵션/플러그인 구조.
 - **사용처**:
-  - `components/data/AppChart.vue`.
+  - `components/AppChart.vue`.
   - `pages/demos/chart-demo.vue` 에서 라인/바/도넛/파이 차트 예시.
 
 ### 3.7 flatpickr
@@ -467,7 +512,7 @@ await post('/users', payload)
 - **이유**:
   - 가벼운 날짜/시간 선택기, single/range/multiple 등 모드 지원.
 - **사용처**:
-  - `components/base/AppDatePicker.vue`.
+  - `components/AppDatePicker.vue`.
   - `pages/demos/datepicker-demo.vue` (min/max, 필수 검증 등).
 
 ### 3.8 nouislider
@@ -475,7 +520,7 @@ await post('/users', payload)
 - **이유**:
   - 터치/마우스 지원, range 핸들 제공.
 - **사용처**:
-  - `components/base/AppProgress.vue` (범위 선택 모드).
+  - `components/AppProgress.vue` (단일/범위 컨트롤 모드).
   - `pages/demos/progress-demo.vue`.
 
 ### 3.9 Toast UI Editor
@@ -490,94 +535,127 @@ await post('/users', payload)
 
 ## 4. 핵심 컴포넌트와 사용 방법 (데모 기준)
 
-> 실제 구현은 `components/base`, `components/data` 에 있으며, 여기는 **어떻게 사용하는지** 관점으로 정리합니다.
+> 실제 구현은 `components/*.vue` 및 `components/AppGrid/*` 등에 있으며, 여기는 **어떻게 사용하는지** 관점으로 정리합니다.
 
-### 4.1 AppButton (`components/base/AppButton.vue`)
+### 4.1 AppButton (`components/AppButton.vue`)
 
-- **주요 props (추론)**:
-  - `variant`: `'fill' | 'text' | 'underline' | 'outline'` 등.
-  - `size`: `'sm' | 'md' | 'lg' | 'custom'`.
-  - `customSize`: `{ width?: number; height?: number }`.
-  - `to`: 내부 라우팅 (`<NuxtLink>`).
-  - `href`: 외부 링크.
-  - `newTab`: 새 탭 열기 여부.
-  - `disabled`, `loading`, `block`.
-  - `ariaLabel`: 아이콘 전용 버튼 접근성용.
+- **주요 props**:
+  - `type`: `'button' | 'submit' | 'reset'`
+  - `to` / `href` / `newTab`: 내부 라우팅 / 외부 링크 / 새 탭
+  - `variant`: `'fill' | 'text' | 'underline' | 'outline'`
+  - `size`: `'sm' | 'md' | 'lg' | 'custom'`
+  - `customSize`: `{ width: number; height?: number }` (`size="custom"`에서 사용)
+  - `disabled`, `loading`, `block`
+  - `ariaLabel`: 아이콘만 렌더링 시 접근성 라벨(권장)
 - **슬롯**:
   - `default`: 텍스트.
   - `#iconLeft`, `#iconRight`: 좌/우 아이콘.
 - **데모 사용 예** (`pages/demos/button-demo.vue`):
   - variant/size/icon/link/state 케이스를 한눈에 볼 수 있음.
 
-### 4.2 AppInput (`components/base/AppInput.vue`)
+### 4.2 AppInput (`components/AppInput.vue`)
 
-- **주요 props (추론)**:
-  - `v-model`: string.
-  - `label`, `placeholder`, `helper`, `error`.
-  - `type`: `'text' | 'email' | 'search' | 'password' | 'number'`.
-  - `size`: `'sm' | 'md' | 'lg'`.
-  - `readonly`, `disabled`, `clearable`, `maxlength`, `min`, `max`.
-  - `inputModeOverride`: 모바일 키보드 타입 (`numeric` 등).
+- **modelValue 타입**:
+  - `string | number | null | undefined`
+- **주요 props**:
+  - `label`, `placeholder`, `helper`, `error`
+  - `type`: `'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search' | 'date' | 'time'`
+  - `size`: `'sm' | 'md' | 'lg'`
+  - `disabled`, `readonly`, `clearable`
+  - `name`, `autocomplete`, `maxlength`, `minlength`, `min`, `max`, `step`
+  - `inputModeOverride`: 모바일 키보드 inputmode 강제(`numeric`, `decimal` 등)
 - **데모 사용 예** (`pages/demos/input-demo.vue`):
   - 기본/사이즈/상태/간단 검증(필수/숫자 범위) 패턴 제공.
 
-### 4.3 AppSelect (`components/base/AppSelect.vue`)
+### 4.3 AppSelect (`components/AppSelect.vue`)
 
-- **주요 props (추론)**:
-  - `v-model`: `string | null`.
-  - `options`: `{ value: string; label: string; disabled?: boolean }[]`.
-  - `label`, `placeholder`, `helper`, `error`, `disabled`.
-  - `searchable`: 옵션 label 기준 substring 검색.
+- **주요 props**:
+  - `v-model`: `string | null`
+  - `options`: `{ value: string; label: string; disabled?: boolean }[]`
+  - `label`, `placeholder`, `helper`, `error`
+  - `required`, `disabled`
+  - `searchable`, `searchPlaceholder`
 - **데모 사용 예** (`pages/demos/select-demo.vue`):
   - 기본/플레이스홀더/필수/검색형/disabled 케이스.
 
-### 4.4 AppDatePicker (`components/base/AppDatePicker.vue`)
+### 4.4 AppDatePicker (`components/AppDatePicker.vue`)
 
 - **v-model 타입**:
   - `mode="single"`: `string | null` (`YYYY-MM-DD`).
   - `mode="range"`: `{ start: string | null; end: string | null } | null`.
   - `mode="multiple"`: `string[]`.
-- **주요 props (추론)**:
-  - `mode`, `label`, `helper`, `min`, `max`, `error`.
+- **주요 props**:
+  - `mode`: `'single' | 'range' | 'multiple'` (기본 `single`)
+  - `label`, `helper`, `error`, `placeholder`
+  - `min`, `max`
+  - `disabled`, `id`
 - **데모 사용 예** (`pages/demos/datepicker-demo.vue`):
   - 단일/범위/다중, min/max, 필수 검증.
 
-### 4.5 AppProgress (`components/base/AppProgress.vue`)
+### 4.5 AppProgress (`components/AppProgress.vue`)
 
 - **모드**:
-  - 단일 값 (linear).
-  - 범위 선택 (`rangeSelectable` + `@update:range`).
-  - 원형/반원형 (SCSS/옵션으로 지원).
+  - `mode="display"`: 표시용 진행 바
+  - `mode="control-single"`: 단일 슬라이더 컨트롤 (`update:value`)
+  - `mode="control-range"`: 범위 슬라이더 컨트롤 (`update:range`)
+- **주요 props**:
+  - `value: number`
+  - `range?: { start: number; end: number }`
+  - `rangeSelectable?: boolean`
+  - `label?`, `disabled?`, `showLabel?`
 - **데모 사용 예** (`pages/demos/progress-demo.vue`):
   - `v-model:value` 로 컨트롤.
   - range 모드에서 드래그로 시작/끝 퍼센트 조정.
 
-### 4.6 AppChoice (`components/base/AppChoice.vue`)
+### 4.6 AppChoice (`components/AppChoice.vue`)
 
 - **역할**: 체크박스/라디오/칩 스타일 선택.
-- **주요 props (추론)**:
-  - `type`: `'checkbox' | 'radio'`.
-  - `variant`: `'chip' | 'chip-outline' | 'fill' | 'ghost'` 등.
-  - `v-model`: boolean(checkbox), string(radio).
-  - `name`, `value` (radio 그룹 구분).
-  - `label`, `helper`, `disabled`.
+- **주요 props**:
+  - `type`: `'checkbox' | 'radio'` (기본 `checkbox`)
+  - `v-model`: `boolean | string | number | null`
+  - `value?`, `name?`, `id?`
+  - `label?`, `helper?`, `error?`
+  - `disabled?`
+  - `variant?`: `'chip' | 'chip-outline' | 'fill' | 'ghost'`
 - **데모 사용 예** (`pages/demos/choice-demo.vue`):
   - 체크박스 + 라디오 + 여러 칩 변형을 한 번에 확인 가능.
 
-### 4.7 AppAgGrid (`components/data/AppAgGrid.vue`)
+### 4.7 AppGrid (`components/AppGrid/index.vue`)
 
-- **역할**: `ag-grid-vue3` 의 래퍼.
-- **props (데모 기준)**:
-  - `grid-id`, `row-data`, `column-defs`, `default-col-def`.
-  - `row-selection`, `animate-rows`, `style`.
-- **이벤트**:
-  - `@grid-ready="onGridReady"` → `api.getGridId()` 기반으로 `GridApi` 저장.
-  - `@selection-changed="onSelectionChanged"` → 선택 행 목록 업데이트.
-- **데모 사용 예** (`pages/demos/ag-grid-demo.vue`):
-  - 두 개의 서로 다른 grid ID 를 가진 그리드를 렌더링.
-  - `exportDisplayed` / `exportDisplayedSelected` 로 엑셀 내보내기.
+- **역할**: `AgGridVue` 래퍼 + 공통 옵션(오버레이/행높이/필터 UX) + `gridId` 기반 registry 등록.
+- **중요 포인트**
+  - `ssr: false`로 CSR 동작
+  - `rowHeight` 기본값 `42`
+  - `getRowHeight` 전달 지원(행 높이 동적 처리)
+  - `onFilterChanged`에서 “필터 존재 + 결과 0건”이면 no-rows 오버레이 표시
+  - `grid-ready` 시 `gridId`를 읽어 `useAgGridRegistry().register(id, api)` 수행
+- **데모 사용 예**:
+  - `pages/demos/ag-grid-demo.vue`에서 `AppGridToolbar(target)`와 `AppGrid(grid-id)`를 쌍으로 사용
 
-### 4.8 AppChart (`components/data/AppChart.vue`)
+### 4.8 AppGridToolbar / Search / Download (`components/AppGrid/*`)
+
+- **AppGridToolbar (`components/AppGrid/Toolbar.vue`)**
+  - `target: string`을 provide (`appGridTarget`)
+- **AppGridSearch (`components/AppGrid/Search.vue`)**
+  - 툴바 내부의 `[name]` 입력을 모아 `filterModel`을 만들어 `api.setFilterModel()`로 적용
+  - Enter/검색 버튼으로 적용, radio/checkbox/select 변경은 자동 반영
+  - 초기화 시: 필터 해제 + 선택 해제 + 폼 입력값 초기화
+- **AppGridDownload (`components/AppGrid/Download.vue`)**
+  - `useAgGridExcelExport()`로 “표시 데이터 전체/선택 데이터” 엑셀 다운로드
+
+### 4.9 AppImageField (`components/AppImageField.vue`)
+
+- **역할**: 단일 이미지 입력(선택/변경/제거) + 미리보기 + 드래그앤드롭.
+- **주요 props**
+  - `accept`, `disabled`, `name`, `previewSize`, `previewAlt`, `emptyText`
+  - `removable`, `allowDrop`, `maxSizeBytes`, `readMode`, `beforeChange`
+- **이벤트**
+  - `update:modelValue`, `change(file, url)`, `remove`, `error({ message, detail })`
+- **구현 포인트**
+  - `readMode: 'objectUrl'` 사용 시 이전 URL을 `URL.revokeObjectURL`로 정리
+  - 버튼 기반 미리보기로 키보드(Enter/Space) 접근성 제공
+
+### 4.10 AppChart (`components/AppChart.vue`)
 
 - **역할**: Chart.js + vue-chartjs 래퍼.
 - **props (데모 기준)**:
