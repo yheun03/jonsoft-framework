@@ -127,6 +127,7 @@
         padding-block: 8px;
         @include font(c1, rg);
         color: $gray-800;
+        align-content: center;
     }
 
     .ag-cell-focus,

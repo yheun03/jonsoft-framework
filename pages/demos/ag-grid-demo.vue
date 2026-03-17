@@ -20,10 +20,10 @@
                         <AppGridSearch>
 
                             <AppInput v-model="search1.name" name="name" placeholder="이름 검색" />
-
                             <AppInput v-model="search1.department" name="department" placeholder="부서 검색" />
 
                         </AppGridSearch>
+
                         <AppGridDownload />
 
                     </AppGridToolbar>
@@ -31,8 +31,8 @@
                     <ClientOnly>
 
                         <AppGrid grid-id="grid1" class="page-demo-grid" :row-data="rows1" :column-defs="columns1"
-                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
-                            :style="{ height: '320px', width: '100%' }" />
+                            :default-col-def="defaultColDef" :get-row-height="getRowHeight" row-selection="multiple"
+                            animate-rows :style="{ height: '320px', width: '100%' }" />
 
                     </ClientOnly>
 
@@ -53,13 +53,12 @@
 
                             <AppChoice v-model="search2.status" type="radio" name="status" value="READY"
                                 label="READY" />
-
                             <AppChoice v-model="search2.status" type="radio" name="status" value="DELIVERY"
                                 label="DELIVERY" />
-
                             <AppChoice v-model="search2.status" type="radio" name="status" value="DONE" label="DONE" />
 
                         </AppGridSearch>
+
                         <AppGridDownload />
 
                     </AppGridToolbar>
@@ -67,12 +66,14 @@
                     <ClientOnly>
 
                         <AppGrid grid-id="grid2" class="page-demo-grid" :row-data="rows2" :column-defs="columns2"
-                            :default-col-def="defaultColDef" row-selection="multiple" animate-rows
-                            :style="{ height: '320px', width: '100%' }" />
+                            :default-col-def="defaultColDef" :get-row-height="getRowHeight" row-selection="multiple"
+                            animate-rows :style="{ height: '320px', width: '100%' }" />
 
                     </ClientOnly>
 
                 </section>
+
+
 
                 <!-- GRID 3 -->
                 <section class="page-demo-card">
@@ -82,9 +83,7 @@
                     <AppGridToolbar target="grid3">
 
                         <AppGridSearch>
-
                             <AppInput v-model="search3.product" name="product" placeholder="상품 검색" />
-
                         </AppGridSearch>
 
                         <AppGridDownload />
@@ -94,7 +93,8 @@
                     <ClientOnly>
 
                         <AppGrid grid-id="grid3" class="page-demo-grid" :row-data="rows3" :column-defs="columns3"
-                            :default-col-def="defaultColDef" animate-rows :style="{ height: '320px', width: '100%' }" />
+                            :default-col-def="defaultColDef" :get-row-height="getRowHeight" animate-rows
+                            :style="{ height: '320px', width: '100%' }" />
 
                     </ClientOnly>
 
@@ -109,8 +109,25 @@
 
 
 <script setup lang="ts">
+
 import type { ColDef } from 'ag-grid-community'
 
+import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
+import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
+import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
+import AppGridCellImage from '~/components/AppGrid/Cell/Image.vue'
+
+
+/* 행 높이 동적 처리 */
+
+const getRowHeight = (params: any) => {
+
+    if (params.data?.productImage) {
+        return 100
+    }
+
+    return 42
+}
 
 
 /* 검색 상태 */
@@ -122,13 +139,12 @@ const search1 = reactive({
 
 const search2 = reactive({
     product: '',
-    status: null as string | null
+    status: '' as string
 })
 
 const search3 = reactive({
     product: ''
 })
-
 
 
 /* 기본 column 옵션 */
@@ -142,12 +158,7 @@ const defaultColDef: ColDef = {
 }
 
 
-
 /* GRID 1 column */
-import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
-import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
-import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
-import AppGridCellImage from '~/components/AppGrid/Cell/Image.vue'
 
 const columns1: ColDef[] = [
 
@@ -166,7 +177,7 @@ const columns1: ColDef[] = [
 
     {
         field: 'department',
-        headerName: '부서',
+        headerName: '부서'
     },
 
     {
@@ -181,7 +192,6 @@ const columns1: ColDef[] = [
     }
 
 ]
-
 
 
 /* GRID 2 column */
@@ -220,103 +230,8 @@ const columns2: ColDef[] = [
 ]
 
 
+/* GRID 3 column */
 
-/* GRID 1 data */
-
-const rows1 = [
-
-    {
-        id: 1,
-        name: '홍길동',
-        department: '개발',
-        email: 'hong@test.com',
-        score: 88
-    },
-
-    {
-        id: 2,
-        name: '김민수',
-        department: '디자인',
-        email: 'kim@test.com',
-        score: 72
-    },
-
-    {
-        id: 3,
-        name: '이서연',
-        department: '기획',
-        email: 'lee@test.com',
-        score: 95
-    },
-
-    {
-        id: 4,
-        name: '박지훈',
-        department: '운영',
-        email: 'park@test.com',
-        score: 61
-    },
-
-    {
-        id: 5,
-        name: '최유진',
-        department: '개발',
-        email: 'choi@test.com',
-        score: 84
-    }
-
-]
-
-
-
-/* GRID 2 data */
-
-const rows2 = [
-
-    {
-        orderId: 'ORD-001',
-        product: '노트북',
-        price: 1200000,
-        status: 'READY',
-        date: '2026-03-01'
-    },
-
-    {
-        orderId: 'ORD-002',
-        product: '키보드',
-        price: 120000,
-        status: 'DELIVERY',
-        date: '2026-03-02'
-    },
-
-    {
-        orderId: 'ORD-003',
-        product: '마우스',
-        price: 35000,
-        status: 'DONE',
-        date: '2026-03-03'
-    },
-
-    {
-        orderId: 'ORD-004',
-        product: '모니터',
-        price: 420000,
-        status: 'DELIVERY',
-        date: '2026-03-04'
-    },
-
-    {
-        orderId: 'ORD-005',
-        product: '태블릿',
-        price: 780000,
-        status: 'READY',
-        date: '2026-03-05'
-    }
-
-]
-
-
-/* GRID 3 data */
 const columns3: ColDef[] = [
 
     {
@@ -328,9 +243,8 @@ const columns3: ColDef[] = [
     {
         field: 'productImage',
         headerName: '상품이미지',
-        width: 80,
-        cellRenderer: AppGridCellImage,
-        autoHeight: true,
+        width: 110,
+        cellRenderer: AppGridCellImage
     },
 
     {
@@ -347,13 +261,12 @@ const columns3: ColDef[] = [
                 { label: '전자기기', value: '전자기기' },
                 { label: '주변기기', value: '주변기기' }
             ]
-        },
-        autoHeight: true
+        }
     },
 
     {
         field: 'price',
-        headerName: '가격',
+        headerName: '가격'
     },
 
     {
@@ -371,6 +284,9 @@ const columns3: ColDef[] = [
         field: 'state',
         headerName: '상태',
         cellRenderer: AppGridCellChoice,
+        suppressMenu: true,
+        sortable: false,
+        filter: false,
         cellRendererParams: {
             type: 'radio',
             options: [
@@ -381,6 +297,36 @@ const columns3: ColDef[] = [
     }
 
 ]
+
+
+/* GRID 1 data */
+
+const rows1 = [
+
+    { id: 1, name: '홍길동', department: '개발', email: 'hong@test.com', score: 88 },
+    { id: 2, name: '김민수', department: '디자인', email: 'kim@test.com', score: 72 },
+    { id: 3, name: '이서연', department: '기획', email: 'lee@test.com', score: 95 },
+    { id: 4, name: '박지훈', department: '운영', email: 'park@test.com', score: 61 },
+    { id: 5, name: '최유진', department: '개발', email: 'choi@test.com', score: 84 }
+
+]
+
+
+/* GRID 2 data */
+
+const rows2 = [
+
+    { orderId: 'ORD-001', product: '노트북', price: 1200000, status: 'READY', date: '2026-03-01' },
+    { orderId: 'ORD-002', product: '키보드', price: 120000, status: 'DELIVERY', date: '2026-03-02' },
+    { orderId: 'ORD-003', product: '마우스', price: 35000, status: 'DONE', date: '2026-03-03' },
+    { orderId: 'ORD-004', product: '모니터', price: 420000, status: 'DELIVERY', date: '2026-03-04' },
+    { orderId: 'ORD-005', product: '태블릿', price: 780000, status: 'READY', date: '2026-03-05' }
+
+]
+
+
+/* GRID 3 data */
+
 const rows3 = [
 
     {
@@ -434,4 +380,5 @@ const rows3 = [
     }
 
 ]
+
 </script>

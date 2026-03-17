@@ -53,6 +53,7 @@ const gridAttrs = computed(() => {
             '<div class="ag-overlay-no-rows">검색된 결과가 없습니다</div>',
 
         rowHeight: rest.rowHeight ?? 42,
+        getRowHeight: rest.getRowHeight,
 
         onFilterChanged(params: FilterChangedEvent) {
 
