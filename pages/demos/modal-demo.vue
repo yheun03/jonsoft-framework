@@ -10,7 +10,7 @@
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">기본</h2>
                     <div class="page-demo-actions">
-                        <AppButton variant="fill" @click="openAlert">Alert 열기</AppButton>
+                        <AppButton variant="primary" @click="openAlert">Alert 열기</AppButton>
                         <AppButton variant="outline" @click="openConfirm">Confirm 열기</AppButton>
                     </div>
                 </section>
@@ -22,7 +22,7 @@
                         ESC/배경/X는 최상단 모달만 닫힙니다.
                     </p>
                     <div class="page-demo-actions">
-                        <AppButton variant="fill" @click="openConfirmNested">Confirm(중첩 유도) 열기</AppButton>
+                        <AppButton variant="primary" @click="openConfirmNested">Confirm(중첩 유도) 열기</AppButton>
                     </div>
                 </section>
             </main>

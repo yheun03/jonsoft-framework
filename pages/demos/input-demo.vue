@@ -65,7 +65,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="fill" @click="onSubmit">제출(검증)</AppButton>
+                            <AppButton variant="primary" @click="onSubmit">제출(검증)</AppButton>
                             <AppButton variant="text" @click="onReset">초기화</AppButton>
                         </div>
                     </section>

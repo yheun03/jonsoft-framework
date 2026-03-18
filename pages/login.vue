@@ -29,7 +29,7 @@
                         <NuxtLink class="login__link" to="/forgot-password">비밀번호를 잊으셨나요?</NuxtLink>
                     </div>
 
-                    <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
+                    <AppButton class="login__submit" type="submit" variant="primary" size="lg" :disabled="!canSubmit">
                         로그인
                     </AppButton>
 

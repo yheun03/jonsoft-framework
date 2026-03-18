@@ -32,7 +32,7 @@
                         <AppChoice v-model="agreeMarketing" type="checkbox" label="마케팅 정보 수신에 동의합니다 (선택)" />
                     </div>
 
-                    <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
+                    <AppButton class="login__submit" type="submit" variant="primary" size="lg" :disabled="!canSubmit">
                         가입하기
                     </AppButton>
 

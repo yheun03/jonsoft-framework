@@ -30,7 +30,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="fill" @click="submit">검증</AppButton>
+                            <AppButton variant="primary" @click="submit">검증</AppButton>
                             <AppButton variant="text" @click="reset">초기화</AppButton>
                         </div>
                     </section>

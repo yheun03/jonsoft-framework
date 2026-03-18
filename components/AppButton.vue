@@ -5,10 +5,16 @@
         :style="customSizeStyle"
         :class="[
             'app-button',
-            size == 'custom' ? 'app-button--custom' : '',
+            size === 'custom' ? 'app-button--custom' : '',
             `app-button--${variant}`,
             `app-button--${size}`,
-            { 'app-button--icon-only': isIconOnly, 'is-disabled': isActuallyDisabled, 'is-loading': loading, 'is-block': block },
+            tone !== 'default' ? `app-button--tone-${tone}` : '',
+            {
+                'app-button--icon-only': isIconOnly,
+                'app-button--disabled': isActuallyDisabled,
+                'app-button--loading': loading,
+                'app-button--block': block,
+            },
         ]"
         :aria-label="computedAriaLabel"
         :aria-disabled="isLinkLike ? (isActuallyDisabled ? 'true' : undefined) : undefined"
@@ -32,7 +38,8 @@
 <script setup lang="ts">
 const attrs = useAttrs()
 
-type ButtonVariant = 'fill' | 'text' | 'underline' | 'outline'
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'text'
+type ButtonTone = 'default' | 'gray' | 'danger'
 type ButtonSize = 'sm' | 'md' | 'lg' | 'custom'
 type ButtonType = 'button' | 'submit' | 'reset'
 
@@ -48,8 +55,10 @@ const props = withDefaults(
         /** 링크 새 탭 */
         newTab?: boolean
 
-        /** fill(면) | text(글자) | underline(밑줄) | outline(테두리) */
+        /** primary | secondary | outline | ghost | text */
         variant?: ButtonVariant
+        /** default | gray | danger */
+        tone?: ButtonTone
         /** sm | md | lg */
         size?: ButtonSize
         /** 커스텀 크기 */
@@ -64,6 +73,8 @@ const props = withDefaults(
         loading?: boolean
         /** 가로 100% */
         block?: boolean
+        /** 아이콘만 버튼(레이아웃 강제) */
+        iconOnly?: boolean
 
         /** 아이콘만 렌더링 시 접근성 라벨(권장) */
         ariaLabel?: string
@@ -73,11 +84,13 @@ const props = withDefaults(
         to: undefined,
         href: undefined,
         newTab: false,
-        variant: 'fill',
+        variant: 'primary',
+        tone: 'default',
         size: 'md',
         disabled: false,
         loading: false,
         block: false,
+        iconOnly: false,
         ariaLabel: undefined,
     },
 )
@@ -106,7 +119,7 @@ const hasLabel = computed(() => {
 const hasIconLeft = computed(() => !!slots.iconLeft?.().length)
 const hasIconRight = computed(() => !!slots.iconRight?.().length)
 
-const isIconOnly = computed(() => !hasLabel.value && (hasIconLeft.value || hasIconRight.value))
+const isIconOnly = computed(() => props.iconOnly || (!hasLabel.value && (hasIconLeft.value || hasIconRight.value)))
 
 const isLinkLike = computed(() => !!props.to || !!props.href)
 const isActuallyDisabled = computed(() => props.disabled || props.loading)

@@ -7,7 +7,7 @@
 
         <template #footer>
             <div class="app-alert-modal__actions">
-                <AppButton variant="fill" @click="onOk">{{ okText }}</AppButton>
+                <AppButton variant="primary" @click="onOk">{{ okText }}</AppButton>
             </div>
         </template>
     </AppModal>

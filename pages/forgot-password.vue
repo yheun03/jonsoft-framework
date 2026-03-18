@@ -23,7 +23,7 @@
                 <form class="login__form" @submit.prevent="onSubmit">
                     <AppInput v-model="email" name="email" type="email" label="이메일" placeholder="name@company.com" />
 
-                    <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
+                    <AppButton class="login__submit" type="submit" variant="primary" size="lg" :disabled="!canSubmit">
                         재설정 링크 보내기
                     </AppButton>
 
