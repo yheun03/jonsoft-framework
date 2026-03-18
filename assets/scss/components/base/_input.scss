@@ -1,56 +1,72 @@
-@use "../../abstract" as *;
+@use "../../abstract/variables" as *;
+@use "sass:map";
 
 /* =========================================
    Component: AppInput
-   설명: 공통 텍스트 입력 필드
-   사용: Form / Search / Filter
-   구조: BEM (Block / Element / Modifier)
 ========================================= */
+
+$input-sizes: (
+    xs: (height: 36px, padding: 12px, icon: 16px),
+    sm: (height: 44px, padding: 14px, icon: 18px),
+    md: (height: 48px, padding: 16px, icon: 20px),
+    lg: (height: 56px, padding: 18px, icon: 22px)
+);
 
 .app-input {
 
-    /* ----------------------------------------
-     Base
-  ---------------------------------------- */
+    /* =========================================
+     Layout
+  ========================================= */
 
-    @include app-field-wrapper;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 
 
-    /* ----------------------------------------
+    /* =========================================
      Element: Label
-  ---------------------------------------- */
+  ========================================= */
 
     &__label {
-        @include app-field-label;
+
+        font-size: 14px;
+        color: $gray-800;
+
     }
 
 
-    /* ----------------------------------------
+    /* =========================================
      Element: Control
-  ---------------------------------------- */
+  ========================================= */
 
     &__control {
+
         position: relative;
+
         display: flex;
         align-items: center;
+
     }
 
 
-    /* ----------------------------------------
+    /* =========================================
      Element: Field
-  ---------------------------------------- */
+  ========================================= */
 
     &__field {
 
-        @include app-field-box;
+        width: 100%;
 
-        /* focus 접근성 */
+        border: 1px solid $gray-300;
+        background: $gray-0;
 
-        &:focus-visible {
-            box-shadow: 0 0 0 3px rgba($primary, .15);
-        }
+        color: $gray-900;
 
-        /* placeholder */
+        outline: none;
+
+        transition:
+            border-color .15s,
+            box-shadow .15s;
 
         &::placeholder {
             color: $gray-600;
@@ -59,104 +75,202 @@
     }
 
 
-    /* ----------------------------------------
-     Element: Clear Button
-  ---------------------------------------- */
+    /* =========================================
+     Element: Icon
+  ========================================= */
 
-    &__clear {
+    &__icon {
 
         position: absolute;
-        right: 10px;
 
-        display: inline-flex;
+        top: 50%;
+        left: 12px;
+
+        transform: translateY(-50%);
+
+        display: flex;
         align-items: center;
         justify-content: center;
 
-        border: 0;
-        background: transparent;
+        pointer-events: none;
 
-        cursor: pointer;
+        svg {
+
+            width: 18px;
+            height: 18px;
+
+            color: $gray-600;
+
+        }
+
+    }
+
+
+    /* =========================================
+     Element: Hint
+  ========================================= */
+
+    &__hint {
+
+        margin: 0;
+
+        font-size: 13px;
 
         color: $gray-600;
 
-        font-size: 18px;
-        line-height: 1;
-
-        padding: 2px 6px;
-
     }
 
 
-    /* ----------------------------------------
-     Element: Helper
-  ---------------------------------------- */
-
-    &__helper {
-        @include app-field-helper;
-    }
-
-
-    /* ----------------------------------------
+    /* =========================================
      Element: Error
-  ---------------------------------------- */
+  ========================================= */
 
     &__error {
-        @include app-field-error;
-    }
 
+        margin: 0;
 
-    /* ----------------------------------------
-     State: Disabled
-  ---------------------------------------- */
+        font-size: 13px;
 
-    &.is-disabled {
-
-        @include app-field-disabled(".app-input__field");
+        color: $status-error;
 
     }
 
 
-    /* ----------------------------------------
-     State: Error
-  ---------------------------------------- */
+    /* =========================================
+     Modifier: Icon
+  ========================================= */
+
+    &--icon-left {
+
+        .app-input__field {
+            padding-left: 40px;
+        }
+
+    }
+
+    &--icon-right {
+
+        .app-input__field {
+            padding-right: 40px;
+        }
+
+    }
+
+
+    /* =========================================
+     Modifier: Size
+  ========================================= */
+
+    @each $size, $data in $input-sizes {
+
+        &--#{$size} {
+
+            .app-input__field {
+
+                height: map.get($data, height);
+
+                padding-left: map.get($data, padding);
+                padding-right: map.get($data, padding);
+
+            }
+
+        }
+
+    }
+
+
+    /* =========================================
+     Modifier: Shape
+  ========================================= */
+
+    &--shape-square {
+
+        .app-input__field {
+            border-radius: 0;
+        }
+
+    }
+
+    &--shape-round {
+
+        .app-input__field {
+            border-radius: 6px;
+        }
+
+    }
+
+    &--shape-pill {
+
+        .app-input__field {
+            border-radius: 999px;
+        }
+
+    }
+
+    &--shape-underline {
+
+        .app-input__field {
+
+            border: none;
+            border-bottom: 1px solid $gray-300;
+
+            border-radius: 0;
+
+        }
+
+    }
+
+
+    /* =========================================
+     State
+  ========================================= */
 
     &.is-error {
 
-        @include app-field-error-border(".app-input__field");
-
-    }
-
-
-    /* ----------------------------------------
-     Size Modifiers
-  ---------------------------------------- */
-
-    &--sm {
-
         .app-input__field {
-            padding: 8px 10px;
-            border-radius: 8px;
-            @include font(b4, rg);
+            border-color: $status-error;
+        }
+
+        .app-input__hint,
+        .app-input__error {
+            color: $status-error;
         }
 
     }
 
-    &--md {
+    &.is-warning {
 
         .app-input__field {
-            padding: 10px 12px;
-            border-radius: 10px;
-            @include font(b3, rg);
+            border-color: $status-warning;
+        }
+
+        .app-input__hint {
+            color: $status-warning;
         }
 
     }
 
-    &--lg {
+    &.is-success {
 
         .app-input__field {
-            padding: 12px 14px;
-            border-radius: 12px;
-            @include font(b2, rg);
+            border-color: $status-success;
+        }
+
+        .app-input__hint {
+            color: $status-success;
+        }
+
+    }
+
+    &.is-disabled {
+
+        .app-input__field {
+
+            background: $gray-100;
+            color: $gray-500;
+
+            cursor: not-allowed;
+
         }
 
     }

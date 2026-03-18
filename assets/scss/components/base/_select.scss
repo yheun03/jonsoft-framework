@@ -2,89 +2,23 @@
 
 /* =========================================
    Component: AppSelect
-   설명: 공통 Select 컴포넌트
-   사용: Form / Filter / Dropdown
-   구조: BEM (Block / Element / Modifier)
 ========================================= */
 
-.app-select {
+.app-select {}
 
-    /* ----------------------------------------
-     Base
-  ---------------------------------------- */
+.app-select__field {
+    @include app-field-box;
+    cursor: pointer;
+}
 
-    @include app-field-wrapper;
+.app-select__search-input {
+    @include app-field-box;
+}
 
+.form-field.is-disabled {
+    @include app-field-disabled(".app-select__field, .app-select__search-input");
+}
 
-    /* ----------------------------------------
-     Element: Label
-  ---------------------------------------- */
-
-    &__label {
-        @include app-field-label;
-    }
-
-
-    /* ----------------------------------------
-     Element: Field
-  ---------------------------------------- */
-
-    &__field {
-
-        @include app-field-box;
-        cursor: pointer;
-
-    }
-
-
-    /* ----------------------------------------
-     Element: Search Input
-  ---------------------------------------- */
-
-    &__search-input {
-
-        @include app-field-box;
-
-    }
-
-
-    /* ----------------------------------------
-     Element: Helper
-  ---------------------------------------- */
-
-    &__helper {
-        @include app-field-helper;
-    }
-
-
-    /* ----------------------------------------
-     Element: Error
-  ---------------------------------------- */
-
-    &__error {
-        @include app-field-error;
-    }
-
-
-    /* ----------------------------------------
-     State: Disabled
-  ---------------------------------------- */
-
-    &.is-disabled {
-
-        @include app-field-disabled(".app-select__field, .app-select__search-input");
-
-    }
-
-
-    /* ----------------------------------------
-     State: Error
-  ---------------------------------------- */
-
-    &.is-error {
-
-        @include app-field-error-border(".app-select__field");
-
-    }
-
+.form-field.is-error {
+    @include app-field-error-border(".app-select__field");
 }
