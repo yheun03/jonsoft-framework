@@ -4,11 +4,7 @@
 @use "icon";
 
 /* =========================================================
-   Component: AppButton
-========================================================= */
-
-/* =========================================================
-   Tone Tokens
+   Tokens
 ========================================================= */
 
 $btn-tones: (
@@ -21,41 +17,33 @@ $btn-tones: (
     "info": $status-info
 );
 
-/* =========================================================
-   Size Tokens
-========================================================= */
-
 $btn-sizes: (
-    xl: (min-width: 88px, height:56px, padding:16px, gap:4px, radius: 6px, font:btn1, weight:sb),
-    lg: (min-width: 80px, height:48px, padding:16px, gap:4px, radius: 6px, font:btn2, weight:sb),
-    md: (min-width: 80px, height:44px, padding:16px, gap:2px, radius: 6px, font:btn2, weight:sb),
-    sm: (min-width: 68px, height:36px, padding:12px, gap:2px, radius: 4px, font:btn3, weight:rg),
-    xs: (min-width: 58px, height:24px, padding:8px, gap:2px, radius: 4px, font:btn4, weight:rg)
+    xl: (min-width:88px, height:56px, padding:16px, gap:6px, font:btn1, weight:sb),
+    lg: (min-width:80px, height:48px, padding:16px, gap:6px, font:btn2, weight:sb),
+    md: (min-width:80px, height:44px, padding:16px, gap:4px, font:btn2, weight:sb),
+    sm: (min-width:68px, height:36px, padding:12px, gap:4px, font:btn3, weight:rg),
+    xs: (min-width:58px, height:24px, padding:8px, gap:4px, font:btn4, weight:rg)
 );
-
-/* -------------------------------------------------------
-   Text Button Typography Override
-------------------------------------------------------- */
 
 $btn-text-sizes: (
-    lg: (font: btn2, weight: rg),
-    md: (font: btn3, weight: rg),
-    sm: (font: btn4, weight: rg)
+    lg: (font:btn2, weight:rg),
+    md: (font:btn3, weight:rg),
+    sm: (font:btn4, weight:rg)
 );
 
 /* =========================================================
-   Variant Mixin
+   Variant
 ========================================================= */
 
-@mixin btn-variant($variant, $btn-color) {
+@mixin btn-variant($variant, $color) {
 
-    $hover: color.adjust($btn-color, $lightness: -6%);
-    $active: color.adjust($btn-color, $lightness: -10%);
-    $focus: color.adjust($btn-color, $lightness: 18%);
+    $hover: color.adjust($color, $lightness: -6%);
+    $active: color.adjust($color, $lightness: -10%);
+    $focus: color.adjust($color, $lightness: 18%);
 
     @if $variant ==fill {
 
-        --btn-bg:#{$btn-color};
+        --btn-bg:#{$color};
         --btn-fg:#{$gray-0};
         --btn-bd: transparent;
 
@@ -67,11 +55,11 @@ $btn-text-sizes: (
     @else if $variant ==outline {
 
         --btn-bg: transparent;
-        --btn-fg:#{$btn-color};
-        --btn-bd:#{$btn-color};
+        --btn-fg:#{$color};
+        --btn-bd:#{$color};
 
-        --btn-bg-hover:#{rgba($btn-color,.06)};
-        --btn-bg-active:#{rgba($btn-color,.10)};
+        --btn-bg-hover:#{rgba($color,.06)};
+        --btn-bg-active:#{rgba($color,.10)};
 
         --btn-fg-hover:#{$hover};
         --btn-fg-active:#{$active};
@@ -84,26 +72,22 @@ $btn-text-sizes: (
     @else if $variant ==text {
 
         --btn-bg: transparent;
-        --btn-fg:#{$btn-color};
+        --btn-fg:#{$color};
         --btn-bd: transparent;
 
         --btn-fg-hover:#{$hover};
         --btn-fg-active:#{$active};
-
-        padding-inline: 0;
 
     }
 
     @else if $variant ==underline {
 
         --btn-bg: transparent;
-        --btn-fg:#{$btn-color};
+        --btn-fg:#{$color};
         --btn-bd: transparent;
 
         --btn-fg-hover:#{$hover};
         --btn-fg-active:#{$active};
-
-        padding-inline: 0;
 
         text-decoration: underline;
         text-underline-offset: 3px;
@@ -119,58 +103,47 @@ $btn-text-sizes: (
 
 .app-button {
 
-    /* -------------------------------------------------------
-     Base
-  ------------------------------------------------------- */
-
     @include font(btn2, rg);
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    gap: 8px;
-    padding: 0 16px;
-
-    min-width: 0;
+    gap: 6px;
 
     border: 1px solid transparent;
-    border-radius: 0;
 
     background: transparent;
     color: $gray-900;
 
+    cursor: pointer;
+    user-select: none;
+
     text-decoration: none;
     white-space: nowrap;
 
-    user-select: none;
-    cursor: pointer;
-    flex-shrink: 0;
-
     appearance: none;
-    -webkit-appearance: none;
 
     transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        opacity .15s ease,
-        box-shadow .15s ease;
+        background-color .15s,
+        border-color .15s,
+        color .15s,
+        box-shadow .15s,
+        opacity .15s;
 
-    /* -------------------------------------------------------
-     CSS Variables
-  ------------------------------------------------------- */
+    /* CSS Variables */
 
     --btn-bg: transparent;
     --btn-fg:#{$gray-900};
     --btn-bd: transparent;
 
     --btn-bg-hover: transparent;
-    --btn-fg-hover: var(--btn-fg);
-    --btn-bd-hover: var(--btn-bd);
-
     --btn-bg-active: transparent;
+
+    --btn-fg-hover: var(--btn-fg);
     --btn-fg-active: var(--btn-fg);
+
+    --btn-bd-hover: var(--btn-bd);
     --btn-bd-active: var(--btn-bd);
 
     --btn-focus:#{$primary-300};
@@ -196,46 +169,41 @@ $btn-text-sizes: (
         outline-offset: 2px;
     }
 
-    /* -------------------------------------------------------
-     Elements
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       Button Size (fill / outline only)
+    ------------------------------------------------ */
 
-    &__icon {
-        @extend .app-icon;
+    &:not(.app-button--variant-text):not(.app-button--variant-underline) {
 
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
+        @each $size, $data in $btn-sizes {
 
-    &__label {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 0;
-    }
+            &.app-button--size-#{$size} {
 
-    /* -------------------------------------------------------
-     Size
-  ------------------------------------------------------- */
+                min-width: map.get($data, min-width);
+                height: map.get($data, height);
 
-    @each $size, $data in $btn-sizes {
+                padding-inline: map.get($data, padding);
+                gap: map.get($data, gap);
 
-        &--size-#{$size} {
+                @include font(map.get($data, font),
+                    map.get($data, weight));
 
-            min-width: map.get($data, min-width);
-            height: map.get($data, height);
-            padding-inline: map.get($data, padding);
-            gap: map.get($data, gap);
-            border-radius: map.get($data, radius);
+            }
 
-            @include font(map.get($data, font), map.get($data, weight));
         }
+
     }
+
+    /* ------------------------------------------------
+       Inline Button
+    ------------------------------------------------ */
 
     &--variant-text,
     &--variant-underline {
+
+        padding: 0;
+        min-width: auto;
+        height: auto;
 
         @each $size, $data in $btn-text-sizes {
 
@@ -250,76 +218,76 @@ $btn-text-sizes: (
 
     }
 
-    /* -------------------------------------------------------
-     Shape
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       Shape
+    ------------------------------------------------ */
 
     &--shape-square {
-        border-radius: 0;
+        border-radius: 0
     }
 
     &--shape-round {
-        border-radius: 6px;
+        border-radius: 6px
     }
 
     &--shape-pill {
-        border-radius: 999px;
+        border-radius: 999px
     }
 
-    /* -------------------------------------------------------
-     Variant 기본
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       Variant
+    ------------------------------------------------ */
 
     &--variant-fill {
-        @include btn-variant(fill, $primary-500);
+        @include btn-variant(fill, $primary-500)
     }
 
     &--variant-outline {
-        @include btn-variant(outline, $primary-500);
+        @include btn-variant(outline, $primary-500)
     }
 
     &--variant-text {
-        @include btn-variant(text, $primary-500);
+        @include btn-variant(text, $primary-500)
     }
 
     &--variant-underline {
-        @include btn-variant(underline, $primary-500);
+        @include btn-variant(underline, $primary-500)
     }
 
-    /* -------------------------------------------------------
-     Tone Override
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       Tone
+    ------------------------------------------------ */
 
-    @each $tone, $btn-color in $btn-tones {
+    @each $tone, $color in $btn-tones {
 
         &--tone-#{$tone} {
 
             &.app-button--variant-fill {
-                @include btn-variant(fill, $btn-color);
+                @include btn-variant(fill, $color)
             }
 
             &.app-button--variant-outline {
-                @include btn-variant(outline, $btn-color);
+                @include btn-variant(outline, $color)
             }
 
             &.app-button--variant-text {
-                @include btn-variant(text, $btn-color);
+                @include btn-variant(text, $color)
             }
 
             &.app-button--variant-underline {
-                @include btn-variant(underline, $btn-color);
+                @include btn-variant(underline, $color)
             }
 
         }
 
     }
 
-    /* -------------------------------------------------------
-     States
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       States
+    ------------------------------------------------ */
 
     &--block {
-        width: 100%;
+        width: 100%
     }
 
     &--disabled {
@@ -329,12 +297,26 @@ $btn-text-sizes: (
     }
 
     &--loading {
-        cursor: progress;
+        cursor: progress
     }
 
-    /* -------------------------------------------------------
-     Icon Only
-  ------------------------------------------------------- */
+    /* ------------------------------------------------
+       Icon
+    ------------------------------------------------ */
+
+    &__icon {
+        @extend .app-icon;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    &__label {
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+    }
 
     &--icon-only {
 
@@ -348,14 +330,42 @@ $btn-text-sizes: (
             }
 
         }
-    }
 
-    /* -------------------------------------------------------
-     Custom size
-  ------------------------------------------------------- */
+    }
 
     &--custom {
-        padding: 0;
+        padding: 0
     }
 
+}
+
+/* =========================================================
+   Spinner
+========================================================= */
+
+.app-button__spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin .6s linear infinite;
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   Icon spacing
+========================================================= */
+
+.app-button__icon--left {
+    margin-right: 4px
+}
+
+.app-button__icon--right {
+    margin-left: 4px
 }

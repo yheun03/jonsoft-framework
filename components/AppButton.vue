@@ -1,15 +1,22 @@
 <template>
-    <component :is="componentTag" v-bind="{ ...attrs, ...componentAttrs }" :class="classes" :style="customSizeStyle"
-        :aria-label="computedAriaLabel" :aria-disabled="ariaDisabled" :tabindex="tabIndex" @click="onClick">
-        <i v-if="hasIconLeft" class="app-button__icon app-button__icon--left" aria-hidden="true">
+    <component :is="tag" v-bind="componentAttrs" :class="classes" :style="customSizeStyle"
+        :aria-label="ariaLabelComputed" :aria-disabled="ariaDisabled" :aria-busy="loading ? 'true' : undefined"
+        :tabindex="tabIndex" @click="onClick">
+        <!-- loading -->
+        <span v-if="loading" class="app-button__spinner" aria-hidden="true" />
+
+        <!-- left icon -->
+        <i v-else-if="$slots.iconLeft" class="app-button__icon app-button__icon--left" aria-hidden="true">
             <slot name="iconLeft" />
         </i>
 
-        <span v-if="hasLabel" class="app-button__label">
+        <!-- label -->
+        <span v-if="$slots.default" class="app-button__label">
             <slot />
         </span>
 
-        <i v-if="hasIconRight" class="app-button__icon app-button__icon--right" aria-hidden="true">
+        <!-- right icon -->
+        <i v-if="$slots.iconRight && !loading" class="app-button__icon app-button__icon--right" aria-hidden="true">
             <slot name="iconRight" />
         </i>
     </component>
@@ -17,11 +24,18 @@
 
 <script setup lang="ts">
 const attrs = useAttrs()
-const slots = useSlots()
 
 type ButtonVariant = 'fill' | 'outline' | 'text' | 'underline'
 type ButtonShape = 'square' | 'round' | 'pill'
-type ButtonTone = 'primary' | 'secondary' | 'gray' | 'danger' | 'warning' | 'success' | 'info'
+type ButtonTone =
+    | 'primary'
+    | 'secondary'
+    | 'gray'
+    | 'danger'
+    | 'warning'
+    | 'success'
+    | 'info'
+
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'custom'
 type ButtonType = 'button' | 'submit' | 'reset'
 
@@ -50,52 +64,50 @@ const props = withDefaults(
     }>(),
     {
         type: 'button',
-        to: undefined,
-        href: undefined,
-        newTab: false,
-
         variant: 'outline',
         shape: 'round',
         tone: 'gray',
         size: 'md',
-
-        customSize: undefined,
-
+        newTab: false,
         disabled: false,
         loading: false,
         block: false,
-        iconOnly: false,
-        ariaLabel: undefined,
-    },
+        iconOnly: false
+    }
 )
 
 const emit = defineEmits<{
-    click: [event: MouseEvent]
+    click: [MouseEvent]
 }>()
 
 const NuxtLinkComp = resolveComponent('NuxtLink')
 
-const hasLabel = computed(() => !!slots.default?.()?.length)
-const hasIconLeft = computed(() => !!slots.iconLeft?.()?.length)
-const hasIconRight = computed(() => !!slots.iconRight?.()?.length)
+/* -------------------------------------------------------
+   상태
+------------------------------------------------------- */
 
-const isIconOnly = computed(() => {
-    return props.iconOnly || (!hasLabel.value && (hasIconLeft.value || hasIconRight.value))
-})
+const isDisabled = computed(() => props.disabled || props.loading)
+const isLink = computed(() => !!props.to || !!props.href)
 
-const isLinkLike = computed(() => !!props.to || !!props.href)
-const isActuallyDisabled = computed(() => props.disabled || props.loading)
+/* -------------------------------------------------------
+   component tag
+------------------------------------------------------- */
 
-const componentTag = computed(() => {
+const tag = computed(() => {
     if (props.to) return NuxtLinkComp
     if (props.href) return 'a'
     return 'button'
 })
 
+/* -------------------------------------------------------
+   attributes
+------------------------------------------------------- */
+
 const componentAttrs = computed(() => {
     if (props.to) {
         return {
             to: props.to,
+            ...attrs
         }
     }
 
@@ -104,38 +116,52 @@ const componentAttrs = computed(() => {
             href: props.href,
             target: props.newTab ? '_blank' : undefined,
             rel: props.newTab ? 'noopener noreferrer' : undefined,
+            ...attrs
         }
     }
 
     return {
         type: props.type,
-        disabled: isActuallyDisabled.value,
+        disabled: isDisabled.value,
+        ...attrs
     }
 })
 
-const computedAriaLabel = computed(() => {
-    if (!isIconOnly.value) return undefined
+/* -------------------------------------------------------
+   accessibility
+------------------------------------------------------- */
+
+const ariaLabelComputed = computed(() => {
+    if (!props.iconOnly) return undefined
     return props.ariaLabel
 })
 
 const ariaDisabled = computed(() => {
-    if (!isLinkLike.value) return undefined
-    return isActuallyDisabled.value ? 'true' : undefined
+    if (!isLink.value) return undefined
+    return isDisabled.value ? 'true' : undefined
 })
 
 const tabIndex = computed(() => {
-    if (isLinkLike.value && isActuallyDisabled.value) return -1
+    if (isLink.value && isDisabled.value) return -1
     return undefined
 })
 
+/* -------------------------------------------------------
+   custom size
+------------------------------------------------------- */
+
 const customSizeStyle = computed(() => {
-    if (!props.customSize) return undefined
+    if (!props.customSize) return
 
     return {
         width: `${props.customSize.width}px`,
-        height: `${props.customSize.height ?? props.customSize.width}px`,
+        height: `${props.customSize.height ?? props.customSize.width}px`
     }
 })
+
+/* -------------------------------------------------------
+   classes
+------------------------------------------------------- */
 
 const classes = computed(() => [
     'app-button',
@@ -144,16 +170,20 @@ const classes = computed(() => [
     `app-button--size-${props.size}`,
     `app-button--tone-${props.tone}`,
     {
-        'app-button--icon-only': isIconOnly.value,
-        'app-button--disabled': isActuallyDisabled.value,
+        'app-button--icon-only': props.iconOnly,
+        'app-button--disabled': isDisabled.value,
         'app-button--loading': props.loading,
         'app-button--block': props.block,
-        'app-button--custom': !!props.customSize,
-    },
+        'app-button--custom': !!props.customSize
+    }
 ])
 
+/* -------------------------------------------------------
+   click
+------------------------------------------------------- */
+
 function onClick(e: MouseEvent) {
-    if (isActuallyDisabled.value) {
+    if (isDisabled.value) {
         e.preventDefault()
         e.stopPropagation()
         return
