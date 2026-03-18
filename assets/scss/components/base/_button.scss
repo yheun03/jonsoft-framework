@@ -33,6 +33,16 @@ $btn-sizes: (
     xs: (min-width: 58px, height:24px, padding:8px, gap:2px, radius: 4px, font:btn4, weight:rg)
 );
 
+/* -------------------------------------------------------
+   Text Button Typography Override
+------------------------------------------------------- */
+
+$btn-text-sizes: (
+    lg: (font: btn2, weight: rg),
+    md: (font: btn3, weight: rg),
+    sm: (font: btn4, weight: rg)
+);
+
 /* =========================================================
    Variant Mixin
 ========================================================= */
@@ -207,22 +217,6 @@ $btn-sizes: (
     }
 
     /* -------------------------------------------------------
-     Shape
-  ------------------------------------------------------- */
-
-    &--shape-square {
-        border-radius: 0;
-    }
-
-    &--shape-round {
-        border-radius: 6px;
-    }
-
-    &--shape-pill {
-        border-radius: 999px;
-    }
-
-    /* -------------------------------------------------------
      Size
   ------------------------------------------------------- */
 
@@ -238,6 +232,38 @@ $btn-sizes: (
 
             @include font(map.get($data, font), map.get($data, weight));
         }
+    }
+
+    &--variant-text,
+    &--variant-underline {
+
+        @each $size, $data in $btn-text-sizes {
+
+            &.app-button--size-#{$size} {
+
+                @include font(map.get($data, font),
+                    map.get($data, weight));
+
+            }
+
+        }
+
+    }
+
+    /* -------------------------------------------------------
+     Shape
+  ------------------------------------------------------- */
+
+    &--shape-square {
+        border-radius: 0;
+    }
+
+    &--shape-round {
+        border-radius: 6px;
+    }
+
+    &--shape-pill {
+        border-radius: 999px;
     }
 
     /* -------------------------------------------------------

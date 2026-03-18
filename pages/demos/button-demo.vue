@@ -28,6 +28,23 @@
                         <AppButton size="lg" @click="log('size:lg')">LG</AppButton>
                         <AppButton size="xl" @click="log('size:xl')">XL</AppButton>
                     </div>
+                    <div class="page-demo-row">
+                        <AppButton size="xs" variant="fill" @click="log('size:xs')">XS</AppButton>
+                        <AppButton size="sm" variant="fill" @click="log('size:sm')">SM</AppButton>
+                        <AppButton size="md" variant="fill" @click="log('size:md')">MD</AppButton>
+                        <AppButton size="lg" variant="fill" @click="log('size:lg')">LG</AppButton>
+                        <AppButton size="xl" variant="fill" @click="log('size:xl')">XL</AppButton>
+                    </div>
+                    <div class="page-demo-row">
+                        <AppButton variant="text" size="sm" @click="log('size:sm')">SM</AppButton>
+                        <AppButton variant="text" size="md" @click="log('size:md')">MD</AppButton>
+                        <AppButton variant="text" size="lg" @click="log('size:lg')">LG</AppButton>
+                    </div>
+                    <div class="page-demo-row">
+                        <AppButton variant="underline" size="sm" @click="log('size:sm')">SM</AppButton>
+                        <AppButton variant="underline" size="md" @click="log('size:md')">MD</AppButton>
+                        <AppButton variant="underline" size="lg" @click="log('size:lg')">LG</AppButton>
+                    </div>
                 </section>
 
                 <section class="page-demo-card">
@@ -69,7 +86,7 @@
                             </template>
                         </AppButton>
 
-                        <AppButton variant="text" size="md" icon-only aria-label="아이콘 버튼" @click="log('icon:only')">
+                        <AppButton variant="text" size="custom" :custom-size="{ width: 24, height: 24 }" icon-only aria-label="아이콘 버튼" @click="log('icon:only')">
                             <template #iconLeft>
                                 <Icon class="page-demo-icon" icon="mdi:star-outline" aria-hidden="true" />
                             </template>

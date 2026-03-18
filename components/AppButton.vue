@@ -22,7 +22,7 @@ const slots = useSlots()
 type ButtonVariant = 'fill' | 'outline' | 'text' | 'underline'
 type ButtonShape = 'square' | 'round' | 'pill'
 type ButtonTone = 'primary' | 'secondary' | 'gray' | 'danger' | 'warning' | 'success' | 'info'
-type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'custom'
 type ButtonType = 'button' | 'submit' | 'reset'
 
 const props = withDefaults(
