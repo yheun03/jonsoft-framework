@@ -577,6 +577,26 @@ await post('/users', payload)
   - `pages/index.vue` 에서 워크스페이스 메인 에디터.
   - `useWorkspaceStore` 의 탭 내용과 markdown 연동.
 
+### 3.10 Iconify (@iconify/vue)
+
+- **공식 문서**: [Iconify for Vue](https://iconify.design/docs/icon-components/vue/)
+- **이유**:
+  - 다양한 아이콘 셋을 단일 문법으로 사용 가능.
+  - SVG 렌더링 기반이라 품질이 안정적.
+- **프로젝트 적용 방식**:
+  - `@iconify/vue` 설치 후 `plugins/iconify.ts`에서 `Icon` 컴포넌트를 **전역 등록**.
+  - 그래서 모든 `.vue`에서 import 없이 `<Icon />` 사용 가능.
+- **사용 예**:
+
+```vue
+<Icon icon="mdi:home" />
+<Icon icon="mdi:home" style="font-size: 20px; color: #2F6BFF;" />
+```
+
+- **SSR/Nuxt 주의사항**:
+  - 아이콘 컴포넌트는 기본적으로 마운트 후 아이콘 데이터를 가져와 렌더링될 수 있어 SSR에서는 초기 HTML에 아이콘이 없을 수 있습니다.
+  - 필요 시 문서의 `ssr` 옵션 등 SSR 관련 옵션을 참고하세요.
+
 ---
 
 ## 4. 핵심 컴포넌트와 사용 방법 (데모 기준)

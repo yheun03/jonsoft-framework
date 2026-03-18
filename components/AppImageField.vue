@@ -38,7 +38,7 @@
                 @click.stop="removeImage"
             >
                 <template #iconLeft>
-                    <span class="app-image-field__remove-icon" aria-hidden="true" v-html="XmarkSvg" />
+                    <Icon class="app-image-field__remove-icon" icon="mdi:close" />
                 </template>
             </AppButton>
         </button>
@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import XmarkSvg from '@/assets/icons/12/ic-xmark.svg?raw'
 
 type ReadMode = 'dataUrl' | 'objectUrl'
 

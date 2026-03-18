@@ -17,7 +17,7 @@
             <p class="app-error__message">{{ message }}</p>
 
             <div class="app-error__actions">
-                <AppButton size="md" variant="primary" @click="goHome">홈으로</AppButton>
+                <AppButton size="md" variant="fill" @click="goHome">홈으로</AppButton>
                 <AppButton size="md" variant="outline" @click="goBack">뒤로</AppButton>
             </div>
 

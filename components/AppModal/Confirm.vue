@@ -8,7 +8,7 @@
         <template #footer>
             <div class="app-confirm-modal__actions">
                 <AppButton variant="outline" @click="onCancel">{{ cancelText }}</AppButton>
-                <AppButton variant="primary" @click="onConfirm">{{ confirmText }}</AppButton>
+                <AppButton variant="fill" @click="onConfirm">{{ confirmText }}</AppButton>
             </div>
         </template>
     </AppModal>

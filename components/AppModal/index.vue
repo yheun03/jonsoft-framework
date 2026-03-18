@@ -11,10 +11,17 @@
                         </slot>
                     </div>
 
-                    <AppButton v-if="closable" class="app-modal__close" variant="text" size="custom"
-                        :custom-size="{ width: 34, height: 34 }" aria-label="닫기" @click="requestClose('close')">
+                    <AppButton
+                        v-if="closable"
+                        class="app-modal__close"
+                        variant="text"
+                        size="custom"
+                        :custom-size="{ width: 34, height: 34 }"
+                        aria-label="닫기"
+                        @click="requestClose('close')"
+                    >
                         <template #iconLeft>
-                            <span class="app-modal__close-icon" aria-hidden="true" v-html="XmarkSvg" />
+                            <Icon class="app-modal__close-icon" icon="mdi:close" />
                         </template>
                     </AppButton>
                 </header>
@@ -32,7 +39,6 @@
 </template>
 
 <script setup lang="ts">
-import XmarkSvg from '@/assets/icons/12/ic-xmark.svg?raw'
 import { useModalStack } from '~/core/composables/useModalStack'
 
 type CloseReason = 'esc' | 'backdrop' | 'close'

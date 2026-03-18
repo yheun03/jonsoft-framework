@@ -60,7 +60,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="primary" @click="randomize">랜덤 데이터</AppButton>
+                            <AppButton variant="fill" @click="randomize">랜덤 데이터</AppButton>
                             <AppButton variant="text" @click="reset">초기화</AppButton>
                         </div>
                     </section>

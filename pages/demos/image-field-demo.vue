@@ -80,7 +80,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="primary" @click="setSample">샘플 이미지(상단)</AppButton>
+                            <AppButton variant="fill" @click="setSample">샘플 이미지(상단)</AppButton>
                             <AppButton variant="text" @click="resetAll">초기화</AppButton>
                         </div>
                     </section>

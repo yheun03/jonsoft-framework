@@ -1,19 +1,117 @@
 @use "../../abstract" as *;
+@use "sass:map";
 @use "sass:color";
 @use "icon";
 
-/* =========================================
+/* =========================================================
    Component: AppButton
-   설명: 공통 버튼 컴포넌트
-   구조: BEM (Block / Element / Modifier)
-   사용: CTA / Form / Action Button
-========================================= */
+========================================================= */
+
+/* =========================================================
+   Tone Tokens
+========================================================= */
+
+$btn-tones: (
+    "primary": $primary-500,
+    "secondary": $gray-700,
+    "gray": $gray-700,
+    "danger": $status-error,
+    "warning": $status-warning,
+    "success": $status-success,
+    "info": $status-info
+);
+
+/* =========================================================
+   Size Tokens
+========================================================= */
+
+$btn-sizes: (
+    xl: (min-width: 88px, height:56px, padding:16px, gap:4px, radius: 6px, font:btn1, weight:sb),
+    lg: (min-width: 80px, height:48px, padding:16px, gap:4px, radius: 6px, font:btn2, weight:sb),
+    md: (min-width: 80px, height:44px, padding:16px, gap:2px, radius: 6px, font:btn2, weight:sb),
+    sm: (min-width: 68px, height:36px, padding:12px, gap:2px, radius: 4px, font:btn3, weight:rg),
+    xs: (min-width: 58px, height:24px, padding:8px, gap:2px, radius: 4px, font:btn4, weight:rg)
+);
+
+/* =========================================================
+   Variant Mixin
+========================================================= */
+
+@mixin btn-variant($variant, $btn-color) {
+
+    $hover: color.adjust($btn-color, $lightness: -6%);
+    $active: color.adjust($btn-color, $lightness: -10%);
+    $focus: color.adjust($btn-color, $lightness: 18%);
+
+    @if $variant ==fill {
+
+        --btn-bg:#{$btn-color};
+        --btn-fg:#{$gray-0};
+        --btn-bd: transparent;
+
+        --btn-bg-hover:#{$hover};
+        --btn-bg-active:#{$active};
+
+    }
+
+    @else if $variant ==outline {
+
+        --btn-bg: transparent;
+        --btn-fg:#{$btn-color};
+        --btn-bd:#{$btn-color};
+
+        --btn-bg-hover:#{rgba($btn-color,.06)};
+        --btn-bg-active:#{rgba($btn-color,.10)};
+
+        --btn-fg-hover:#{$hover};
+        --btn-fg-active:#{$active};
+
+        --btn-bd-hover:#{$hover};
+        --btn-bd-active:#{$active};
+
+    }
+
+    @else if $variant ==text {
+
+        --btn-bg: transparent;
+        --btn-fg:#{$btn-color};
+        --btn-bd: transparent;
+
+        --btn-fg-hover:#{$hover};
+        --btn-fg-active:#{$active};
+
+        padding-inline: 0;
+
+    }
+
+    @else if $variant ==underline {
+
+        --btn-bg: transparent;
+        --btn-fg:#{$btn-color};
+        --btn-bd: transparent;
+
+        --btn-fg-hover:#{$hover};
+        --btn-fg-active:#{$active};
+
+        padding-inline: 0;
+
+        text-decoration: underline;
+        text-underline-offset: 3px;
+
+    }
+
+    --btn-focus:#{$focus};
+}
+
+/* =========================================================
+   Button
+========================================================= */
 
 .app-button {
 
-    /* ----------------------------------------
+    /* -------------------------------------------------------
      Base
-  ---------------------------------------- */
+  ------------------------------------------------------- */
 
     @include font(btn2, rg);
 
@@ -24,8 +122,13 @@
     gap: 8px;
     padding: 0 16px;
 
+    min-width: 0;
+
     border: 1px solid transparent;
-    border-radius: 10px;
+    border-radius: 0;
+
+    background: transparent;
+    color: $gray-900;
 
     text-decoration: none;
     white-space: nowrap;
@@ -34,6 +137,9 @@
     cursor: pointer;
     flex-shrink: 0;
 
+    appearance: none;
+    -webkit-appearance: none;
+
     transition:
         background-color .15s ease,
         border-color .15s ease,
@@ -41,46 +147,23 @@
         opacity .15s ease,
         box-shadow .15s ease;
 
-    /* custom 버튼 override 허용 */
-    &:not([class*="app-button--custom"]) {
-        border-radius: 10px;
-    }
-
-    /* 접근성 */
-    &:focus-visible {
-        outline: 2px solid $primary-300;
-        outline-offset: 2px;
-    }
-
-
-    /* ----------------------------------------
-     Element
-  ---------------------------------------- */
-
-    &__icon {
-        @extend .app-icon;
-    }
-
-    &__label {
-        display: inline-flex;
-        align-items: center;
-    }
-
-
-    /* ----------------------------------------
-     Design tokens (CSS variables)
-  ---------------------------------------- */
+    /* -------------------------------------------------------
+     CSS Variables
+  ------------------------------------------------------- */
 
     --btn-bg: transparent;
-    --btn-fg: #{$gray-900};
+    --btn-fg:#{$gray-900};
     --btn-bd: transparent;
+
     --btn-bg-hover: transparent;
     --btn-fg-hover: var(--btn-fg);
     --btn-bd-hover: var(--btn-bd);
+
     --btn-bg-active: transparent;
     --btn-fg-active: var(--btn-fg);
     --btn-bd-active: var(--btn-bd);
-    --btn-focus: #{$primary-300};
+
+    --btn-focus:#{$primary-300};
 
     background: var(--btn-bg);
     color: var(--btn-fg);
@@ -98,148 +181,116 @@
         border-color: var(--btn-bd-active);
     }
 
-
-    /* ----------------------------------------
-     Size Modifiers
-  ---------------------------------------- */
-
-    &--sm {
-        height: 32px;
-        padding: 0 12px;
-        gap: 6px;
-
-        @include font(btn3, rg);
+    &:focus-visible {
+        outline: 2px solid var(--btn-focus);
+        outline-offset: 2px;
     }
 
-    &--md {
-        height: 40px;
-        padding: 0 16px;
-        gap: 8px;
+    /* -------------------------------------------------------
+     Elements
+  ------------------------------------------------------- */
 
-        @include font(btn2, rg);
+    &__icon {
+        @extend .app-icon;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
     }
 
-    &--lg {
-        height: 48px;
-        padding: 0 20px;
-        gap: 10px;
-
-        @include font(btn1, rg);
+    &__label {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
     }
 
-    /* ----------------------------------------
-     Tone
-  ---------------------------------------- */
+    /* -------------------------------------------------------
+     Shape
+  ------------------------------------------------------- */
 
-    $tone-colors: (
-        default: $primary-500,
-        gray: $gray-700,
-        danger: $status-error,
-    );
-
-    @function tone-color($tone) {
-        $c: map-get($tone-colors, $tone);
-        @if $c == null {
-            @return $primary-500;
-        }
-        @return $c;
+    &--shape-square {
+        border-radius: 0;
     }
 
-    /* ----------------------------------------
-     Variant styles via mixin
-  ---------------------------------------- */
+    &--shape-round {
+        border-radius: 6px;
+    }
 
-    @mixin apply-variant($variant, $tone) {
-        $c: tone-color($tone);
-        $hover: color.adjust($c, $lightness: -6%);
-        $active: color.adjust($c, $lightness: -10%);
+    &--shape-pill {
+        border-radius: 999px;
+    }
 
-        @if $variant == primary {
-            --btn-bg: #{$c};
-            --btn-fg: #{$gray-0};
-            --btn-bd: transparent;
-            --btn-bg-hover: #{$hover};
-            --btn-bg-active: #{$active};
-            --btn-focus: #{color.adjust($c, $lightness: 14%)};
-        } @else if $variant == secondary {
-            --btn-bg: #{rgba($c, .12)};
-            --btn-fg: #{$c};
-            --btn-bd: transparent;
-            --btn-bg-hover: #{rgba($c, .18)};
-            --btn-bg-active: #{rgba($c, .24)};
-            --btn-focus: #{color.adjust($c, $lightness: 18%)};
-        } @else if $variant == outline {
-            --btn-bg: transparent;
-            --btn-fg: #{$c};
-            --btn-bd: #{$c};
-            --btn-bg-hover: #{rgba($c, .06)};
-            --btn-fg-hover: #{$hover};
-            --btn-bd-hover: #{$hover};
-            --btn-bg-active: #{rgba($c, .10)};
-            --btn-fg-active: #{$active};
-            --btn-bd-active: #{$active};
-            --btn-focus: #{color.adjust($c, $lightness: 18%)};
-        } @else if $variant == ghost {
-            --btn-bg: transparent;
-            --btn-fg: #{$c};
-            --btn-bd: transparent;
-            --btn-bg-hover: #{rgba($c, .08)};
-            --btn-bg-active: #{rgba($c, .14)};
-            --btn-focus: #{color.adjust($c, $lightness: 18%)};
-        } @else if $variant == text {
-            --btn-bg: transparent;
-            --btn-fg: #{$c};
-            --btn-bd: transparent;
-            --btn-bg-hover: transparent;
-            --btn-fg-hover: #{$hover};
-            --btn-bg-active: transparent;
-            --btn-fg-active: #{$active};
-            --btn-focus: #{color.adjust($c, $lightness: 18%)};
-            padding-left: 0;
-            padding-right: 0;
+    /* -------------------------------------------------------
+     Size
+  ------------------------------------------------------- */
+
+    @each $size, $data in $btn-sizes {
+
+        &--size-#{$size} {
+
+            min-width: map.get($data, min-width);
+            height: map.get($data, height);
+            padding-inline: map.get($data, padding);
+            gap: map.get($data, gap);
+            border-radius: map.get($data, radius);
+
+            @include font(map.get($data, font), map.get($data, weight));
         }
     }
 
-    /* ----------------------------------------
-     Variants (default tone)
-  ---------------------------------------- */
+    /* -------------------------------------------------------
+     Variant 기본
+  ------------------------------------------------------- */
 
-    &--primary {
-        @include apply-variant(primary, default);
-    }
-    &--secondary {
-        @include apply-variant(secondary, default);
-    }
-    &--outline {
-        @include apply-variant(outline, default);
-    }
-    &--ghost {
-        @include apply-variant(ghost, default);
-    }
-    &--text {
-        @include apply-variant(text, default);
+    &--variant-fill {
+        @include btn-variant(fill, $primary-500);
     }
 
-    /* tone overrides */
-    &--tone-gray {
-        &.app-button--primary { @include apply-variant(primary, gray); }
-        &.app-button--secondary { @include apply-variant(secondary, gray); }
-        &.app-button--outline { @include apply-variant(outline, gray); }
-        &.app-button--ghost { @include apply-variant(ghost, gray); }
-        &.app-button--text { @include apply-variant(text, gray); }
+    &--variant-outline {
+        @include btn-variant(outline, $primary-500);
     }
 
-    &--tone-danger {
-        &.app-button--primary { @include apply-variant(primary, danger); }
-        &.app-button--secondary { @include apply-variant(secondary, danger); }
-        &.app-button--outline { @include apply-variant(outline, danger); }
-        &.app-button--ghost { @include apply-variant(ghost, danger); }
-        &.app-button--text { @include apply-variant(text, danger); }
+    &--variant-text {
+        @include btn-variant(text, $primary-500);
     }
 
-    /* ----------------------------------------
-     State modifiers
-  ---------------------------------------- */
+    &--variant-underline {
+        @include btn-variant(underline, $primary-500);
+    }
+
+    /* -------------------------------------------------------
+     Tone Override
+  ------------------------------------------------------- */
+
+    @each $tone, $btn-color in $btn-tones {
+
+        &--tone-#{$tone} {
+
+            &.app-button--variant-fill {
+                @include btn-variant(fill, $btn-color);
+            }
+
+            &.app-button--variant-outline {
+                @include btn-variant(outline, $btn-color);
+            }
+
+            &.app-button--variant-text {
+                @include btn-variant(text, $btn-color);
+            }
+
+            &.app-button--variant-underline {
+                @include btn-variant(underline, $btn-color);
+            }
+
+        }
+
+    }
+
+    /* -------------------------------------------------------
+     States
+  ------------------------------------------------------- */
 
     &--block {
         width: 100%;
@@ -255,33 +306,30 @@
         cursor: progress;
     }
 
-    /* 접근성 */
-    &:focus-visible {
-        outline: 2px solid var(--btn-focus);
-        outline-offset: 2px;
-    }
-
-    /* ----------------------------------------
-     Modifier: Icon Only
-  ---------------------------------------- */
+    /* -------------------------------------------------------
+     Icon Only
+  ------------------------------------------------------- */
 
     &--icon-only {
 
         padding: 0;
         gap: 0;
 
-        &.app-button--sm {
-            width: 32px;
-        }
+        @each $size, $data in $btn-sizes {
 
-        &.app-button--md {
-            width: 40px;
-        }
+            &.app-button--size-#{$size} {
+                width: map.get($data, height);
+            }
 
-        &.app-button--lg {
-            width: 48px;
         }
+    }
 
+    /* -------------------------------------------------------
+     Custom size
+  ------------------------------------------------------- */
+
+    &--custom {
+        padding: 0;
     }
 
 }

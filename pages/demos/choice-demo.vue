@@ -55,7 +55,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="primary" @click="reset">초기화</AppButton>
+                            <AppButton variant="fill" @click="reset">초기화</AppButton>
                         </div>
                     </section>
                     <section class="page-demo-card">

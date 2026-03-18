@@ -20,7 +20,7 @@
                         aria-label="탭 닫기"
                         @click="(e) => onClose(e, t.key)"
                     >
-                        <span class="route-tabs__close-icon" aria-hidden="true" v-html="XmarkSvg" />
+                        <Icon class="route-tabs__close-icon" icon="mdi:close" />
                     </button>
                 </li>
             </ul>
@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import XmarkSvg from '~/assets/icons/12/ic-xmark.svg?raw'
 import { useRouteTabsStore } from '~/core/stores/route-tabs'
 
 const router = useRouter()

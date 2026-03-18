@@ -3,7 +3,9 @@
         <section class="login__hero" aria-label="브랜드 이미지 영역">
             <div class="login__hero-inner">
                 <div class="login__brand">
-                    <div class="login__logo" aria-hidden="true" v-html="LogoSvg" />
+                    <div class="login__logo" aria-hidden="true">
+                        <Icon icon="mdi:application-braces-outline" />
+                    </div>
                     <p class="login__tagline">워크스페이스 + UI 데모를 위한 Jonsoft Framework</p>
                 </div>
 
@@ -23,7 +25,7 @@
                 <form class="login__form" @submit.prevent="onSubmit">
                     <AppInput v-model="email" name="email" type="email" label="이메일" placeholder="name@company.com" />
 
-                    <AppButton class="login__submit" type="submit" variant="primary" size="lg" :disabled="!canSubmit">
+                    <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
                         재설정 링크 보내기
                     </AppButton>
 
@@ -39,7 +41,6 @@
 </template>
 
 <script setup lang="ts">
-import LogoSvg from '@/assets/icons/logo.svg?raw'
 
 definePageMeta({
     layout: false,

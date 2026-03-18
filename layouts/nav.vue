@@ -13,7 +13,7 @@
                     ariaLabel="메모 추가"
                 >
                     <template #iconLeft>
-                        <span class="nav-action-icon" aria-hidden="true" v-html="EditIconSvg" />
+                        <Icon class="nav-action-icon" icon="mdi:pencil-outline" aria-hidden="true" />
                     </template>
                 </AppButton>
 
@@ -25,7 +25,7 @@
                     ariaLabel="메모 폴더 추가"
                 >
                     <template #iconLeft>
-                        <span class="nav-action-icon" aria-hidden="true" v-html="FolderPlusIconSvg" />
+                        <Icon class="nav-action-icon" icon="mdi:folder-plus-outline" aria-hidden="true" />
                     </template>
                 </AppButton>
 
@@ -37,7 +37,7 @@
                     ariaLabel="메모 필터 적용"
                 >
                     <template #iconLeft>
-                        <span class="nav-action-icon" aria-hidden="true" v-html="FilterIconSvg" />
+                        <Icon class="nav-action-icon" icon="mdi:filter-variant" aria-hidden="true" />
                     </template>
                 </AppButton>
 
@@ -49,7 +49,7 @@
                     ariaLabel="현재 열린 메모 표시"
                 >
                     <template #iconLeft>
-                        <span class="nav-action-icon" aria-hidden="true" v-html="TargetIconSvg" />
+                        <Icon class="nav-action-icon" icon="mdi:target" aria-hidden="true" />
                     </template>
                 </AppButton>
 
@@ -61,7 +61,7 @@
                     ariaLabel="메모 검색"
                 >
                     <template #iconLeft>
-                        <span class="nav-action-icon" aria-hidden="true" v-html="SearchIconSvg" />
+                        <Icon class="nav-action-icon" icon="mdi:magnify" aria-hidden="true" />
                     </template>
                 </AppButton>
             </div>
@@ -83,7 +83,7 @@
         <div class="layout-nav__footer">
             <AppButton variant="text" size="custom" :custom-size="{ width: 28 }" ariaLabel="테마 변경">
                 <template #iconLeft>
-                    <span class="nav-action-icon" aria-hidden="true" v-html="ThemeIconSvg" />
+                    <Icon class="nav-action-icon" icon="mdi:weather-night" aria-hidden="true" />
                 </template>
             </AppButton>
         </div>
@@ -93,14 +93,7 @@
 <script setup lang="ts">
 import PatternNavItem from '@/components/PatternNavItem.vue'
 import { MENUS } from '~/server/utils/menu-data'
-import TempIconSvg from '@/assets/icons/temp.svg?raw'
-import LogoIconSvg from '@/assets/icons/logo.svg?raw'
-import EditIconSvg from '@/assets/icons/20/ic-edit.svg?raw'
-import FolderPlusIconSvg from '@/assets/icons/20/ic-folder-plus.svg?raw'
-import FilterIconSvg from '@/assets/icons/20/ic-filter.svg?raw'
-import TargetIconSvg from '@/assets/icons/20/ic-target.svg?raw'
-import SearchIconSvg from '@/assets/icons/20/ic-search.svg?raw'
-import ThemeIconSvg from '@/assets/icons/20/ic-moon.svg?raw'
+import logoSvg from '~/assets/icons/logo.svg?raw'
 
 type Menu = {
     id: string
@@ -155,15 +148,7 @@ function buildMenuTreeAndSort(items: readonly Menu[]): Menu[] {
 
 const menuTree = computed(() => buildMenuTreeAndSort(MENUS as unknown as Menu[]))
 
-const ICON_SVGS: Record<string, string> = {
-    temp: TempIconSvg,
-    logo: LogoIconSvg,
-}
-
-const logoSvg = ICON_SVGS.logo
-
-function getIconSvg(icon?: string): string | null {
-    if (!icon) return null
-    return ICON_SVGS[icon] ?? null
+function getIconSvg() {
+    return null
 }
 </script>

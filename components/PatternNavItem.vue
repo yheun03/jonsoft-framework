@@ -26,11 +26,11 @@
                 @click.stop="open = !open"
             >
                 <template #iconLeft>
-                    <i
+                    <Icon
                         class="icon layout-nav__toggle-icon"
                         :class="{ 'is-open': open }"
+                        icon="mdi:chevron-right"
                         aria-hidden="true"
-                        v-html="ChevronRightSvg"
                     />
                 </template>
             </AppButton>
@@ -74,7 +74,6 @@
 </template>
 
 <script setup lang="ts">
-import ChevronRightSvg from '@/assets/icons/16/ic-chevron-right.svg?raw'
 
 type Menu = {
     id: string

@@ -4,49 +4,74 @@
             <main class="page-demo-main">
                 <header class="page-demo__header">
                     <h1 class="page-demo__title">Button Demo</h1>
-                    <p class="page-demo__desc">variant/size/icon/link/상태 케이스를 한 화면에서 확인합니다.</p>
+                    <p class="page-demo__desc">
+                        variant / shape / size / tone / icon / link / 상태 케이스를 한 화면에서 확인합니다.
+                    </p>
                 </header>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Variant</h2>
                     <div class="page-demo-row">
-                        <AppButton variant="primary" @click="log('primary')">primary</AppButton>
-                        <AppButton variant="secondary" @click="log('secondary')">secondary</AppButton>
+                        <AppButton variant="fill" @click="log('fill')">fill</AppButton>
                         <AppButton variant="outline" @click="log('outline')">outline</AppButton>
-                        <AppButton variant="ghost" @click="log('ghost')">ghost</AppButton>
                         <AppButton variant="text" @click="log('text')">text</AppButton>
+                        <AppButton variant="underline" @click="log('underline')">underline</AppButton>
                     </div>
                 </section>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Size</h2>
                     <div class="page-demo-row">
-                        <AppButton size="sm" @click="log('size:sm')">Small</AppButton>
-                        <AppButton size="md" @click="log('size:md')">Medium</AppButton>
-                        <AppButton size="lg" @click="log('size:lg')">Large</AppButton>
+                        <AppButton size="xs" @click="log('size:xs')">XS</AppButton>
+                        <AppButton size="sm" @click="log('size:sm')">SM</AppButton>
+                        <AppButton size="md" @click="log('size:md')">MD</AppButton>
+                        <AppButton size="lg" @click="log('size:lg')">LG</AppButton>
+                        <AppButton size="xl" @click="log('size:xl')">XL</AppButton>
+                    </div>
+                </section>
+
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">Shape</h2>
+                    <div class="page-demo-row">
+                        <AppButton variant="fill" shape="square" @click="log('shape:square')">Square</AppButton>
+                        <AppButton variant="fill" shape="round" @click="log('shape:round')">Round(6px)</AppButton>
+                        <AppButton variant="fill" shape="pill" @click="log('shape:pill')">Pill</AppButton>
+                    </div>
+                </section>
+
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">Tone</h2>
+                    <div class="page-demo-row">
+                        <AppButton variant="fill" tone="primary" @click="log('tone:primary')">Primary</AppButton>
+                        <AppButton variant="fill" tone="secondary" @click="log('tone:secondary')">Secondary</AppButton>
+                        <AppButton variant="outline" tone="gray" @click="log('tone:gray')">Gray</AppButton>
+                        <AppButton variant="fill" tone="danger" @click="log('tone:danger')">Danger</AppButton>
+                        <AppButton variant="fill" tone="warning" @click="log('tone:warning')">Warning</AppButton>
+                        <AppButton variant="fill" tone="success" @click="log('tone:success')">Success</AppButton>
+                        <AppButton variant="fill" tone="info" @click="log('tone:info')">Info</AppButton>
                     </div>
                 </section>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Icon</h2>
                     <div class="page-demo-row">
-                        <AppButton variant="primary" @click="log('icon:left')">
+                        <AppButton variant="fill" @click="log('icon:left')">
                             <template #iconLeft>
-                                <span class="page-demo-icon" aria-hidden="true" v-html="TempIconSvg" />
+                                <Icon class="page-demo-icon" icon="mdi:star-outline" aria-hidden="true" />
                             </template>
                             왼쪽 아이콘
                         </AppButton>
 
-                        <AppButton variant="primary" @click="log('icon:right')">
+                        <AppButton variant="fill" @click="log('icon:right')">
                             오른쪽 아이콘
                             <template #iconRight>
-                                <span class="page-demo-icon" aria-hidden="true" v-html="TempIconSvg" />
+                                <Icon class="page-demo-icon" icon="mdi:star-outline" aria-hidden="true" />
                             </template>
                         </AppButton>
 
-                        <AppButton variant="ghost" size="md" icon-only aria-label="아이콘 버튼" @click="log('icon:only')">
+                        <AppButton variant="text" size="md" icon-only aria-label="아이콘 버튼" @click="log('icon:only')">
                             <template #iconLeft>
-                                <span class="page-demo-icon" aria-hidden="true" v-html="TempIconSvg" />
+                                <Icon class="page-demo-icon" icon="mdi:star-outline" aria-hidden="true" />
                             </template>
                         </AppButton>
                     </div>
@@ -76,14 +101,14 @@
                         <AppButton :loading="true" @click="log('loading (should not)')">Loading</AppButton>
                         <AppButton :block="true" @click="log('block')">Block(100%)</AppButton>
                         <AppButton
-                            variant="ghost"
+                            variant="text"
                             size="custom"
                             :custom-size="{ width: 40, height: 40 }"
                             aria-label="커스텀 아이콘 버튼"
                             @click="log('custom size')"
                         >
                             <template #iconLeft>
-                                <span class="page-demo-icon" aria-hidden="true" v-html="TempIconSvg" />
+                                <Icon class="page-demo-icon" icon="mdi:star-outline" aria-hidden="true" />
                             </template>
                         </AppButton>
                     </div>
@@ -95,7 +120,7 @@
                     <section class="page-demo-card">
                         <h2 class="page-demo-card__title">Actions</h2>
                         <div class="page-demo-actions">
-                            <AppButton variant="primary" @click="clear">로그 비우기</AppButton>
+                            <AppButton variant="fill" @click="clear">로그 비우기</AppButton>
                         </div>
                     </section>
 
@@ -110,7 +135,6 @@
 </template>
 
 <script setup lang="ts">
-import TempIconSvg from '@/assets/icons/temp.svg?raw'
 
 type LogItem = { t: number; message: string }
 const logs = ref<LogItem[]>([])
