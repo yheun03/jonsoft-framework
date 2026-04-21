@@ -6,10 +6,10 @@
 ========================================= */
 
 $select-sizes: (
-    xs: (height: 36px, padding: 12px, icon: 16px),
-    sm: (height: 44px, padding: 14px, icon: 18px),
-    md: (height: 48px, padding: 16px, icon: 20px),
-    lg: (height: 56px, padding: 18px, icon: 22px)
+    xs: (height: 36px, padding-x: 12px, icon: 16px, gap: 8px),
+    sm: (height: 44px, padding-x: 16px, icon: 18px, gap: 8px),
+    md: (height: 48px, padding-x: 16px, icon: 20px, gap: 10px),
+    lg: (height: 56px, padding-x: 16px, icon: 22px, gap: 10px)
 );
 
 /* =========================================
@@ -24,41 +24,52 @@ $select-sizes: (
 
     &__control {
         position: relative;
+        overflow: visible;
     }
 
-    &__field {
+    &__trigger {
         width: 100%;
+        min-width: 0;
         box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
         background-color: transparent;
-        border: unset;
-        outline: unset;
+        border: 0;
+        outline: 0;
         color: inherit;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
         cursor: pointer;
-
-        &::placeholder {
-            color: $color-04-gray;
-        }
+        text-align: left;
 
         &:disabled {
             cursor: not-allowed;
         }
     }
 
-    &__icon {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+    &__value {
+        @include font(b3, rg);
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
+        &--placeholder {
+            color: $color-04-gray;
+        }
+    }
+
+    &__icon {
         display: flex;
         align-items: center;
         justify-content: center;
+        flex: 0 0 auto;
         pointer-events: none;
+        transition: transform 0.2s ease;
 
         &--right {
-            right: 12px;
+            flex-shrink: 0;
         }
 
         svg {
@@ -68,16 +79,69 @@ $select-sizes: (
         }
     }
 
+    &__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        width: 100%;
+        z-index: 30;
+        margin: 0;
+        padding: 6px 0;
+        list-style: none;
+        background-color: $bg-white;
+        border: 1px solid $line-regular;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        max-height: 240px;
+        overflow-y: auto;
+    }
+
+    &__option {
+        @include font(b3, rg);
+        padding: 10px 14px;
+        color: $color-02-black;
+        cursor: pointer;
+        transition: background-color 0.15s ease, color 0.15s ease;
+
+        &:hover {
+            background-color: $bg-light;
+        }
+
+        &.is-selected {
+            background-color: $bg-light;
+            color: $color-02-black;
+        }
+
+        &.is-disabled {
+            color: $color-05-gray-disabled;
+            cursor: not-allowed;
+            background-color: transparent;
+        }
+    }
+
+    /* -------------------------
+       State
+    ------------------------- */
+
+    &--open {
+        .app-select__icon--right {
+            transform: rotate(180deg);
+        }
+    }
+
     /* -------------------------
        Modifier: Size
     ------------------------- */
 
     @each $size, $data in $select-sizes {
         &--#{$size} {
-            .app-select__field {
+
+            .app-select__trigger,
+            .app-select__option {
                 height: map.get($data, height);
-                padding-left: map.get($data, padding);
-                padding-right: calc(#{map.get($data, padding)} + #{map.get($data, icon)} + 12px);
+                padding-inline: map.get($data, padding-x);
+                gap: map.get($data, gap);
+                align-content: center;
             }
 
             .app-select__icon {
@@ -106,26 +170,20 @@ $select-sizes: (
     &--shape-pill {
         .app-select__control {
             border-radius: 999px;
+        }
 
-            .app-select__field {
-                padding-left: 20px;
-                padding-right: 48px;
-            }
+        .app-select__trigger {
+            padding-inline: 20px;
         }
     }
 
     &--shape-underline {
         .app-select__control {
-            border-width: 0 0 1px 0;
-
-            .app-select__field {
-                padding-left: 0;
-                padding-right: 28px;
-            }
+            border-width: 0 0 1px;
         }
 
-        .app-select__icon--right {
-            right: 0;
+        .app-select__trigger {
+            padding-inline: 0;
         }
     }
 }
