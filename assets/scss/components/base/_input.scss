@@ -1,8 +1,8 @@
-@use "../../abstract/variables" as *;
+@use "abstract/index" as *;
 @use "sass:map";
 
 /* =========================================
-   Component: AppInput
+   Config
 ========================================= */
 
 $input-sizes: (
@@ -12,267 +12,163 @@ $input-sizes: (
     lg: (height: 56px, padding: 18px, icon: 22px)
 );
 
+/* =========================================
+   Component: AppInput
+========================================= */
+
 .app-input {
+    @extend .form-field;
 
-    /* =========================================
-     Layout
-  ========================================= */
-
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-
-
-    /* =========================================
-     Element: Label
-  ========================================= */
+    /* -------------------------
+       Element
+    ------------------------- */
 
     &__label {
-
-        font-size: 14px;
-        color: $gray-800;
-
+        @extend .form-field__label;
     }
-
-
-    /* =========================================
-     Element: Control
-  ========================================= */
 
     &__control {
-
-        position: relative;
-
-        display: flex;
-        align-items: center;
-
+        @extend .form-field__control;
     }
 
-
-    /* =========================================
-     Element: Field
-  ========================================= */
-
     &__field {
-
         width: 100%;
+        box-sizing: border-box;
 
         border: 1px solid $gray-300;
         background: $gray-0;
-
         color: $gray-900;
-
         outline: none;
 
         transition:
-            border-color .15s,
-            box-shadow .15s;
+            border-color 0.15s,
+            box-shadow 0.15s;
 
         &::placeholder {
             color: $gray-600;
         }
-
     }
 
+    &__hint {
+        @extend .form-field__hint;
+    }
 
-    /* =========================================
-     Element: Icon
-  ========================================= */
+    &__error {
+        @extend .form-field__error;
+    }
 
     &__icon {
-
         position: absolute;
-
         top: 50%;
-        left: 12px;
-
         transform: translateY(-50%);
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        pointer-events: none;
-
-        svg {
-
-            width: 18px;
-            height: 18px;
-
-            color: $gray-600;
-
+        &--left {
+            left: 12px;
         }
 
+        &--right {
+            right: 12px;
+            pointer-events: auto;
+        }
     }
 
-
-    /* =========================================
-     Element: Hint
-  ========================================= */
-
-    &__hint {
-
-        margin: 0;
-
-        font-size: 13px;
-
-        color: $gray-600;
-
-    }
-
-
-    /* =========================================
-     Element: Error
-  ========================================= */
-
-    &__error {
-
-        margin: 0;
-
-        font-size: 13px;
-
-        color: $status-error;
-
-    }
-
-
-    /* =========================================
-     Modifier: Icon
-  ========================================= */
+    /* -------------------------
+       Modifier: Icon
+    ------------------------- */
 
     &--icon-left {
-
         .app-input__field {
             padding-left: 40px;
         }
-
     }
 
     &--icon-right {
-
         .app-input__field {
             padding-right: 40px;
         }
-
     }
 
-
-    /* =========================================
-     Modifier: Size
-  ========================================= */
+    /* -------------------------
+       Modifier: Size
+    ------------------------- */
 
     @each $size, $data in $input-sizes {
-
         &--#{$size} {
-
             .app-input__field {
-
                 height: map.get($data, height);
-
-                padding-left: map.get($data, padding);
-                padding-right: map.get($data, padding);
-
+                padding-inline: map.get($data, padding);
             }
 
+            .app-input__icon {
+                width: map.get($data, icon);
+                height: map.get($data, icon);
+            }
         }
-
     }
 
-
-    /* =========================================
-     Modifier: Shape
-  ========================================= */
+    /* -------------------------
+       Modifier: Shape
+    ------------------------- */
 
     &--shape-square {
-
         .app-input__field {
             border-radius: 0;
         }
-
     }
 
     &--shape-round {
-
         .app-input__field {
             border-radius: 6px;
         }
-
     }
 
     &--shape-pill {
-
         .app-input__field {
             border-radius: 999px;
+            padding-inline: 20px;
         }
-
     }
 
     &--shape-underline {
-
         .app-input__field {
-
-            border: none;
+            padding-inline: 0;
+            border: 0;
             border-bottom: 1px solid $gray-300;
-
             border-radius: 0;
-
         }
-
     }
 
-
-    /* =========================================
-     State
-  ========================================= */
+    /* -------------------------
+       State
+    ------------------------- */
 
     &.is-error {
-
         .app-input__field {
             border-color: $status-error;
         }
-
-        .app-input__hint,
-        .app-input__error {
-            color: $status-error;
-        }
-
     }
 
     &.is-warning {
-
         .app-input__field {
             border-color: $status-warning;
         }
-
-        .app-input__hint {
-            color: $status-warning;
-        }
-
     }
 
     &.is-success {
-
         .app-input__field {
             border-color: $status-success;
         }
-
-        .app-input__hint {
-            color: $status-success;
-        }
-
     }
 
     &.is-disabled {
-
         .app-input__field {
-
             background: $gray-100;
             color: $gray-500;
-
             cursor: not-allowed;
-
         }
-
     }
-
 }

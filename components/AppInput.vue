@@ -6,32 +6,61 @@
         `app-input--shape-${shape}`,
         {
             'app-input--icon-left': hasIconLeft,
-            'app-input--icon-right': hasIconRight,
+            'app-input--icon-right': hasIconRight || clearable || passwordToggle,
             'is-disabled': disabled,
             [`is-${state}`]: state
         }
     ]">
 
         <!-- label -->
+
         <label v-if="label" class="app-input__label" :for="inputId">
             {{ label }}
         </label>
 
 
         <!-- control -->
+
         <div class="app-input__control">
 
-            <!-- icon left -->
+
+            <!-- left icon -->
+
             <span v-if="hasIconLeft" class="app-input__icon app-input__icon--left">
                 <slot name="iconLeft" />
             </span>
 
-            <!-- input -->
-            <input :id="inputId" class="app-input__field" :type="type" :value="value" :placeholder="placeholder"
-                :name="name" :autocomplete="autocomplete" :disabled="disabled" :readonly="readonly"
-                :aria-invalid="state === 'error'" :aria-describedby="hintId" @input="onInput" />
 
-            <!-- icon right -->
+            <!-- input -->
+
+            <input :id="inputId" class="app-input__field" :type="computedType" :value="modelValue ?? ''"
+                :placeholder="placeholder" :name="name" :autocomplete="autocomplete" :disabled="disabled"
+                :readonly="readonly" :aria-invalid="state === 'error'" :aria-describedby="describedBy"
+                @input="onInput" />
+
+
+            <!-- clear -->
+
+            <button v-if="clearable && modelValue" class="app-input__icon app-input__icon--right" type="button"
+                @click="clear">
+
+                <Icon icon="mdi:close" />
+
+            </button>
+
+
+            <!-- password toggle -->
+
+            <button v-if="passwordToggle" class="app-input__icon app-input__icon--right" type="button"
+                @click="togglePassword">
+
+                <Icon :icon="showPassword ? 'mdi:eye-off' : 'mdi:eye'" />
+
+            </button>
+
+
+            <!-- slot right -->
+
             <span v-if="hasIconRight" class="app-input__icon app-input__icon--right">
                 <slot name="iconRight" />
             </span>
@@ -40,12 +69,14 @@
 
 
         <!-- hint -->
-        <p v-if="hint && state !== 'error'" class="app-input__hint" :id="hintId">
+
+        <p v-if="hint && !state" class="app-input__hint" :id="hintId">
             {{ hint }}
         </p>
 
 
         <!-- error -->
+
         <p v-if="state === 'error'" class="app-input__error" :id="hintId">
             {{ hint }}
         </p>
@@ -55,27 +86,15 @@
 </template>
 
 
-<script setup lang="ts">
-import { computed, useSlots } from 'vue'
 
-/* types */
+<script setup lang="ts">
+
+import { computed, useSlots, ref } from 'vue'
 
 type InputSize = 'xs' | 'sm' | 'md' | 'lg'
+type InputShape = 'square' | 'round' | 'pill' | 'underline'
+type InputState = 'error' | 'warning' | 'success' | null
 
-type InputShape =
-    | 'square'
-    | 'round'
-    | 'pill'
-    | 'underline'
-
-type InputState =
-    | 'error'
-    | 'warning'
-    | 'success'
-    | null
-
-
-/* props */
 
 const props = withDefaults(
     defineProps<{
@@ -96,6 +115,9 @@ const props = withDefaults(
         disabled?: boolean
         readonly?: boolean
 
+        clearable?: boolean
+        passwordToggle?: boolean
+
         id?: string
         name?: string
         autocomplete?: string
@@ -107,50 +129,66 @@ const props = withDefaults(
         state: null,
         type: 'text',
         disabled: false,
-        readonly: false
-    }
-)
+        readonly: false,
+        clearable: false,
+        passwordToggle: false
+    })
 
 
-/* emits */
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string): void
 }>()
 
 
-/* slots */
+const fallbackId = useId()
+
+const inputId = computed(() => props.id ?? `app-input-${fallbackId}`)
+
+const hintId = computed(() => `hint-${inputId.value}`)
+
+const describedBy = computed(() => props.hint ? hintId.value : undefined)
+
 
 const slots = useSlots()
 
 const hasIconLeft = computed(() => !!slots.iconLeft)
+
 const hasIconRight = computed(() => !!slots.iconRight)
 
 
-/* value */
+/* password */
 
-const value = computed(() =>
-    props.modelValue ?? ''
-)
+const showPassword = ref(false)
 
+const computedType = computed(() => {
 
-/* id */
+    if (props.passwordToggle) {
+        return showPassword.value ? 'text' : 'password'
+    }
 
-const fallbackId = useId()
+    return props.type
 
-const inputId = computed(() =>
-    props.id ?? `app-input-${fallbackId}`
-)
-
-
-/* aria */
-
-const hintId = computed(() =>
-    props.hint ? `hint-${inputId.value}` : undefined
-)
+})
 
 
-/* events */
+function togglePassword() {
+
+    showPassword.value = !showPassword.value
+
+}
+
+
+/* clear */
+
+function clear() {
+
+    emit('update:modelValue', '')
+
+}
+
+
+/* input */
 
 function onInput(e: Event) {
 
@@ -159,4 +197,5 @@ function onInput(e: Event) {
     emit('update:modelValue', target.value)
 
 }
+
 </script>

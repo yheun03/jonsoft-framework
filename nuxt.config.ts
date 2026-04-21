@@ -60,4 +60,9 @@ export default defineNuxtConfig({
             apiBase: '/api',
         },
     },
+
+    // GitHub Pages 배포 대응
+    nitro: {
+        preset: "static"
+    }
 })

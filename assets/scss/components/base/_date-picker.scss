@@ -1,19 +1,77 @@
-@use "../../abstract" as *;
+@use "abstract/index" as *;
 
 /* =========================================
    Component: AppDatePicker
 ========================================= */
 
-.app-date-picker {}
+.app-date-picker {
+    @extend .form-field;
 
-.app-date-picker__field {
-    @include app-field-box;
-}
+    /* -------------------------
+       Element
+    ------------------------- */
 
-.form-field.is-disabled {
-    @include app-field-disabled(".app-date-picker__field");
-}
+    &__label {
+        @extend .form-field__label;
+    }
 
-.form-field.is-error {
-    @include app-field-error-border(".app-date-picker__field");
+    &__control {
+        @extend .form-field__control;
+    }
+
+    &__field {
+        width: 100%;
+        box-sizing: border-box;
+
+        border: 1px solid $gray-300;
+        background: $gray-0;
+        color: $gray-900;
+        outline: none;
+
+        transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
+
+        &::placeholder {
+            color: $gray-600;
+        }
+    }
+
+    &__hint {
+        @extend .form-field__hint;
+    }
+
+    &__error {
+        @extend .form-field__error;
+    }
+
+    /* -------------------------
+       State
+    ------------------------- */
+
+    &.is-error {
+        .app-date-picker__field {
+            border-color: $status-error;
+        }
+    }
+
+    &.is-warning {
+        .app-date-picker__field {
+            border-color: $status-warning;
+        }
+    }
+
+    &.is-success {
+        .app-date-picker__field {
+            border-color: $status-success;
+        }
+    }
+
+    &.is-disabled {
+        .app-date-picker__field {
+            background: $gray-100;
+            color: $gray-500;
+            cursor: not-allowed;
+        }
+    }
 }

@@ -114,16 +114,13 @@
 
                     <div class="page-demo-grid">
 
-                        <AppInput v-model="icon" label="검색" placeholder="검색어">
-
+                        <AppInput v-model="search" placeholder="검색어">
                             <template #iconLeft>
-
-                                <Icon icon="mdi:magnify" class="page-demo-icon" />
-
+                                <Icon icon="mdi:magnify" />
                             </template>
-
                         </AppInput>
-
+                        <AppInput v-model="search" placeholder="검색" clearable />
+                        <AppInput v-model="password" placeholder="비밀번호" type="password" passwordToggle />
                     </div>
 
                 </section>
@@ -213,6 +210,7 @@ const basic = ref('')
 const email = ref('')
 const search = ref('')
 const icon = ref('')
+const password = ref('')
 
 const sizes = reactive({
     xs: '',

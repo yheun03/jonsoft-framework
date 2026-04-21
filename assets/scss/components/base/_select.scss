@@ -1,24 +1,90 @@
-@use "../../abstract" as *;
+@use "abstract/index" as *;
 
 /* =========================================
    Component: AppSelect
 ========================================= */
 
-.app-select {}
+.app-select {
+    @extend .form-field;
 
-.app-select__field {
-    @include app-field-box;
-    cursor: pointer;
-}
+    /* -------------------------
+       Element
+    ------------------------- */
 
-.app-select__search-input {
-    @include app-field-box;
-}
+    &__label {
+        @extend .form-field__label;
+    }
 
-.form-field.is-disabled {
-    @include app-field-disabled(".app-select__field, .app-select__search-input");
-}
+    &__control {
+        @extend .form-field__control;
+    }
 
-.form-field.is-error {
-    @include app-field-error-border(".app-select__field");
+    &__field,
+    &__search-input {
+        width: 100%;
+        box-sizing: border-box;
+
+        border: 1px solid $gray-300;
+        background: $gray-0;
+        color: $gray-900;
+        outline: none;
+
+        transition:
+            border-color 0.15s,
+            box-shadow 0.15s;
+
+        &::placeholder {
+            color: $gray-600;
+        }
+    }
+
+    &__field {
+        cursor: pointer;
+    }
+
+    &__hint {
+        @extend .form-field__hint;
+    }
+
+    &__error {
+        @extend .form-field__error;
+    }
+
+    /* -------------------------
+       State
+    ------------------------- */
+
+    &.is-error {
+
+        .app-select__field,
+        .app-select__search-input {
+            border-color: $status-error;
+        }
+    }
+
+    &.is-warning {
+
+        .app-select__field,
+        .app-select__search-input {
+            border-color: $status-warning;
+        }
+    }
+
+    &.is-success {
+
+        .app-select__field,
+        .app-select__search-input {
+            border-color: $status-success;
+        }
+    }
+
+    &.is-disabled {
+
+        .app-select__field,
+        .app-select__search-input {
+            background: $gray-100;
+            color: $gray-500;
+            cursor: not-allowed;
+        }
+    }
 }
