@@ -15,6 +15,7 @@
     ------------------------- */
 
     &__label {
+        @include font(b3, rg);
         color: $gray-800;
     }
 

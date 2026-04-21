@@ -72,25 +72,24 @@ $typography-scale: (
 
 @function typography-scale($key) {
     $value: map.get($typography-scale, $key);
-    @if $value == null {
+
+    @if $value ==null {
         @error "Unknown typography token `#{$key}`.";
     }
+
     @return $value;
 }
 
-@mixin font($token, $weight-key) {
+@mixin font($token, $weight-key, $ls: $letter-spacing) {
     $scale: typography-scale($token);
     $size: map.get($scale, size);
     $lh: map.get($scale, lh);
     $weight: map.get($font-weight, $weight-key);
 
-    @if $weight == null {
+    @if $weight ==null {
         @error "Unknown font-weight token `#{$weight-key}`.";
     }
 
-    font-family: $font-family-base;
-    font-size: $size;
-    line-height: $lh;
-    font-weight: $weight;
-    letter-spacing: $letter-spacing;
+    font: $weight #{$size}/#{$lh} $font-family-base;
+    letter-spacing: $ls;
 }
