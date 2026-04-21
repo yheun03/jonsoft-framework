@@ -19,6 +19,7 @@
         @include font(b3, rg);
         color: $color-02-black;
         margin-bottom: 12px;
+        transition: 0.15s;
     }
 
     &__hint {
@@ -33,6 +34,16 @@
         background-color: $bg-white;
         border: 1px solid $line-regular;
         overflow: hidden;
+        transition: 0.15s;
+
+        &:hover {
+            background-color: $bg-light;
+        }
+
+        &:focus,
+        &:focus-within {
+            border-color: $line-black;
+        }
     }
 
 
@@ -42,15 +53,16 @@
 
     &.is-disabled {
         .form-field__control {
-            opacity: 0.7;
             cursor: not-allowed;
+            background-color: $bg-light;
+            color: $color-05-gray-disabled;
         }
     }
 
     &.is-error {
 
 
-        &__control {
+        .form-field__control {
             border-color: $status-error;
         }
 
@@ -61,7 +73,7 @@
 
     &.is-warning {
 
-        &__control {
+        .form-field__control {
             border-color: $status-warning;
         }
 
@@ -72,7 +84,7 @@
 
     &.is-success {
 
-        &__control {
+        .form-field__control {
             border-color: $status-success;
         }
 

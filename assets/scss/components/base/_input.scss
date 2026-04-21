@@ -26,13 +26,10 @@ $input-sizes: (
     &__field {
         width: 100%;
         box-sizing: border-box;
-
+        background-color: transparent;
         border: unset;
         outline: unset;
-
-        transition:
-            border-color 0.15s,
-            box-shadow 0.15s;
+        color: inherit;
 
         &::placeholder {
             color: $color-04-gray;
