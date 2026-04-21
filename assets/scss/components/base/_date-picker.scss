@@ -5,19 +5,11 @@
 ========================================= */
 
 .app-date-picker {
-    @extend .form-field;
 
     /* -------------------------
        Element
     ------------------------- */
 
-    &__label {
-        @extend .form-field__label;
-    }
-
-    &__control {
-        @extend .form-field__control;
-    }
 
     &__field {
         width: 100%;
@@ -37,13 +29,6 @@
         }
     }
 
-    &__hint {
-        @extend .form-field__hint;
-    }
-
-    &__error {
-        @extend .form-field__error;
-    }
 
     /* -------------------------
        State

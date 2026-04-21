@@ -8,15 +8,24 @@
 .form-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+
+    background-color: $bg-white;
+    border: 1px solid $line-regular;
 
     /* -------------------------
        Element
     ------------------------- */
 
-    &__label {
+    &__label,
+    &__hint {
         @include font(b3, rg);
-        color: $gray-800;
+        color: $color-02-black;
+        margin-bottom: 12px;
+    }
+
+    &__hint {
+        margin-bottom: unset;
+        margin-top: 8px;
     }
 
     &__control {
@@ -25,21 +34,6 @@
         align-items: center;
     }
 
-    &__hint {
-        margin: 0;
-        margin-top: 8px;
-        font-size: 14px;
-        line-height: 1.4;
-        color: $gray-600;
-    }
-
-    &__error {
-        margin: 0;
-        margin-top: 8px;
-        font-size: 14px;
-        line-height: 1.4;
-        color: $status-error;
-    }
 
     /* -------------------------
        State
@@ -54,8 +48,7 @@
 
     &.is-error {
 
-        .form-field__hint,
-        .form-field__error {
+        .form-field__hint {
             color: $status-error;
         }
     }

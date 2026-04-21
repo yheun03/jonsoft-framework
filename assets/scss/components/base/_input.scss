@@ -17,19 +17,11 @@ $input-sizes: (
 ========================================= */
 
 .app-input {
-    @extend .form-field;
 
     /* -------------------------
        Element
     ------------------------- */
 
-    &__label {
-        @extend .form-field__label;
-    }
-
-    &__control {
-        @extend .form-field__control;
-    }
 
     &__field {
         width: 100%;
@@ -47,14 +39,6 @@ $input-sizes: (
         &::placeholder {
             color: $gray-600;
         }
-    }
-
-    &__hint {
-        @extend .form-field__hint;
-    }
-
-    &__error {
-        @extend .form-field__error;
     }
 
     &__icon {

@@ -1,6 +1,7 @@
 <template>
 
     <div :class="[
+        'form-field',
         'app-input',
         `app-input--${size}`,
         `app-input--shape-${shape}`,
@@ -14,14 +15,14 @@
 
         <!-- label -->
 
-        <label v-if="label" class="app-input__label" :for="inputId">
+        <label v-if="label" class="form-field__label app-input__label" :for="inputId">
             {{ label }}
         </label>
 
 
         <!-- control -->
 
-        <div class="app-input__control">
+        <div class="form-field__control app-input__control">
 
 
             <!-- left icon -->
@@ -70,14 +71,7 @@
 
         <!-- hint -->
 
-        <p v-if="hint && !state" class="app-input__hint" :id="hintId">
-            {{ hint }}
-        </p>
-
-
-        <!-- error -->
-
-        <p v-if="state === 'error'" class="app-input__error" :id="hintId">
+        <p v-if="hint" class="app-input__hint" :id="hintId">
             {{ hint }}
         </p>
 

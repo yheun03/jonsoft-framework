@@ -5,19 +5,11 @@
 ========================================= */
 
 .app-select {
-    @extend .form-field;
 
     /* -------------------------
        Element
     ------------------------- */
 
-    &__label {
-        @extend .form-field__label;
-    }
-
-    &__control {
-        @extend .form-field__control;
-    }
 
     &__field,
     &__search-input {
@@ -40,14 +32,6 @@
 
     &__field {
         cursor: pointer;
-    }
-
-    &__hint {
-        @extend .form-field__hint;
-    }
-
-    &__error {
-        @extend .form-field__error;
     }
 
     /* -------------------------
