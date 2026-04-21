@@ -126,6 +126,46 @@
                 </section>
 
 
+                <!-- ICONIFY -->
+
+                <section class="page-demo-card">
+
+                    <h2 class="page-demo-card__title">
+                        Iconify
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        <code>@iconify/vue</code> 아이콘을 Input의 좌/우 슬롯에 배치하는 예제입니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+
+                        <AppInput v-model="icon" placeholder="사용자명">
+                            <template #iconLeft>
+                                <Icon icon="mdi:account-outline" />
+                            </template>
+                        </AppInput>
+
+                        <AppInput v-model="email" placeholder="이메일">
+                            <template #iconLeft>
+                                <Icon icon="mdi:email-outline" />
+                            </template>
+                            <template #iconRight>
+                                <Icon icon="mdi:check-circle-outline" />
+                            </template>
+                        </AppInput>
+
+                        <AppInput v-model="url" placeholder="https://example.com">
+                            <template #iconLeft>
+                                <Icon icon="mdi:link-variant" />
+                            </template>
+                        </AppInput>
+
+                    </div>
+
+                </section>
+
+
                 <!-- STATE -->
 
                 <section class="page-demo-card">
@@ -211,6 +251,7 @@ const email = ref('')
 const search = ref('')
 const icon = ref('')
 const password = ref('')
+const url = ref('')
 
 const sizes = reactive({
     xs: '',
@@ -241,6 +282,7 @@ const output = computed(() =>
             email: email.value,
             search: search.value,
             icon: icon.value,
+            url: url.value,
             sizes,
             shape,
             stateError: stateError.value,

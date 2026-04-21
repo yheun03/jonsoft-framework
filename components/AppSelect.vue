@@ -1,69 +1,96 @@
 <template>
-    <div class="app-select" :class="{ 'is-disabled': disabled, 'is-error': !!error }">
-        <label v-if="label" class="app-select__label" :for="selectId">{{ label }}</label>
+    <div :class="[
+        'form-field',
+        'app-select',
+        `app-select--${size}`,
+        `app-select--shape-${shape}`,
+        {
+            'is-disabled': disabled,
+            [`is-${state}`]: state
+        }
+    ]">
 
-        <div v-if="searchable" class="app-select__search">
-            <input
-                class="app-select__search-input"
-                type="search"
-                :placeholder="searchPlaceholder"
-                :disabled="disabled"
-                v-model="query"
-            />
+        <!-- label -->
+        <label v-if="label" class="form-field__label app-select__label" :for="selectId">
+            {{ label }}
+        </label>
+
+        <!-- control -->
+        <div class="form-field__control app-select__control">
+
+            <select :id="selectId" class="app-select__field" :value="modelValue ?? ''" :name="name" :disabled="disabled"
+                :required="required" :aria-invalid="state === 'error'" :aria-describedby="describedBy"
+                @change="onChange">
+                <option v-if="placeholder" value="" :disabled="required" hidden>
+                    {{ placeholder }}
+                </option>
+
+                <option v-for="opt in options" :key="opt.value" :value="opt.value" :disabled="opt.disabled">
+                    {{ opt.label }}
+                </option>
+            </select>
+
+            <span class="app-select__icon app-select__icon--right" aria-hidden="true">
+                <slot name="iconRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </slot>
+            </span>
+
         </div>
 
-        <select
-            :id="selectId"
-            class="app-select__field"
-            :value="modelValue ?? ''"
-            :disabled="disabled"
-            :aria-invalid="!!error"
-            :aria-describedby="describedBy"
-            @change="onChange"
-        >
-            <option v-if="placeholder" value="" :disabled="required" hidden>{{ placeholder }}</option>
-            <option v-for="opt in filteredOptions" :key="opt.value" :value="opt.value" :disabled="opt.disabled">
-                {{ opt.label }}
-            </option>
-        </select>
+        <!-- hint -->
+        <p v-if="hint" class="form-field__hint app-select__hint" :id="hintId">
+            {{ hint }}
+        </p>
 
-        <p v-if="helper && !error" class="app-select__helper" :id="helperId">{{ helper }}</p>
-        <p v-if="error" class="app-select__error" :id="errorId">{{ error }}</p>
     </div>
 </template>
 
 <script setup lang="ts">
-export type AppSelectOption = { value: string; label: string; disabled?: boolean }
+import { computed } from 'vue'
+
+export type AppSelectOption = {
+    value: string
+    label: string
+    disabled?: boolean
+}
+
+type SelectSize = 'xs' | 'sm' | 'md' | 'lg'
+type SelectShape = 'square' | 'round' | 'pill' | 'underline'
+type SelectState = 'error' | 'warning' | 'success' | null
 
 const props = withDefaults(
     defineProps<{
-        modelValue: string | null | undefined
+        modelValue: string | null
+
         options: AppSelectOption[]
 
         label?: string
-        helper?: string
-        error?: string
+        hint?: string
 
         placeholder?: string
         required?: boolean
 
-        disabled?: boolean
-        id?: string
+        size?: SelectSize
+        shape?: SelectShape
+        state?: SelectState
 
-        searchable?: boolean
-        searchPlaceholder?: string
+        disabled?: boolean
+
+        id?: string
+        name?: string
     }>(),
     {
-        label: undefined,
-        helper: undefined,
-        error: undefined,
+        size: 'md',
+        shape: 'round',
+        state: null,
         placeholder: '선택하세요',
         required: false,
-        disabled: false,
-        id: undefined,
-        searchable: false,
-        searchPlaceholder: '검색...',
-    },
+        disabled: false
+    }
 )
 
 const emit = defineEmits<{
@@ -72,31 +99,16 @@ const emit = defineEmits<{
 }>()
 
 const fallbackId = useId()
+
 const selectId = computed(() => props.id ?? `app-select-${fallbackId}`)
-const helperId = computed(() => `${selectId.value}-helper`)
-const errorId = computed(() => `${selectId.value}-error`)
-
-const describedBy = computed(() => {
-    if (props.error) return errorId.value
-    if (props.helper) return helperId.value
-    return undefined
-})
-
-const query = ref('')
-
-const filteredOptions = computed(() => {
-    if (!props.searchable) return props.options
-    const q = query.value.trim().toLowerCase()
-    if (!q) return props.options
-    return props.options.filter((o) => o.label.toLowerCase().includes(q))
-})
+const hintId = computed(() => `hint-${selectId.value}`)
+const describedBy = computed(() => props.hint ? hintId.value : undefined)
 
 function onChange(e: Event) {
-    const el = e.target as HTMLSelectElement
-    const v = el.value
-    const next = v === '' ? null : v
-    emit('update:modelValue', next)
+    const target = e.target as HTMLSelectElement
+    const value = target.value
+
+    emit('update:modelValue', value === '' ? null : value)
     emit('change', e)
 }
 </script>
-
