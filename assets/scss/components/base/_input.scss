@@ -59,22 +59,6 @@ $input-sizes: (
     }
 
     /* -------------------------
-       Modifier: Icon
-    ------------------------- */
-
-    &--icon-left {
-        .app-input__field {
-            padding-left: 40px;
-        }
-    }
-
-    &--icon-right {
-        .app-input__field {
-            padding-right: 40px;
-        }
-    }
-
-    /* -------------------------
        Modifier: Size
     ------------------------- */
 
@@ -125,6 +109,22 @@ $input-sizes: (
             .app-input__field {
                 padding-inline: 0;
             }
+        }
+    }
+
+    /* -------------------------
+       Modifier: Icon
+    ------------------------- */
+
+    &--icon-left {
+        .app-input__field {
+            padding-left: 40px;
+        }
+    }
+
+    &--icon-right {
+        .app-input__field {
+            padding-right: 40px;
         }
     }
 }
