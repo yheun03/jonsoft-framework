@@ -71,7 +71,7 @@
 
         <!-- hint -->
 
-        <p v-if="hint" class="app-input__hint" :id="hintId">
+        <p v-if="hint" class="form-field__hint app-input__hint" :id="hintId">
             {{ hint }}
         </p>
 

@@ -27,17 +27,15 @@ $input-sizes: (
         width: 100%;
         box-sizing: border-box;
 
-        border: 1px solid $gray-300;
-        background: $gray-0;
-        color: $gray-900;
-        outline: none;
+        border: unset;
+        outline: unset;
 
         transition:
             border-color 0.15s,
             box-shadow 0.15s;
 
         &::placeholder {
-            color: $gray-600;
+            color: $color-04-gray;
         }
     }
 
@@ -99,60 +97,34 @@ $input-sizes: (
     ------------------------- */
 
     &--shape-square {
-        .app-input__field {
+        .app-input__control {
             border-radius: 0;
         }
     }
 
     &--shape-round {
-        .app-input__field {
+        .app-input__control {
             border-radius: 6px;
         }
     }
 
     &--shape-pill {
-        .app-input__field {
+        .app-input__control {
             border-radius: 999px;
-            padding-inline: 20px;
+
+            .app-input__field {
+                padding-inline: 20px;
+            }
         }
     }
 
     &--shape-underline {
-        .app-input__field {
-            padding-inline: 0;
-            border: 0;
-            border-bottom: 1px solid $gray-300;
-            border-radius: 0;
-        }
-    }
+        .app-input__control {
+            border-width: 0 0 1px 0;
 
-    /* -------------------------
-       State
-    ------------------------- */
-
-    &.is-error {
-        .app-input__field {
-            border-color: $status-error;
-        }
-    }
-
-    &.is-warning {
-        .app-input__field {
-            border-color: $status-warning;
-        }
-    }
-
-    &.is-success {
-        .app-input__field {
-            border-color: $status-success;
-        }
-    }
-
-    &.is-disabled {
-        .app-input__field {
-            background: $gray-100;
-            color: $gray-500;
-            cursor: not-allowed;
+            .app-input__field {
+                padding-inline: 0;
+            }
         }
     }
 }

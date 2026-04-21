@@ -9,8 +9,6 @@
     display: flex;
     flex-direction: column;
 
-    background-color: $bg-white;
-    border: 1px solid $line-regular;
 
     /* -------------------------
        Element
@@ -32,6 +30,9 @@
         position: relative;
         display: flex;
         align-items: center;
+        background-color: $bg-white;
+        border: 1px solid $line-regular;
+        overflow: hidden;
     }
 
 
@@ -48,18 +49,33 @@
 
     &.is-error {
 
+
+        &__control {
+            border-color: $status-error;
+        }
+
         .form-field__hint {
             color: $status-error;
         }
     }
 
     &.is-warning {
+
+        &__control {
+            border-color: $status-warning;
+        }
+
         .form-field__hint {
             color: $status-warning;
         }
     }
 
     &.is-success {
+
+        &__control {
+            border-color: $status-success;
+        }
+
         .form-field__hint {
             color: $status-success;
         }
