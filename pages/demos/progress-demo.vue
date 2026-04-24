@@ -10,115 +10,88 @@
                     </h1>
 
                     <p class="page-demo__desc">
-                        선형 Progress 컴포넌트입니다.
-                        display / control-single / control-range 모드와 value, range, label, disabled 속성을 지원합니다.
+                        Linear Progress와 Gauge Progress 컴포넌트입니다.
+                        display / drag control 형태를 지원합니다.
                     </p>
                 </header>
 
-                <!-- BASIC DISPLAY -->
+                <!-- LINEAR DISPLAY -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Basic
+                        Linear Display
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        가장 기본적인 display 모드 예시입니다.
+                        선형 프로그레스의 기본 표시 예시입니다.
                     </p>
 
                     <div class="page-demo-stack">
-                        <AppProgress :value="basicValue" variant="linear" />
-                    </div>
-                </section>
+                        <AppProgress :value="linearDisplayValue" variant="linear" />
 
-                <!-- VALUE -->
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">
-                        Value
-                    </h2>
-
-                    <p class="page-demo-card__desc">
-                        단일 value 값을 기준으로 진행률을 표시합니다.
-                    </p>
-
-                    <div class="page-demo-stack">
-                        <AppProgress :value="10" variant="linear" />
-                        <AppProgress :value="35" variant="linear" />
-                        <AppProgress :value="65" variant="linear" />
-                        <AppProgress :value="90" variant="linear" />
-                    </div>
-                </section>
-
-                <!-- RANGE DISPLAY -->
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">
-                        Range Display
-                    </h2>
-
-                    <p class="page-demo-card__desc">
-                        range 값을 기준으로 구간 진행률을 표시합니다.
-                    </p>
-
-                    <div class="page-demo-stack">
-                        <AppProgress :value="rangeDisplay.end" :range="rangeDisplay" variant="linear" />
+                        <AppProgress :value="linearRangeDisplay.end" :range="linearRangeDisplay" variant="linear" />
 
                         <div class="page-demo-hint">
-                            {{ rangeDisplay.start }}% ~ {{ rangeDisplay.end }}%
+                            {{ linearRangeDisplay.start }}% ~ {{ linearRangeDisplay.end }}%
                         </div>
                     </div>
                 </section>
 
-                <!-- CONTROL SINGLE -->
+                <!-- LINEAR DRAG -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Control Single
+                        Linear Drag Control
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        mode="control-single"에서 단일 값을 직접 조정할 수 있습니다.
+                        드래그로 단일 값과 범위를 조정할 수 있습니다.
                     </p>
 
                     <div class="page-demo-stack">
-                        <AppProgress v-model:value="controlValue" variant="linear" mode="control-single" label="단일 값"
-                            :show-label="true" />
-                    </div>
-                </section>
+                        <AppProgress v-model:value="linearControlValue" variant="linear" mode="control-single"
+                            label="단일 값" :show-label="true" />
 
-                <!-- CONTROL RANGE -->
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">
-                        Control Range
-                    </h2>
-
-                    <p class="page-demo-card__desc">
-                        mode="control-range"에서 범위를 직접 조정할 수 있습니다.
-                    </p>
-
-                    <div class="page-demo-stack">
-                        <AppProgress :value="controlRange.end" :range="controlRange" variant="linear"
-                            mode="control-range" @update:range="onUpdateRange" />
+                        <AppProgress :value="linearControlRange.end" :range="linearControlRange" variant="linear"
+                            mode="control-range" @update:range="onUpdateLinearRange" />
 
                         <div class="page-demo-hint">
-                            {{ controlRange.start }}% ~ {{ controlRange.end }}%
+                            {{ linearControlRange.start }}% ~ {{ linearControlRange.end }}%
                         </div>
                     </div>
                 </section>
 
-                <!-- LABEL / SHOW LABEL -->
+                <!-- GAUGE DISPLAY -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Label
+                        Gauge Display
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        label과 showLabel 속성을 확인합니다.
+                        반원 게이지와 반도넛 범위의 기본 표시 예시입니다.
                     </p>
 
-                    <div class="page-demo-stack">
-                        <AppProgress v-model:value="labeledValue" variant="linear" mode="control-single" label="진행률"
-                            :show-label="true" />
+                    <div class="page-demo-grid">
+                        <AppProgressGauge :value="gaugeDisplayValue" type="gauge" label="속도" />
 
-                        <AppProgress v-model:value="plainLabeledValue" variant="linear" mode="control-single"
-                            label="라벨만 표시" />
+                        <AppProgressGauge :range="gaugeRangeDisplay" type="semi-doughnut-range" label="권장 범위" />
+                    </div>
+                </section>
+
+                <!-- GAUGE DRAG -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Gauge Drag Control
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        드래그로 게이지 값과 반도넛 범위를 조정할 수 있습니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppProgressGauge v-model:value="gaugeControlValue" type="gauge" mode="control-single"
+                            label="속도" />
+
+                        <AppProgressGauge :range="gaugeControlRange" type="semi-doughnut-range" mode="control-range"
+                            label="권장 범위" @update:range="onUpdateGaugeRange" />
                     </div>
                 </section>
 
@@ -132,12 +105,12 @@
                         비활성 상태를 확인합니다.
                     </p>
 
-                    <div class="page-demo-stack">
-                        <AppProgress :value="disabledValue" variant="linear" mode="control-single" label="Disabled"
-                            :show-label="true" disabled />
+                    <div class="page-demo-grid">
+                        <AppProgress :value="disabledLinearValue" variant="linear" mode="control-single"
+                            label="Disabled Linear" :show-label="true" disabled />
 
-                        <AppProgress :value="disabledRange.end" :range="disabledRange" variant="linear"
-                            mode="control-range" disabled />
+                        <AppProgressGauge :value="disabledGaugeValue" type="gauge" mode="control-single"
+                            label="Disabled Gauge" disabled />
                     </div>
                 </section>
 
@@ -159,55 +132,72 @@
 </template>
 
 <script setup lang="ts">
-const basicValue = 35
+const linearDisplayValue = 35
 
-const rangeDisplay = reactive({
+const linearRangeDisplay = reactive({
     start: 20,
     end: 70,
 })
 
-const controlValue = ref(35)
+const linearControlValue = ref(42)
 
-const controlRange = reactive({
+const linearControlRange = reactive({
     start: 25,
     end: 75,
 })
 
-const labeledValue = ref(48)
-const plainLabeledValue = ref(62)
+const gaugeDisplayValue = 68
 
-const disabledValue = 40
-
-const disabledRange = reactive({
-    start: 30,
-    end: 60,
+const gaugeRangeDisplay = reactive({
+    start: 20,
+    end: 70,
 })
 
-function onUpdateRange(value: { start: number; end: number }) {
-    controlRange.start = value.start
-    controlRange.end = value.end
+const gaugeControlValue = ref(68)
+
+const gaugeControlRange = reactive({
+    start: 20,
+    end: 70,
+})
+
+const disabledLinearValue = 40
+const disabledGaugeValue = 55
+
+function onUpdateLinearRange(value: { start: number; end: number }) {
+    linearControlRange.start = value.start
+    linearControlRange.end = value.end
+}
+
+function onUpdateGaugeRange(value: { start: number; end: number }) {
+    gaugeControlRange.start = value.start
+    gaugeControlRange.end = value.end
 }
 
 const output = computed(() =>
     JSON.stringify(
         {
-            basicValue,
-            rangeDisplay: {
-                start: rangeDisplay.start,
-                end: rangeDisplay.end,
+            linearDisplayValue,
+            linearRangeDisplay: {
+                start: linearRangeDisplay.start,
+                end: linearRangeDisplay.end,
             },
-            controlValue: controlValue.value,
-            controlRange: {
-                start: controlRange.start,
-                end: controlRange.end,
+            linearControlValue: linearControlValue.value,
+            linearControlRange: {
+                start: linearControlRange.start,
+                end: linearControlRange.end,
             },
-            labeledValue: labeledValue.value,
-            plainLabeledValue: plainLabeledValue.value,
-            disabledValue,
-            disabledRange: {
-                start: disabledRange.start,
-                end: disabledRange.end,
+            gaugeDisplayValue,
+            gaugeRangeDisplay: {
+                start: gaugeRangeDisplay.start,
+                end: gaugeRangeDisplay.end,
             },
+            gaugeControlValue: gaugeControlValue.value,
+            gaugeControlRange: {
+                start: gaugeControlRange.start,
+                end: gaugeControlRange.end,
+            },
+            disabledLinearValue,
+            disabledGaugeValue,
         },
         null,
         2,

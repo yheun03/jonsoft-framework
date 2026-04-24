@@ -8,7 +8,8 @@
 @use "input";
 @use "image-field";
 @use "modal";
-@use "progress";
+@use "Progress/progress";
+@use "Progress/progressGauge";
 @use "select";
 @use "tabs-page";
 @use "workspace-pane";
