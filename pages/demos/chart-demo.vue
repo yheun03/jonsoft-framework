@@ -14,13 +14,16 @@
                             <AppChart class="page-demo-chart-box" type="line" :data="lineData" :options="lineOptions" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData" :options="steppedLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData"
+                                :options="steppedLineOptions" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData"
+                                :options="multiLineOptions" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" :options="multiLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData"
+                                :options="multiLineOptions" />
                         </client-only>
                     </div>
                 </section>
@@ -32,13 +35,16 @@
                             <AppChart class="page-demo-chart-box" type="bar" :data="barData" :options="barOptions" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData" :options="doughnutOptions" :height="220" />
+                            <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData"
+                                :options="doughnutOptions" :height="220" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="doughnut" :data="halfDoughnutData" :options="doughnutOptions" :height="220" />
+                            <AppChart class="page-demo-chart-box" type="doughnut" variant="semi-doughnut"
+                                :data="semiDonutChartData" :options="semiDonutChartOptions" :height="220" />
                         </client-only>
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :options="pieOptions" :height="220" />
+                            <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :options="pieOptions"
+                                :height="220" />
                         </client-only>
                     </div>
                 </section>
@@ -48,7 +54,8 @@
                     <div class="page-demo-controls">
                         <div class="page-demo-control">
                             <label class="page-demo-control__label">포인트 수 (Line)</label>
-                            <input class="page-demo-control__range" type="range" min="5" max="20" :value="points" @input="onPoints" />
+                            <input class="page-demo-control__range" type="range" min="5" max="20" :value="points"
+                                @input="onPoints" />
                             <div class="page-demo-control__value">{{ points }}</div>
                         </div>
                     </div>
@@ -228,18 +235,24 @@ const doughnutData = computed<ChartData<'doughnut'>>(() => ({
 }))
 
 // 반 도넛(위가 평평한 반원)
-const halfDoughnutData = computed<ChartData<'doughnut'>>(() => ({
-    labels: pieLabels,
+const semiDonutChartData = {
+    labels: ['정상', '지연', '대기', '점검'],
     datasets: [
         {
-            label: 'Half Doughnut',
-            data: pieBaseData.value,
-            backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
-            circumference: Math.PI,
-            rotation: -0.5 * Math.PI,
+            data: [45, 25, 15, 15],
+            backgroundColor: ['#00626F', '#2687D8', '#32C771', '#FFAA00'],
+            borderWidth: 0,
         },
     ],
-}))
+}
+
+const semiDonutChartOptions = {
+    plugins: {
+        legend: {
+            position: 'bottom',
+        },
+    },
+}
 
 const doughnutOptions = computed<ChartOptions<'doughnut'>>(() => ({
     responsive: true,
@@ -281,4 +294,3 @@ const output = computed(() =>
 </script>
 
 <!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
-

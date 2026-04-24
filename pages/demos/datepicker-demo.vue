@@ -253,7 +253,7 @@
 import { Icon } from '@iconify/vue'
 import type { DateRangeValue } from '~/components/AppDatePicker.vue'
 
-const min = '2026-01-01'
+const min = '2026-04-01'
 const max = '2026-12-31'
 
 const basic = reactive({
