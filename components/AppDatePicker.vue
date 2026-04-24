@@ -1,51 +1,91 @@
 <template>
-    <div class="app-date-picker" :class="{ 'is-disabled': disabled, 'is-error': !!error }">
-        <label v-if="label" class="app-date-picker__label" :for="inputId">{{ label }}</label>
+    <div :class="rootClasses">
 
-        <input
-            :id="inputId"
-            class="app-date-picker__field"
-            type="text"
-            :value="displayValue"
-            :placeholder="placeholder"
-            :disabled="disabled"
-            :aria-invalid="!!error"
-            :aria-describedby="describedBy"
-            readonly
-            ref="inputEl"
-        />
+        <!-- label -->
+        <label v-if="label" class="form-field__label app-date-picker__label" :for="inputId">
+            {{ label }}
+        </label>
 
-        <p v-if="helper && !error" class="app-date-picker__helper" :id="helperId">{{ helper }}</p>
-        <p v-if="error" class="app-date-picker__error" :id="errorId">{{ error }}</p>
+        <!-- control -->
+        <div class="form-field__control app-date-picker__control">
+
+            <!-- input -->
+            <input :id="inputId" ref="inputEl" class="app-date-picker__field" type="text" :value="displayValue"
+                :placeholder="placeholder" :name="name" :disabled="disabled" :readonly="true"
+                :aria-invalid="state === 'error'" :aria-describedby="describedBy" />
+
+            <!-- right icon -->
+            <span class="app-date-picker__icon app-date-picker__icon--right" aria-hidden="true">
+                <slot name="iconRight">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M8 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M16 2V5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <path d="M3 9H21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                </slot>
+            </span>
+
+        </div>
+
+        <!-- hint -->
+        <p v-if="hint" class="form-field__hint app-date-picker__hint" :id="hintId">
+            {{ hint }}
+        </p>
+
     </div>
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import flatpickr from 'flatpickr'
 import type { Instance as FlatpickrInstance } from 'flatpickr/dist/types/instance'
 import type { Options as FlatpickrOptions } from 'flatpickr/dist/types/options'
 import 'flatpickr/dist/flatpickr.css'
 
-export type DateRangeValue = { start: string | null; end: string | null }
+export type DateRangeValue = {
+    start: string | null
+    end: string | null
+}
+
 type Mode = 'single' | 'range' | 'multiple'
+type DatePickerSize = 'xs' | 'sm' | 'md' | 'lg'
+type DatePickerShape = 'square' | 'round' | 'pill' | 'underline'
+type DatePickerState = 'error' | 'warning' | 'success' | null
 
 const props = withDefaults(
     defineProps<{
         /** single: string|null (YYYY-MM-DD)
-         *  range: {start,end}|null
-         *  multiple: string[] */
+         *  range: { start, end } | null
+         *  multiple: string[]
+         */
         modelValue: string | null | undefined | DateRangeValue | string[]
+
         label?: string
+        hint?: string
+
         mode?: Mode
-        helper?: string
-        error?: string
         min?: string
         max?: string
         placeholder?: string
+
+        size?: DatePickerSize
+        shape?: DatePickerShape
+        state?: DatePickerState
+
         disabled?: boolean
+
         id?: string
+        name?: string
     }>(),
-    { disabled: false, mode: 'single', placeholder: '날짜 선택' },
+    {
+        mode: 'single',
+        placeholder: '날짜 선택',
+        size: 'md',
+        shape: 'round',
+        state: null,
+        disabled: false
+    }
 )
 
 const emit = defineEmits<{
@@ -53,66 +93,112 @@ const emit = defineEmits<{
 }>()
 
 const fallbackId = useId()
-const inputId = computed(() => props.id ?? `app-date-${fallbackId}`)
-const helperId = computed(() => `${inputId.value}-helper`)
-const errorId = computed(() => `${inputId.value}-error`)
-
-const describedBy = computed(() => {
-    if (props.error) return errorId.value
-    if (props.helper) return helperId.value
-    return undefined
-})
-
 const inputEl = ref<HTMLInputElement | null>(null)
+
 let fp: FlatpickrInstance | null = null
 
 const format = 'Y-m-d'
 
+const inputId = computed(() => props.id ?? `app-date-picker-${fallbackId}`)
+const hintId = computed(() => `hint-${inputId.value}`)
+
+const describedBy = computed(() => {
+    return props.hint ? hintId.value : undefined
+})
+
+const rootClasses = computed(() => [
+    'form-field',
+    'app-date-picker',
+    `app-date-picker--${props.size}`,
+    `app-date-picker--shape-${props.shape}`,
+    {
+        'is-disabled': props.disabled,
+        [`is-${props.state}`]: props.state
+    }
+])
+
+const displayValue = computed(() => {
+    if (props.mode === 'single') {
+        return (props.modelValue as string | null) ?? ''
+    }
+
+    if (props.mode === 'multiple') {
+        return Array.isArray(props.modelValue)
+            ? (props.modelValue as string[]).join(', ')
+            : ''
+    }
+
+    const rangeValue = props.modelValue as DateRangeValue | null
+
+    if (!rangeValue) {
+        return ''
+    }
+
+    return [rangeValue.start, rangeValue.end].filter(Boolean).join(' ~ ')
+})
+
 function toRangeValue(dates: Date[]): DateRangeValue | null {
-    if (!dates?.length) return null
-    const toStr = (d?: Date) => (d ? fp?.formatDate(d, format) ?? null : null)
-    const start = toStr(dates[0])
-    const end = toStr(dates[1])
-    if (!start && !end) return null
+    if (!dates.length) {
+        return null
+    }
+
+    const toString = (date?: Date) => {
+        return date ? fp?.formatDate(date, format) ?? null : null
+    }
+
+    const start = toString(dates[0])
+    const end = toString(dates[1])
+
+    if (!start && !end) {
+        return null
+    }
+
     return { start, end }
 }
 
 function normalizeIncomingToDates(): Date[] {
     if (props.mode === 'single') {
-        const v = props.modelValue as string | null | undefined
-        return v ? [new Date(v)] : []
+        const value = props.modelValue as string | null | undefined
+        return value ? [new Date(value)] : []
     }
-    if (props.mode === 'multiple') {
-        const v = props.modelValue as string[] | undefined
-        return Array.isArray(v) ? v.filter(Boolean).map((s) => new Date(s)) : []
-    }
-    // range
-    const v = props.modelValue as DateRangeValue | null | undefined
-    const out: Date[] = []
-    if (v?.start) out.push(new Date(v.start))
-    if (v?.end) out.push(new Date(v.end))
-    return out
-}
 
-const displayValue = computed(() => {
-    if (props.mode === 'single') return (props.modelValue as string | null) ?? ''
-    if (props.mode === 'multiple') return Array.isArray(props.modelValue) ? (props.modelValue as string[]).join(', ') : ''
-    const r = props.modelValue as DateRangeValue | null
-    if (!r) return ''
-    return [r.start, r.end].filter(Boolean).join(' ~ ')
-})
+    if (props.mode === 'multiple') {
+        const value = props.modelValue as string[] | undefined
+        return Array.isArray(value)
+            ? value.filter(Boolean).map((date) => new Date(date))
+            : []
+    }
+
+    const value = props.modelValue as DateRangeValue | null | undefined
+    const result: Date[] = []
+
+    if (value?.start) {
+        result.push(new Date(value.start))
+    }
+
+    if (value?.end) {
+        result.push(new Date(value.end))
+    }
+
+    return result
+}
 
 function onFlatpickrChange(selectedDates: Date[]) {
     if (props.mode === 'single') {
-        const d = selectedDates[0]
-        emit('update:modelValue', d ? fp?.formatDate(d, format) ?? '' : null)
+        const date = selectedDates[0]
+        emit('update:modelValue', date ? fp?.formatDate(date, format) ?? '' : null)
         return
     }
+
     if (props.mode === 'multiple') {
-        const arr = selectedDates.map((d) => fp?.formatDate(d, format) ?? '').filter(Boolean)
-        emit('update:modelValue', arr)
+        const values = selectedDates
+            .map((date) => fp?.formatDate(date, format) ?? '')
+            .filter(Boolean)
+
+        emit('update:modelValue', values)
         return
     }
+
     emit('update:modelValue', toRangeValue(selectedDates))
 }
 
@@ -121,18 +207,26 @@ function buildOptions(): Partial<FlatpickrOptions> {
         mode: props.mode,
         dateFormat: format,
         allowInput: false,
+        clickOpens: !props.disabled,
         disableMobile: true,
         minDate: props.min,
         maxDate: props.max,
-        onChange: (selectedDates) => onFlatpickrChange(selectedDates),
+        onChange: (selectedDates) => onFlatpickrChange(selectedDates)
     }
 }
 
 onMounted(() => {
-    if (!inputEl.value) return
+    if (!inputEl.value) {
+        return
+    }
+
     fp = flatpickr(inputEl.value, buildOptions() as FlatpickrOptions)
-    const initDates = normalizeIncomingToDates()
-    if (initDates.length) fp.setDate(initDates, false)
+
+    const initialDates = normalizeIncomingToDates()
+
+    if (initialDates.length) {
+        fp.setDate(initialDates, false)
+    }
 })
 
 onBeforeUnmount(() => {
@@ -143,15 +237,18 @@ onBeforeUnmount(() => {
 watch(
     () => [props.modelValue, props.mode, props.min, props.max, props.disabled] as const,
     () => {
-        if (!fp) return
+        if (!fp) {
+            return
+        }
+
         fp.set('mode', props.mode)
         fp.set('minDate', props.min)
         fp.set('maxDate', props.max)
-        fp.set('disable', props.disabled ? [() => true] : [])
+        fp.set('clickOpens', !props.disabled)
+
         const nextDates = normalizeIncomingToDates()
         fp.setDate(nextDates, false)
     },
-    { deep: true },
+    { deep: true }
 )
 </script>
-
