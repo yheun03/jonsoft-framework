@@ -2,48 +2,129 @@
     <div class="page-demo">
         <div class="page-demo-layout">
             <main class="page-demo-main">
+
+                <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">Checkbox & Radio Demo</h1>
-                    <p class="page-demo__desc">체크박스와 라디오 입력 컴포넌트를 확인합니다.</p>
+                    <h1 class="page-demo__title">
+                        AppChoice
+                    </h1>
+
+                    <p class="page-demo__desc">
+                        checkbox / radio / chip 계열 선택 컴포넌트입니다.
+                        type / variant / hint / state / disabled 속성을 지원합니다.
+                    </p>
                 </header>
 
+                <!-- BASIC CHECKBOX -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Checkbox (기본)</h2>
+                    <h2 class="page-demo-card__title">
+                        Basic Checkbox
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        가장 기본적인 checkbox 예시입니다.
+                    </p>
+
                     <div class="page-demo-stack">
-                        <AppChoice type="checkbox" v-model="checkA" label="알림 수신" helper="이메일로 알림을 받습니다." />
-                        <AppChoice type="checkbox" v-model="checkB" label="마케팅 동의" />
-                        <AppChoice type="checkbox" v-model="checkDisabled" label="비활성" :disabled="true" helper="선택 불가" />
+                        <AppChoice v-model="checkbox.basic" type="checkbox" label="알림 수신" hint="이메일로 알림을 받습니다." />
+
+                        <AppChoice v-model="checkbox.marketing" type="checkbox" label="마케팅 동의" />
                     </div>
                 </section>
 
+                <!-- BASIC RADIO -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Radio (기본)</h2>
+                    <h2 class="page-demo-card__title">
+                        Basic Radio
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        가장 기본적인 radio 예시입니다.
+                    </p>
+
                     <div class="page-demo-stack">
-                        <AppChoice type="radio" v-model="radioValue" name="plan" value="basic" label="Basic" helper="기본 요금제" />
-                        <AppChoice type="radio" v-model="radioValue" name="plan" value="pro" label="Pro" helper="확장 요금제" />
-                        <AppChoice type="radio" v-model="radioValue" name="plan" value="enterprise" label="Enterprise" helper="엔터프라이즈" />
+                        <AppChoice v-model="radio.plan" type="radio" name="plan" value="basic" label="Basic"
+                            hint="기본 요금제" />
+
+                        <AppChoice v-model="radio.plan" type="radio" name="plan" value="pro" label="Pro"
+                            hint="확장 요금제" />
+
+                        <AppChoice v-model="radio.plan" type="radio" name="plan" value="enterprise" label="Enterprise"
+                            hint="엔터프라이즈" />
                     </div>
                 </section>
 
+                <!-- STATE -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Chip Variants</h2>
+                    <h2 class="page-demo-card__title">
+                        State
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        hint와 state 속성을 함께 확인합니다.
+                    </p>
+
+                    <div class="page-demo-stack">
+                        <AppChoice v-model="state.error" type="checkbox" label="Error" hint="에러 메시지" state="error" />
+
+                        <AppChoice v-model="state.warning" type="checkbox" label="Warning" hint="경고 메시지"
+                            state="warning" />
+
+                        <AppChoice v-model="state.success" type="checkbox" label="Success" hint="선택 가능"
+                            state="success" />
+                    </div>
+                </section>
+
+                <!-- DISABLED -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Disabled
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        비활성 상태를 확인합니다.
+                    </p>
+
+                    <div class="page-demo-stack">
+                        <AppChoice v-model="disabled.checkbox" type="checkbox" label="Disabled Checkbox" hint="선택 불가"
+                            disabled />
+
+                        <AppChoice v-model="disabled.radio" type="radio" name="disabled-plan" value="disabled-option"
+                            label="Disabled Radio" hint="선택 불가" disabled />
+                    </div>
+                </section>
+
+                <!-- CHIP VARIANTS -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Chip Variants
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        chip / chip-outline / fill / ghost variant를 확인합니다.
+                    </p>
+
                     <div class="page-demo-stack">
                         <div class="page-demo-row">
-                            <AppChoice type="checkbox" variant="chip" v-model="chipDev" label="개발" />
-                            <AppChoice type="checkbox" variant="chip" v-model="chipDesign" label="디자인" />
-                            <AppChoice type="checkbox" variant="chip" v-model="chipPlan" label="기획" />
+                            <AppChoice v-model="chip.chipA" type="checkbox" variant="chip" label="Chip A" />
+                            <AppChoice v-model="chip.chipB" type="checkbox" variant="chip" label="Chip B" />
                         </div>
+
                         <div class="page-demo-row">
-                            <AppChoice type="checkbox" variant="chip-outline" v-model="chipOutlineA" label="Chip Outline A" />
-                            <AppChoice type="checkbox" variant="chip-outline" v-model="chipOutlineB" label="Chip Outline B" />
+                            <AppChoice v-model="chip.outlineA" type="checkbox" variant="chip-outline"
+                                label="Outline A" />
+                            <AppChoice v-model="chip.outlineB" type="checkbox" variant="chip-outline"
+                                label="Outline B" />
                         </div>
+
                         <div class="page-demo-row">
-                            <AppChoice type="checkbox" variant="fill" v-model="chipFillA" label="Fill A" />
-                            <AppChoice type="checkbox" variant="fill" v-model="chipFillB" label="Fill B" />
+                            <AppChoice v-model="chip.fillA" type="checkbox" variant="fill" label="Fill A" />
+                            <AppChoice v-model="chip.fillB" type="checkbox" variant="fill" label="Fill B" />
                         </div>
+
                         <div class="page-demo-row">
-                            <AppChoice type="checkbox" variant="ghost" v-model="chipGhostA" label="Ghost A" />
-                            <AppChoice type="checkbox" variant="ghost" v-model="chipGhostB" label="Ghost B" />
+                            <AppChoice v-model="chip.ghostA" type="checkbox" variant="ghost" label="Ghost A" />
+                            <AppChoice v-model="chip.ghostB" type="checkbox" variant="ghost" label="Ghost B" />
                         </div>
                     </div>
                 </section>
@@ -53,13 +134,10 @@
             <aside class="page-demo-aside" aria-label="현재 값 패널">
                 <div class="page-demo-aside__sticky">
                     <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">Actions</h2>
-                        <div class="page-demo-actions">
-                            <AppButton variant="fill" @click="reset">초기화</AppButton>
-                        </div>
-                    </section>
-                    <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">현재 값</h2>
+                        <h2 class="page-demo-card__title">
+                            Current Value
+                        </h2>
+
                         <pre class="page-demo-output">{{ output }}</pre>
                     </section>
                 </div>
@@ -69,57 +147,45 @@
 </template>
 
 <script setup lang="ts">
-const checkA = ref(false)
-const checkB = ref(false)
-const checkDisabled = ref(false)
+const checkbox = reactive({
+    basic: true,
+    marketing: false,
+})
 
-const radioValue = ref<string | null>('basic')
+const radio = reactive({
+    plan: 'basic',
+})
 
-const chipDev = ref(false)
-const chipDesign = ref(false)
-const chipPlan = ref(false)
+const state = reactive({
+    error: false,
+    warning: false,
+    success: true,
+})
 
-const chipOutlineA = ref(false)
-const chipOutlineB = ref(false)
+const disabled = reactive({
+    checkbox: false,
+    radio: 'disabled-option' as string | number | null,
+})
 
-const chipFillA = ref(false)
-const chipFillB = ref(false)
-
-const chipGhostA = ref(false)
-const chipGhostB = ref(false)
-
-function reset() {
-    checkA.value = false
-    checkB.value = false
-    checkDisabled.value = false
-    radioValue.value = 'basic'
-    chipDev.value = false
-    chipDesign.value = false
-    chipPlan.value = false
-    chipOutlineA.value = false
-    chipOutlineB.value = false
-    chipFillA.value = false
-    chipFillB.value = false
-    chipGhostA.value = false
-    chipGhostB.value = false
-}
+const chip = reactive({
+    chipA: false,
+    chipB: true,
+    outlineA: false,
+    outlineB: true,
+    fillA: false,
+    fillB: true,
+    ghostA: false,
+    ghostB: true,
+})
 
 const output = computed(() =>
     JSON.stringify(
         {
-            checkbox: { checkA: checkA.value, checkB: checkB.value, checkDisabled: checkDisabled.value },
-            radio: radioValue.value,
-            chips: {
-                dev: chipDev.value,
-                design: chipDesign.value,
-                plan: chipPlan.value,
-                outlineA: chipOutlineA.value,
-                outlineB: chipOutlineB.value,
-                fillA: chipFillA.value,
-                fillB: chipFillB.value,
-                ghostA: chipGhostA.value,
-                ghostB: chipGhostB.value,
-            },
+            checkbox,
+            radio,
+            state,
+            disabled,
+            chip,
         },
         null,
         2,
@@ -128,4 +194,3 @@ const output = computed(() =>
 </script>
 
 <!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
-

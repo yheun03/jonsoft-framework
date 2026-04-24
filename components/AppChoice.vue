@@ -1,53 +1,55 @@
 <template>
-    <label class="app-choice" :class="choiceClasses">
-        <span class="app-choice__control">
-            <input
-                class="app-choice__input"
-                :type="type"
-                :id="inputId"
-                :name="name"
-                :value="value"
-                :checked="isChecked"
-                :disabled="disabled"
-                :aria-invalid="!!error"
-                :aria-describedby="describedBy"
-                @change="onChange"
-            />
+    <label :class="rootClasses">
+        <!-- control -->
+        <span v-if="showControl" class="app-choice__control">
+            <input :id="inputId" class="app-choice__input" :type="type" :name="name" :value="inputValue"
+                :checked="isChecked" :disabled="disabled" :aria-invalid="state === 'error'"
+                :aria-describedby="describedBy" @change="onChange" />
+
             <span class="app-choice__visual" aria-hidden="true">
                 <span class="app-choice__inner" />
             </span>
         </span>
 
-        <span class="app-choice__body">
-            <span v-if="label" class="app-choice__label">{{ label }}</span>
-            <span v-if="helper && !error" class="app-choice__helper" :id="helperId">{{ helper }}</span>
-            <span v-if="error" class="app-choice__error" :id="errorId">{{ error }}</span>
+        <!-- body -->
+        <span v-if="hasBody" class="app-choice__body">
+            <span v-if="label" class="app-choice__label">
+                {{ label }}
+            </span>
+
+            <span v-if="hint" :id="hintId" class="app-choice__hint">
+                {{ hint }}
+            </span>
         </span>
     </label>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
 type ChoiceType = 'checkbox' | 'radio'
-type ChoiceVariant = 'chip' | 'chip-outline' | 'fill' | 'ghost'
+type ChoiceVariant = 'default' | 'chip' | 'chip-outline' | 'fill' | 'ghost'
+type ChoiceState = 'error' | 'warning' | 'success' | null
 
 const props = withDefaults(
     defineProps<{
         type?: ChoiceType
-        /** checkbox: boolean, radio: string | number | null */
+        /** checkbox: boolean / radio: string | number | null */
         modelValue: boolean | string | number | null
         value?: string | number
         name?: string
         label?: string
-        helper?: string
-        error?: string
+        hint?: string
         disabled?: boolean
         id?: string
-        /** 시각적 스타일: chip, chip-outline, fill, ghost */
         variant?: ChoiceVariant
+        state?: ChoiceState
     }>(),
     {
         type: 'checkbox',
         disabled: false,
+        variant: 'default',
+        state: null,
     },
 )
 
@@ -56,44 +58,59 @@ const emit = defineEmits<{
 }>()
 
 const fallbackId = useId()
+
 const inputId = computed(() => props.id ?? `app-choice-${fallbackId}`)
-const helperId = computed(() => `${inputId.value}-helper`)
-const errorId = computed(() => `${inputId.value}-error`)
+const hintId = computed(() => `${inputId.value}-hint`)
 
 const describedBy = computed(() => {
-    if (props.error) return errorId.value
-    if (props.helper) return helperId.value
-    return undefined
+    return props.hint ? hintId.value : undefined
+})
+
+const isChipVariant = computed(() => {
+    return ['chip', 'chip-outline', 'fill', 'ghost'].includes(props.variant)
+})
+
+const showControl = computed(() => !isChipVariant.value)
+
+const hasBody = computed(() => {
+    return !!props.label || !!props.hint
+})
+
+const inputValue = computed(() => {
+    return props.value ?? ''
 })
 
 const isChecked = computed(() => {
     if (props.type === 'checkbox') {
-        return !!props.modelValue
+        return Boolean(props.modelValue)
     }
-    // radio
-    if (props.value === undefined) return false
+
+    if (props.value === undefined) {
+        return false
+    }
+
     return props.modelValue === props.value
 })
 
-const choiceClasses = computed(() => ({
-    'app-choice--checkbox': props.type === 'checkbox',
-    'app-choice--radio': props.type === 'radio',
-    'app-choice--chip': props.variant === 'chip',
-    'app-choice--chip-outline': props.variant === 'chip-outline',
-    'app-choice--fill': props.variant === 'fill',
-    'app-choice--ghost': props.variant === 'ghost',
-    'is-disabled': props.disabled,
-    'is-error': !!props.error,
-    'is-checked': isChecked.value,
-}))
+const rootClasses = computed(() => [
+    'app-choice',
+    `app-choice--${props.type}`,
+    `app-choice--${props.variant}`,
+    {
+        'is-disabled': props.disabled,
+        'is-checked': isChecked.value,
+        [`is-${props.state}`]: props.state,
+    },
+])
 
-function onChange(e: Event) {
-    const el = e.target as HTMLInputElement
+function onChange(event: Event) {
+    const target = event.target as HTMLInputElement
+
     if (props.type === 'checkbox') {
-        emit('update:modelValue', el.checked)
-    } else {
-        emit('update:modelValue', el.value ?? props.value ?? null)
+        emit('update:modelValue', target.checked)
+        return
     }
+
+    emit('update:modelValue', props.value ?? target.value ?? null)
 }
 </script>
-
