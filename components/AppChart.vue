@@ -1,16 +1,14 @@
 <template>
     <ClientOnly>
         <div class="app-chart" :class="wrapperClasses" :style="{ height: `${resolvedHeight}px` }">
-            <Line v-if="resolvedType === 'line'" :key="renderKey" class="app-chart__canvas" :data="lineData"
-                :options="lineOptions" />
+            <Line v-if="isLine" class="app-chart__canvas" :data="lineData" :options="lineOptions" />
 
-            <Bar v-else-if="resolvedType === 'bar'" :key="renderKey" class="app-chart__canvas" :data="barData"
-                :options="barOptions" />
+            <Bar v-else-if="isBar" class="app-chart__canvas" :data="barData" :options="barOptions" />
 
-            <Doughnut v-else-if="resolvedType === 'doughnut'" :key="renderKey" class="app-chart__canvas"
-                :data="doughnutData" :options="doughnutOptions" />
+            <Doughnut v-else-if="isDoughnut" class="app-chart__canvas" :data="doughnutData"
+                :options="doughnutOptions" />
 
-            <Pie v-else :key="renderKey" class="app-chart__canvas" :data="pieData" :options="pieOptions" />
+            <Pie v-else class="app-chart__canvas" :data="pieData" :options="pieOptions" />
         </div>
 
         <template #fallback>
@@ -22,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useAttrs } from 'vue'
+import { computed } from 'vue'
 import { Bar, Line, Doughnut, Pie } from 'vue-chartjs'
 import {
     Chart as ChartJS,
@@ -56,30 +54,31 @@ ChartJS.register(
 type ChartType = 'line' | 'bar' | 'doughnut' | 'pie'
 type ChartVariant = 'default' | 'semi-doughnut'
 
+type AnyObject = Record<string, any>
+
 const props = withDefaults(
     defineProps<{
         type: ChartType
         data: ChartData<ChartType>
-        options?: ChartOptions<ChartType>
         height?: number
         variant?: ChartVariant
         cutout?: string | number
+        options?: AnyObject
     }>(),
     {
         height: 260,
         variant: 'default',
         cutout: '68%',
+        options: () => ({}),
     },
 )
 
-const attrs = useAttrs()
-
-function isObject(value: unknown): value is Record<string, any> {
+function isObject(value: unknown): value is AnyObject {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
-function deepMerge<T extends Record<string, any>>(...sources: T[]): T {
-    const result: Record<string, any> = {}
+function deepMerge<T extends AnyObject>(...sources: T[]): T {
+    const result: AnyObject = {}
 
     for (const source of sources) {
         if (!isObject(source)) continue
@@ -109,6 +108,10 @@ const resolvedType = computed<ChartType>(() => {
     return props.variant === 'semi-doughnut' ? 'doughnut' : props.type
 })
 
+const isLine = computed(() => resolvedType.value === 'line')
+const isBar = computed(() => resolvedType.value === 'bar')
+const isDoughnut = computed(() => resolvedType.value === 'doughnut')
+
 const resolvedHeight = computed(() => {
     if (props.variant === 'semi-doughnut') {
         return Math.max(220, Math.floor(Number(props.height) || 260))
@@ -117,20 +120,87 @@ const resolvedHeight = computed(() => {
     return Math.max(120, Math.floor(Number(props.height) || 260))
 })
 
-const wrapperClasses = computed(() => [
-    attrs.class,
-    {
-        'app-chart--semi-doughnut': props.variant === 'semi-doughnut',
-    },
-])
+const wrapperClasses = computed(() => ({
+    'app-chart--semi-doughnut': props.variant === 'semi-doughnut',
+}))
 
-const baseOptions: ChartOptions<any> = {
+const baseOptions = {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
-}
+    plugins: {
+        legend: {
+            display: true,
+        },
+        tooltip: {
+            enabled: true,
+        },
+    },
+} satisfies AnyObject
 
-const semiDoughnutOptions: ChartOptions<'doughnut'> = {
+const defaultLineOptions = {
+    scales: {
+        x: {
+            grid: {
+                display: false,
+            },
+        },
+        y: {
+            beginAtZero: true,
+            suggestedMax: 100,
+            grid: {
+                color: 'rgba(0, 0, 0, 0.05)',
+            },
+        },
+    },
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+    },
+} satisfies AnyObject
+
+const defaultBarOptions = {
+    scales: {
+        x: {
+            grid: {
+                display: false,
+            },
+        },
+        y: {
+            beginAtZero: true,
+            suggestedMax: 100,
+            grid: {
+                color: 'rgba(0, 0, 0, 0.05)',
+            },
+        },
+    },
+    plugins: {
+        legend: {
+            display: true,
+            position: 'top',
+        },
+    },
+} satisfies AnyObject
+
+const defaultDoughnutOptions = {
+    cutout: props.cutout,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            align: 'center',
+            labels: {
+                boxWidth: 14,
+                boxHeight: 14,
+                padding: 12,
+                usePointStyle: false,
+            },
+        },
+    },
+} satisfies AnyObject
+
+const defaultSemiDoughnutOptions = {
     rotation: -90,
     circumference: 180,
     cutout: props.cutout,
@@ -154,22 +224,22 @@ const semiDoughnutOptions: ChartOptions<'doughnut'> = {
             },
         },
     },
-}
+} satisfies AnyObject
 
-const mergedOptions = computed(() => {
-    if (props.variant === 'semi-doughnut') {
-        return deepMerge(
-            baseOptions as Record<string, any>,
-            semiDoughnutOptions as Record<string, any>,
-            (props.options ?? {}) as Record<string, any>,
-        )
-    }
-
-    return deepMerge(
-        baseOptions as Record<string, any>,
-        (props.options ?? {}) as Record<string, any>,
-    )
-})
+const defaultPieOptions = {
+    plugins: {
+        legend: {
+            position: 'bottom',
+            align: 'center',
+            labels: {
+                boxWidth: 14,
+                boxHeight: 14,
+                padding: 12,
+                usePointStyle: false,
+            },
+        },
+    },
+} satisfies AnyObject
 
 const chartData = computed(() => {
     if (props.variant !== 'semi-doughnut') {
@@ -191,23 +261,39 @@ const barData = computed(() => props.data as ChartData<'bar'>)
 const doughnutData = computed(() => chartData.value as ChartData<'doughnut'>)
 const pieData = computed(() => props.data as ChartData<'pie'>)
 
-const lineOptions = computed(() => mergedOptions.value as ChartOptions<'line'>)
-const barOptions = computed(() => mergedOptions.value as ChartOptions<'bar'>)
-const doughnutOptions = computed(() => mergedOptions.value as ChartOptions<'doughnut'>)
-const pieOptions = computed(() => mergedOptions.value as ChartOptions<'pie'>)
+const lineOptions = computed<ChartOptions<'line'>>(() => {
+    return deepMerge(
+        baseOptions,
+        defaultLineOptions,
+        props.options,
+    ) as ChartOptions<'line'>
+})
 
-const renderKey = computed(() => {
-    return JSON.stringify({
-        type: resolvedType.value,
-        variant: props.variant,
-        height: resolvedHeight.value,
-        labels: props.data?.labels ?? [],
-        datasets: props.data?.datasets?.map((dataset: any) => ({
-            label: dataset.label,
-            data: dataset.data,
-            backgroundColor: dataset.backgroundColor,
-            borderColor: dataset.borderColor,
-        })),
-    })
+const barOptions = computed<ChartOptions<'bar'>>(() => {
+    return deepMerge(
+        baseOptions,
+        defaultBarOptions,
+        props.options,
+    ) as ChartOptions<'bar'>
+})
+
+const doughnutOptions = computed<ChartOptions<'doughnut'>>(() => {
+    const preset = props.variant === 'semi-doughnut'
+        ? defaultSemiDoughnutOptions
+        : defaultDoughnutOptions
+
+    return deepMerge(
+        baseOptions,
+        preset,
+        props.options,
+    ) as ChartOptions<'doughnut'>
+})
+
+const pieOptions = computed<ChartOptions<'pie'>>(() => {
+    return deepMerge(
+        baseOptions,
+        defaultPieOptions,
+        props.options,
+    ) as ChartOptions<'pie'>
 })
 </script>

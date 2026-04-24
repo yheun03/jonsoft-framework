@@ -3,61 +3,72 @@
         <div class="page-demo-layout">
             <main class="page-demo-main">
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">Chart Demo (Chart.js)</h1>
-                    <p class="page-demo__desc">라인/스텝/다중, 바/도넛/반도넛/원형 차트를 확인합니다.</p>
+                    <h1 class="page-demo__title">
+                        AppChart
+                    </h1>
+
+                    <p class="page-demo__desc">
+                        Chart.js 기반 차트 컴포넌트입니다.
+                        line / bar / doughnut / semi-doughnut / pie 타입을 지원합니다.
+                    </p>
                 </header>
 
+                <!-- LINE -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Line Variants</h2>
+                    <h2 class="page-demo-card__title">
+                        Line Variants
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        기본 라인, 스텝 라인, 멀티 라인 구성을 확인합니다.
+                    </p>
+
                     <div class="page-demo-grid">
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="lineData" :options="lineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="lineData" />
                         </client-only>
+
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData"
-                                :options="steppedLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="steppedLineData" />
                         </client-only>
+
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData"
-                                :options="multiLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData" />
                         </client-only>
+
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData"
-                                :options="multiLineOptions" />
+                            <AppChart class="page-demo-chart-box" type="line" :data="multiLineData2" />
                         </client-only>
                     </div>
                 </section>
 
+                <!-- CHART TYPES -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Bar / Doughnut / Pie</h2>
+                    <h2 class="page-demo-card__title">
+                        Bar / Doughnut / Semi Doughnut / Pie
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        막대형, 도넛형, 반도넛형, 원형 차트 구성을 확인합니다.
+                    </p>
+
                     <div class="page-demo-grid">
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="bar" :data="barData" :options="barOptions" />
+                            <AppChart class="page-demo-chart-box" type="bar" :data="barData" />
                         </client-only>
+
                         <client-only>
-                            <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData"
-                                :options="doughnutOptions" :height="220" />
+                            <AppChart class="page-demo-chart-box" type="doughnut" :data="doughnutData" :height="220" />
                         </client-only>
+
                         <client-only>
                             <AppChart class="page-demo-chart-box" type="doughnut" variant="semi-doughnut"
-                                :data="semiDonutChartData" :options="semiDonutChartOptions" :height="220" />
+                                :data="semiDoughnutData" :height="220" />
                         </client-only>
-                        <client-only>
-                            <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :options="pieOptions"
-                                :height="220" />
-                        </client-only>
-                    </div>
-                </section>
 
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Controls</h2>
-                    <div class="page-demo-controls">
-                        <div class="page-demo-control">
-                            <label class="page-demo-control__label">포인트 수 (Line)</label>
-                            <input class="page-demo-control__range" type="range" min="5" max="20" :value="points"
-                                @input="onPoints" />
-                            <div class="page-demo-control__value">{{ points }}</div>
-                        </div>
+                        <client-only>
+                            <AppChart class="page-demo-chart-box" type="pie" :data="pieData" :height="220" />
+                        </client-only>
                     </div>
                 </section>
             </main>
@@ -65,14 +76,10 @@
             <aside class="page-demo-aside" aria-label="현재 값 패널">
                 <div class="page-demo-aside__sticky">
                     <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">Actions</h2>
-                        <div class="page-demo-actions">
-                            <AppButton variant="fill" @click="randomize">랜덤 데이터</AppButton>
-                            <AppButton variant="text" @click="reset">초기화</AppButton>
-                        </div>
-                    </section>
-                    <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">현재 값</h2>
+                        <h2 class="page-demo-card__title">
+                            Current Value
+                        </h2>
+
                         <pre class="page-demo-output">{{ output }}</pre>
                     </section>
                 </div>
@@ -82,160 +89,124 @@
 </template>
 
 <script setup lang="ts">
-import type { ChartData, ChartOptions } from 'chart.js'
+import type { ChartData } from 'chart.js'
 
-const points = ref(12)
-
-const seed = ref<number[]>([])
-
-function makeSeed(n: number) {
-    return Array.from({ length: n }, () => Math.round(20 + Math.random() * 80))
-}
-
-function makeLabels(n: number) {
-    return Array.from({ length: n }, (_, i) => `D${i + 1}`)
-}
-
-function randomize() {
-    seed.value = makeSeed(points.value)
-}
-
-function reset() {
-    points.value = 12
-    seed.value = makeSeed(12)
-}
-
-function onPoints(e: Event) {
-    const v = Number((e.target as HTMLInputElement).value)
-    points.value = v
-    seed.value = makeSeed(v)
-}
-
-reset()
-
-// Line 기본
-const lineData = computed<ChartData<'line'>>(() => {
-    const labels = makeLabels(points.value)
-    return {
-        labels,
-        datasets: [
-            {
-                label: 'Line',
-                data: seed.value,
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                fill: true,
-                tension: 0.35,
-                pointRadius: 3,
-            },
-        ],
-    }
-})
-
-const lineOptions = computed<ChartOptions<'line'>>(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { display: true },
-        tooltip: { enabled: true },
-    },
-    scales: {
-        y: { beginAtZero: true, suggestedMax: 100 },
-    },
-}))
-
-// 뚝뚝 끊기는 스텝 라인
-const steppedLineData = computed<ChartData<'line'>>(() => {
-    const base = lineData.value
-    return {
-        ...base,
-        datasets: base.datasets.map((ds) => ({
-            ...ds,
-            label: 'Stepped',
-            tension: 0,
-            stepped: true as const,
-        })),
-    }
-})
-
-const steppedLineOptions = computed<ChartOptions<'line'>>(() => lineOptions.value)
-
-// 다중 라인
-const multiLineData = computed<ChartData<'line'>>(() => {
-    const labels = makeLabels(points.value)
-    const base = seed.value
-    const second = base.map((v) => Math.max(0, Math.min(100, v + (Math.random() * 30 - 15))))
-    return {
-        labels,
-        datasets: [
-            {
-                label: 'Series A',
-                data: base,
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.15)',
-                fill: true,
-                tension: 0.35,
-                pointRadius: 3,
-            },
-            {
-                label: 'Series B',
-                data: second,
-                borderColor: '#f97316',
-                backgroundColor: 'rgba(249, 115, 22, 0.15)',
-                fill: true,
-                tension: 0.35,
-                pointRadius: 3,
-            },
-        ],
-    }
-})
-
-const multiLineOptions = computed<ChartOptions<'line'>>(() => lineOptions.value)
-
-// Bar
-const barData = computed<ChartData<'bar'>>(() => {
-    const labels = makeLabels(points.value)
-    return {
-        labels,
-        datasets: [
-            {
-                label: 'Bar',
-                data: seed.value,
-                backgroundColor: 'rgba(59, 130, 246, 0.7)',
-            },
-        ],
-    }
-})
-
-const barOptions = computed<ChartOptions<'bar'>>(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { display: true },
-        tooltip: { enabled: true },
-    },
-    scales: {
-        y: { beginAtZero: true, suggestedMax: 100 },
-    },
-}))
-
-// 도넛 / 반도넛 / 원형
+const lineLabels = ['1월', '2월', '3월', '4월', '5월', '6월']
 const pieLabels = ['A', 'B', 'C', 'D']
-const pieBaseData = computed(() => makeSeed(pieLabels.length))
+
+const lineData = computed<ChartData<'line'>>(() => ({
+    labels: lineLabels,
+    datasets: [
+        {
+            label: 'Line',
+            data: [35, 52, 41, 68, 57, 74],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+    ],
+}))
+
+const steppedLineData = computed<ChartData<'line'>>(() => ({
+    labels: lineLabels,
+    datasets: [
+        {
+            label: 'Stepped',
+            data: [28, 46, 39, 63, 55, 71],
+            borderColor: '#14b8a6',
+            backgroundColor: 'rgba(20, 184, 166, 0.15)',
+            fill: true,
+            tension: 0,
+            stepped: true,
+            pointRadius: 3,
+        },
+    ],
+}))
+
+const multiLineData = computed<ChartData<'line'>>(() => ({
+    labels: lineLabels,
+    datasets: [
+        {
+            label: 'Series A',
+            data: [32, 48, 44, 62, 58, 76],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.15)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+        {
+            label: 'Series B',
+            data: [25, 39, 51, 57, 49, 68],
+            borderColor: '#f97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.15)',
+            fill: true,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+    ],
+}))
+
+const multiLineData2 = computed<ChartData<'line'>>(() => ({
+    labels: lineLabels,
+    datasets: [
+        {
+            label: 'Series A',
+            data: [30, 45, 40, 58, 52, 70],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.08)',
+            fill: false,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+        {
+            label: 'Series B',
+            data: [22, 36, 34, 49, 46, 61],
+            borderColor: '#22c55e',
+            backgroundColor: 'rgba(34, 197, 94, 0.08)',
+            fill: false,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+        {
+            label: 'Series C',
+            data: [38, 53, 49, 66, 60, 78],
+            borderColor: '#f97316',
+            backgroundColor: 'rgba(249, 115, 22, 0.08)',
+            fill: false,
+            tension: 0.35,
+            pointRadius: 3,
+        },
+    ],
+}))
+
+const barData = computed<ChartData<'bar'>>(() => ({
+    labels: lineLabels,
+    datasets: [
+        {
+            label: 'Bar',
+            data: [45, 62, 38, 74, 59, 81],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderRadius: 8,
+        },
+    ],
+}))
 
 const doughnutData = computed<ChartData<'doughnut'>>(() => ({
     labels: pieLabels,
     datasets: [
         {
             label: 'Doughnut',
-            data: pieBaseData.value,
+            data: [35, 25, 20, 20],
             backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
+            borderWidth: 0,
         },
     ],
 }))
 
-// 반 도넛(위가 평평한 반원)
-const semiDonutChartData = {
+const semiDoughnutData = computed<ChartData<'doughnut'>>(() => ({
     labels: ['정상', '지연', '대기', '점검'],
     datasets: [
         {
@@ -244,22 +215,6 @@ const semiDonutChartData = {
             borderWidth: 0,
         },
     ],
-}
-
-const semiDonutChartOptions = {
-    plugins: {
-        legend: {
-            position: 'bottom',
-        },
-    },
-}
-
-const doughnutOptions = computed<ChartOptions<'doughnut'>>(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { position: 'bottom' },
-    },
 }))
 
 const pieData = computed<ChartData<'pie'>>(() => ({
@@ -267,25 +222,24 @@ const pieData = computed<ChartData<'pie'>>(() => ({
     datasets: [
         {
             label: 'Pie',
-            data: pieBaseData.value,
+            data: [30, 22, 18, 30],
             backgroundColor: ['#3b82f6', '#22c55e', '#f97316', '#e11d48'],
+            borderWidth: 0,
         },
     ],
-}))
-
-const pieOptions = computed<ChartOptions<'pie'>>(() => ({
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { position: 'bottom' },
-    },
 }))
 
 const output = computed(() =>
     JSON.stringify(
         {
-            points: points.value,
-            seed: seed.value,
+            lineData: lineData.value,
+            steppedLineData: steppedLineData.value,
+            multiLineData: multiLineData.value,
+            multiLineData2: multiLineData2.value,
+            barData: barData.value,
+            doughnutData: doughnutData.value,
+            semiDoughnutData: semiDoughnutData.value,
+            pieData: pieData.value,
         },
         null,
         2,
