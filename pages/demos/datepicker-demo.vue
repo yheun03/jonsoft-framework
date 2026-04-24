@@ -2,41 +2,245 @@
     <div class="page-demo">
         <div class="page-demo-layout">
             <main class="page-demo-main">
+
+                <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">DatePicker Demo</h1>
-                    <p class="page-demo__desc">Flatpickr 기반 데이트피커(단일/범위/다중, min/max, 검증)를 확인합니다.</p>
+                    <h1 class="page-demo__title">
+                        AppDatePicker
+                    </h1>
+
+                    <p class="page-demo__desc">
+                        Flatpickr 기반 DatePicker 컴포넌트입니다.
+                        mode / size / shape / state / disabled / min / max 속성을 지원합니다.
+                    </p>
                 </header>
 
+                <!-- BASIC -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">기본</h2>
+                    <h2 class="page-demo-card__title">
+                        Basic
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        가장 기본적인 DatePicker 사용 예시입니다.
+                    </p>
+
                     <div class="page-demo-grid">
-                        <AppDatePicker v-model="single" label="단일 날짜" helper="flatpickr-input (single)" />
-                        <AppDatePicker v-model="range" mode="range" label="범위 날짜" helper="range" />
-                        <AppDatePicker v-model="multiple" mode="multiple" label="다중 날짜" helper="multiple" />
+                        <AppDatePicker v-model="basic.single" label="단일 날짜" placeholder="날짜를 선택하세요"
+                            hint="기본 single 모드입니다">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="basic.range" mode="range" label="범위 날짜" placeholder="기간을 선택하세요"
+                            hint="시작일과 종료일을 선택합니다">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="basic.multiple" mode="multiple" label="다중 날짜" placeholder="여러 날짜를 선택하세요"
+                            hint="복수 날짜 선택이 가능합니다">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
                     </div>
                 </section>
 
+                <!-- MODE -->
                 <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">제약/검증</h2>
+                    <h2 class="page-demo-card__title">
+                        Mode
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        single / range / multiple 모드를 제어합니다.
+                    </p>
+
                     <div class="page-demo-grid">
-                        <AppDatePicker v-model="singleMinMax" label="min/max" :min="min" :max="max" helper="min/max 적용" />
-                        <AppDatePicker v-model="requiredSingle" label="필수(단일)" :error="requiredError" helper="비어있으면 에러" />
-                        <AppDatePicker v-model="requiredRange" mode="range" label="필수(범위)" :error="requiredRangeError" helper="start/end 필요" />
+                        <AppDatePicker v-model="modes.single" mode="single" label="Single" hint="하나의 날짜 선택">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="modes.range" mode="range" label="Range" hint="날짜 범위 선택">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="modes.multiple" mode="multiple" label="Multiple" hint="여러 날짜 선택">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
                     </div>
                 </section>
+
+                <!-- SIZE -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Size
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        DatePicker의 높이를 제어합니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppDatePicker v-model="sizes.xs" size="xs" label="XS">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="sizes.sm" size="sm" label="SM">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="sizes.md" size="md" label="MD">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="sizes.lg" size="lg" label="LG">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                    </div>
+                </section>
+
+                <!-- SHAPE -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Shape
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        DatePicker의 border 스타일을 제어합니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppDatePicker v-model="shapes.square" shape="square" label="Square">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="shapes.round" shape="round" label="Round">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="shapes.pill" shape="pill" label="Pill">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="shapes.underline" shape="underline" label="Underline">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                    </div>
+                </section>
+
+                <!-- STATE -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        State
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        입력 상태에 따른 스타일을 제공합니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppDatePicker v-model="states.error" label="Error" state="error" hint="에러 메시지">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="states.warning" label="Warning" state="warning" hint="경고 메시지">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="states.success" label="Success" state="success" hint="선택 가능">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                    </div>
+                </section>
+
+                <!-- DISABLED -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Disabled
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        선택 불가 상태를 제어합니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppDatePicker v-model="disabledValue" label="Disabled" disabled hint="비활성 상태">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                    </div>
+                </section>
+
+                <!-- CONSTRAINTS -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Constraints
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        min / max 속성으로 선택 가능한 날짜 범위를 제한합니다.
+                    </p>
+
+                    <div class="page-demo-grid">
+                        <AppDatePicker v-model="constraints.single" label="Min / Max" :min="min" :max="max"
+                            hint="2026년 내에서만 선택 가능">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+
+                        <AppDatePicker v-model="constraints.range" mode="range" label="Range with Min / Max" :min="min"
+                            :max="max" hint="범위 선택에도 동일하게 적용">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                    </div>
+                </section>
+
             </main>
 
+            <!-- STATE PANEL -->
             <aside class="page-demo-aside" aria-label="현재 값 패널">
                 <div class="page-demo-aside__sticky">
                     <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">Actions</h2>
-                        <div class="page-demo-actions">
-                            <AppButton variant="fill" @click="submit">검증</AppButton>
-                            <AppButton variant="text" @click="reset">초기화</AppButton>
-                        </div>
-                    </section>
-                    <section class="page-demo-card">
-                        <h2 class="page-demo-card__title">현재 값</h2>
+                        <h2 class="page-demo-card__title">
+                            Current Value
+                        </h2>
+
                         <pre class="page-demo-output">{{ output }}</pre>
                     </section>
                 </div>
@@ -46,54 +250,61 @@
 </template>
 
 <script setup lang="ts">
-import type { DateRangeValue } from '~/components/base/AppDatePicker.vue'
-
-const single = ref<string | null>(null)
-const range = ref<DateRangeValue | null>(null)
-const multiple = ref<string[]>([])
-
-const singleMinMax = ref<string | null>(null)
-const requiredSingle = ref<string | null>(null)
-const requiredRange = ref<DateRangeValue | null>(null)
-const submitted = ref(false)
+import { Icon } from '@iconify/vue'
+import type { DateRangeValue } from '~/components/AppDatePicker.vue'
 
 const min = '2026-01-01'
 const max = '2026-12-31'
 
-const requiredError = computed(() => {
-    if (!submitted.value) return undefined
-    return requiredSingle.value ? undefined : '필수 입력입니다.'
+const basic = reactive({
+    single: null as string | null,
+    range: null as DateRangeValue | null,
+    multiple: [] as string[],
 })
 
-const requiredRangeError = computed(() => {
-    if (!submitted.value) return undefined
-    return requiredRange.value?.start && requiredRange.value?.end ? undefined : '시작/종료 날짜 모두 입력해주세요.'
+const modes = reactive({
+    single: null as string | null,
+    range: null as DateRangeValue | null,
+    multiple: [] as string[],
 })
 
-function submit() {
-    submitted.value = true
-}
+const sizes = reactive({
+    xs: null as string | null,
+    sm: null as string | null,
+    md: null as string | null,
+    lg: null as string | null,
+})
 
-function reset() {
-    single.value = null
-    range.value = null
-    multiple.value = []
-    singleMinMax.value = null
-    requiredSingle.value = null
-    requiredRange.value = null
-    submitted.value = false
-}
+const shapes = reactive({
+    square: null as string | null,
+    round: null as string | null,
+    pill: null as string | null,
+    underline: null as string | null,
+})
+
+const states = reactive({
+    error: null as string | null,
+    warning: null as string | null,
+    success: null as string | null,
+})
+
+const disabledValue = ref<string | null>('2026-05-10')
+
+const constraints = reactive({
+    single: null as string | null,
+    range: null as DateRangeValue | null,
+})
 
 const output = computed(() =>
     JSON.stringify(
         {
-            single: single.value,
-            range: range.value,
-            multiple: multiple.value,
-            singleMinMax: singleMinMax.value,
-            requiredSingle: requiredSingle.value,
-            requiredRange: requiredRange.value,
-            submitted: submitted.value,
+            basic,
+            modes,
+            sizes,
+            shapes,
+            states,
+            disabledValue: disabledValue.value,
+            constraints,
             min,
             max,
         },
@@ -104,4 +315,3 @@ const output = computed(() =>
 </script>
 
 <!-- demo 공통 스타일은 assets/scss/main.scss 로 이동 -->
-
