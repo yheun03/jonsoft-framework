@@ -1,30 +1,29 @@
 <template>
-    <div class="app-progress" :class="[`app-progress--${variant}`, `app-progress--${mode}`]">
-        <!-- ------------------------------------------------------------------ -->
-        <!-- linear -->
-        <!-- ------------------------------------------------------------------ -->
+    <div :class="rootClasses">
         <div class="app-progress__linear">
+
             <!-- single control -->
             <div v-if="isSingleControl" class="app-progress__control">
-                <label v-if="label" class="app-progress__control-label">{{ label }}</label>
+                <label v-if="label" class="app-progress__control-label">
+                    {{ label }}
+                </label>
 
                 <div ref="singleEl" class="app-progress__noui" role="slider" aria-orientation="horizontal"
-                    :aria-valuemin="0" :aria-valuemax="100" :aria-valuenow="clampedValue" />
+                    :aria-valuemin="0" :aria-valuemax="100" :aria-valuenow="singleValue" />
 
-                <div v-if="showLabel" class="app-progress__control-value">{{ clampedValue }}%</div>
+                <div v-if="showLabel" class="app-progress__control-value">
+                    {{ singleValue }}%
+                </div>
             </div>
 
             <!-- range control -->
-            <div v-else-if="isRangeSelectable" ref="sliderEl" class="app-progress__noui" role="group"
+            <div v-else-if="isRangeControl" ref="rangeEl" class="app-progress__noui" role="group"
                 aria-label="프로그레스 범위 선택" />
 
             <!-- display -->
             <div v-else class="app-progress__track" role="progressbar" :aria-valuenow="displayEnd" aria-valuemin="0"
                 aria-valuemax="100">
-                <div class="app-progress__bar-range" :style="{
-                    '--start': displayStart,
-                    '--end': displayEnd,
-                }" />
+                <div class="app-progress__bar-range" :style="rangeStyle" />
             </div>
         </div>
     </div>
@@ -39,10 +38,15 @@ import 'nouislider/dist/nouislider.css'
 type Variant = 'linear'
 type Mode = 'display' | 'control-single' | 'control-range'
 
+type ProgressRange = {
+    start: number
+    end: number
+}
+
 const props = withDefaults(
     defineProps<{
         value: number
-        range?: { start: number; end: number }
+        range?: ProgressRange
         rangeSelectable?: boolean
         mode?: Mode
         label?: string
@@ -52,173 +56,233 @@ const props = withDefaults(
     }>(),
     {
         variant: 'linear',
+        mode: 'display',
         showLabel: false,
         rangeSelectable: false,
-        mode: 'display',
         label: undefined,
         disabled: false,
     },
 )
 
 const emit = defineEmits<{
-    (e: 'update:range', value: { start: number; end: number }): void
+    (e: 'update:range', value: ProgressRange): void
     (e: 'update:value', value: number): void
 }>()
 
-/* -------------------------------------------------------------------------- */
-/* 지역변수 */
-/* -------------------------------------------------------------------------- */
 function clamp(value: number) {
-    const n = Number(value)
-    if (Number.isNaN(n)) return 0
-    return Math.min(100, Math.max(0, Math.round(n)))
+    const next = Number(value)
+
+    if (Number.isNaN(next)) {
+        return 0
+    }
+
+    return Math.min(100, Math.max(0, Math.round(next)))
 }
 
-/* -------------------------------------------------------------------------- */
-/* common */
-/* -------------------------------------------------------------------------- */
-const clampedValue = computed(() => clamp(props.value))
+function normalizeRange(range?: ProgressRange): ProgressRange {
+    if (!range) {
+        return {
+            start: 0,
+            end: 0,
+        }
+    }
 
-const displayStart = computed(() => {
-    if (!props.range) return 0
-    return clamp(Math.min(props.range.start, props.range.end))
-})
+    const start = clamp(range.start)
+    const end = clamp(range.end)
 
+    return {
+        start: Math.min(start, end),
+        end: Math.max(start, end),
+    }
+}
+
+function isSameRange(a: ProgressRange, b: ProgressRange) {
+    return a.start === b.start && a.end === b.end
+}
+
+const singleEl = ref<HTMLElement | null>(null)
+const rangeEl = ref<HTMLElement | null>(null)
+
+const rootClasses = computed(() => [
+    'app-progress',
+    `app-progress--${props.variant}`,
+    `app-progress--${props.mode}`,
+    {
+        'is-disabled': props.disabled,
+    },
+])
+
+const singleValue = computed(() => clamp(props.value))
+const normalizedRange = computed(() => normalizeRange(props.range))
+
+const displayStart = computed(() => normalizedRange.value.start)
 const displayEnd = computed(() => {
-    if (!props.range) return clampedValue.value
-    return clamp(Math.max(props.range.start, props.range.end))
+    if (props.range) {
+        return normalizedRange.value.end
+    }
+
+    return singleValue.value
 })
 
-const isSingleControl = computed(() => props.variant === 'linear' && props.mode === 'control-single')
-const isRangeSelectable = computed(() => {
+const isSingleControl = computed(() => {
+    return props.variant === 'linear' && props.mode === 'control-single'
+})
+
+const isRangeControl = computed(() => {
     return props.variant === 'linear' && !!props.range && (props.mode === 'control-range' || props.rangeSelectable)
 })
 
-/* -------------------------------------------------------------------------- */
-/* 단일 선택 (control-single) */
-/* -------------------------------------------------------------------------- */
-const singleEl = ref<HTMLElement | null>(null)
-let singleSlider: NoUiSliderApi | null = null
+const rangeStyle = computed(() => ({
+    '--start': displayStart.value,
+    '--end': displayEnd.value,
+}))
 
-function destroySingleSlider() {
-    if (!singleSlider) return
-    singleSlider.destroy()
-    singleSlider = null
-}
+/* -------------------------------------------------------------------------- */
+/* private slider manager */
+/* -------------------------------------------------------------------------- */
+function createSliderManagers() {
+    let singleSlider: NoUiSliderApi | null = null
+    let rangeSlider: NoUiSliderApi | null = null
 
-function ensureSingleSlider() {
-    if (!isSingleControl.value) {
+    function destroySingleSlider() {
+        if (!singleSlider) return
+        singleSlider.destroy()
+        singleSlider = null
+    }
+
+    function destroyRangeSlider() {
+        if (!rangeSlider) return
+        rangeSlider.destroy()
+        rangeSlider = null
+    }
+
+    function syncSingleSlider() {
+        if (!isSingleControl.value) {
+            destroySingleSlider()
+            return
+        }
+
+        if (!singleEl.value) return
+
+        if (!singleSlider) {
+            singleSlider = noUiSlider.create(singleEl.value, {
+                start: [singleValue.value],
+                connect: [true, false],
+                range: { min: 0, max: 100 },
+                step: 1,
+                behaviour: 'tap-drag',
+                animate: false,
+                animationDuration: 0,
+            })
+
+            const handleSingle = (values: (number | string)[]) => {
+                const next = clamp(Number(values[0]))
+
+                if (next !== singleValue.value) {
+                    emit('update:value', next)
+                }
+            }
+
+            singleSlider.on('slide', handleSingle)
+            singleSlider.on('set', handleSingle)
+        } else {
+            const raw = singleSlider.get()
+            const current = Number(Array.isArray(raw) ? raw[0] : raw)
+
+            if (!Number.isNaN(current) && clamp(current) !== singleValue.value) {
+                singleSlider.set([singleValue.value])
+            }
+        }
+
+        if (props.disabled) singleSlider.disable()
+        else singleSlider.enable()
+    }
+
+    function syncRangeSlider() {
+        if (!isRangeControl.value) {
+            destroyRangeSlider()
+            return
+        }
+
+        if (!rangeEl.value) return
+
+        if (!rangeSlider) {
+            rangeSlider = noUiSlider.create(rangeEl.value, {
+                start: [normalizedRange.value.start, normalizedRange.value.end],
+                connect: true,
+                range: { min: 0, max: 100 },
+                step: 1,
+                behaviour: 'tap-drag',
+                animate: false,
+                animationDuration: 0,
+            })
+
+            const handleRange = (values: (number | string)[]) => {
+                const next = normalizeRange({
+                    start: Number(values[0]),
+                    end: Number(values[1]),
+                })
+
+                if (!isSameRange(next, normalizedRange.value)) {
+                    emit('update:range', next)
+                }
+            }
+
+            rangeSlider.on('slide', handleRange)
+            rangeSlider.on('set', handleRange)
+        } else {
+            const raw = rangeSlider.get()
+            const current = Array.isArray(raw)
+                ? normalizeRange({
+                    start: Number(raw[0]),
+                    end: Number(raw[1]),
+                })
+                : normalizedRange.value
+
+            if (!isSameRange(current, normalizedRange.value)) {
+                rangeSlider.set([normalizedRange.value.start, normalizedRange.value.end])
+            }
+        }
+
+        if (props.disabled) rangeSlider.disable()
+        else rangeSlider.enable()
+    }
+
+    function destroyAll() {
         destroySingleSlider()
-        return
-    }
-    if (!singleEl.value) return
-
-    const nextValue = clampedValue.value
-
-    if (!singleSlider) {
-        singleSlider = noUiSlider.create(singleEl.value, {
-            start: [nextValue],
-            connect: [true, false],
-            range: { min: 0, max: 100 },
-            step: 1,
-            behaviour: 'tap-drag',
-            animate: false,
-            animationDuration: 0,
-        })
-
-        const handleSingle = (values: (number | string)[]) => {
-            const next = clamp(Number(values[0]))
-            emit('update:value', next)
-        }
-
-        singleSlider.on('slide', handleSingle)
-        singleSlider.on('set', handleSingle)
-    } else {
-        const raw = singleSlider.get()
-        const current = Number(Array.isArray(raw) ? raw[0] : raw)
-
-        if (!Number.isNaN(current) && clamp(current) !== nextValue) {
-            singleSlider.set([nextValue])
-        }
-    }
-
-    if (props.disabled) singleSlider.disable()
-    else singleSlider.enable()
-}
-
-/* -------------------------------------------------------------------------- */
-/* 다중 선택 (control-range) */
-/* -------------------------------------------------------------------------- */
-const sliderEl = ref<HTMLElement | null>(null)
-let rangeSlider: NoUiSliderApi | null = null
-let lastRange: { start: number; end: number } | null = null
-
-function destroyRangeSlider() {
-    if (!rangeSlider) return
-    rangeSlider.destroy()
-    rangeSlider = null
-    lastRange = null
-}
-
-function ensureRangeSlider() {
-    if (!isRangeSelectable.value) {
         destroyRangeSlider()
-        return
     }
-    if (!sliderEl.value) return
 
-    const start = displayStart.value
-    const end = displayEnd.value
-
-    if (!rangeSlider) {
-        rangeSlider = noUiSlider.create(sliderEl.value, {
-            start: [start, end],
-            connect: true,
-            range: { min: 0, max: 100 },
-            step: 1,
-            behaviour: 'tap-drag',
-            animate: false,
-            animationDuration: 0,
-        })
-
-        const handleRange = (values: (number | string)[]) => {
-            const s = clamp(Number(values[0]))
-            const e = clamp(Number(values[1]))
-            const next = { start: Math.min(s, e), end: Math.max(s, e) }
-            if (lastRange && lastRange.start === next.start && lastRange.end === next.end) return
-            lastRange = next
-            emit('update:range', next)
-        }
-
-        rangeSlider.on('slide', handleRange)
-        rangeSlider.on('set', handleRange)
-    } else {
-        const raw = rangeSlider.get()
-        const current = Array.isArray(raw)
-            ? { start: clamp(Number(raw[0])), end: clamp(Number(raw[1])) }
-            : { start, end }
-
-        if (current.start !== start || current.end !== end) {
-            rangeSlider.set([start, end])
-        }
+    return {
+        syncSingleSlider,
+        syncRangeSlider,
+        destroyAll,
     }
 }
+
+const sliderManagers = createSliderManagers()
 
 onMounted(() => {
-    ensureSingleSlider()
-    ensureRangeSlider()
+    sliderManagers.syncSingleSlider()
+    sliderManagers.syncRangeSlider()
 })
 
 onBeforeUnmount(() => {
-    destroySingleSlider()
-    destroyRangeSlider()
+    sliderManagers.destroyAll()
 })
 
-watch([isSingleControl, clampedValue, () => props.disabled], () => {
-    ensureSingleSlider()
-})
+watch(
+    [isSingleControl, singleValue, () => props.disabled],
+    () => {
+        sliderManagers.syncSingleSlider()
+    },
+)
 
-watch([isRangeSelectable, displayStart, displayEnd], () => {
-    ensureRangeSlider()
-})
+watch(
+    [isRangeControl, normalizedRange, () => props.disabled],
+    () => {
+        sliderManagers.syncRangeSlider()
+    },
+    { deep: true },
+)
 </script>
