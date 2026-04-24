@@ -144,6 +144,11 @@ $select-sizes: (
                 align-content: center;
             }
 
+            .app-select__option {
+                height: unset;
+                min-height: map.get($data, height);
+            }
+
             .app-select__icon {
                 width: map.get($data, icon);
                 height: map.get($data, icon);

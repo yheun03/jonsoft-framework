@@ -12,7 +12,8 @@
                 :aria-expanded="isOpen" :aria-controls="menuId" aria-haspopup="listbox" @click="toggle"
                 @keydown="onTriggerKeydown">
                 <span class="app-select__value" :class="{ 'app-select__value--placeholder': !selectedOption }">
-                    {{ selectedOption?.label ?? placeholder }}
+                    <span v-if="selectedOption" v-html="selectedOption.label" />
+                    <span v-else>{{ placeholder }}</span>
                 </span>
 
                 <span class="app-select__icon app-select__icon--right" aria-hidden="true">
@@ -35,7 +36,7 @@
                         'is-disabled': !!opt.disabled
                     }" role="option" :aria-selected="modelValue === opt.value" :aria-disabled="!!opt.disabled"
                     @click="selectOption(opt)">
-                    {{ opt.label }}
+                    <span v-html="opt.label" />
                 </li>
             </ul>
         </div>
