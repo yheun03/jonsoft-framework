@@ -26,7 +26,7 @@
             <ul v-if="isOpen" :id="menuId" class="app-select__menu" role="listbox" :aria-labelledby="triggerId">
                 <li v-if="placeholder && !required" :id="getOptionId('__placeholder__')" class="app-select__option"
                     :class="{ 'is-selected': modelValue === null }" role="option" :aria-selected="modelValue === null"
-                    @click="selectNull">
+                    style="display: none;" @click="selectNull">
                     {{ placeholder }}
                 </li>
 
