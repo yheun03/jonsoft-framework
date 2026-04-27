@@ -29,20 +29,10 @@
 </template>
 
 <script setup lang="ts">
-type Menu = {
-    id: string
-    label: string
-    to?: string
-    order: number
-    depth: number
-    icon?: string
-    newTab?: boolean
-    children?: readonly Menu[]
-
-}
+import type { NavMenu } from '~/navigation/nav.types'
 
 const props = defineProps<{
-    item: Menu
+    item: NavMenu
     getIconSvg: (icon?: string) => string | null
 }>()
 
