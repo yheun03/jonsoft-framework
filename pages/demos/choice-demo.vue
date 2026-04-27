@@ -86,11 +86,16 @@
                     </p>
 
                     <div class="page-demo-stack">
-                        <AppChoice v-model="disabled.checkbox" type="checkbox" label="Disabled Checkbox" hint="선택 불가"
+                        <AppChoice v-model="disabled.checkbox1" type="checkbox" label="Disabled Checkbox" hint="선택 불가"
+                            disabled />
+                        <AppChoice v-model="disabled.checkbox2" type="checkbox" label="Disabled Checkbox" hint="선택 불가"
                             disabled />
 
-                        <AppChoice v-model="disabled.radio" type="radio" name="disabled-plan" value="disabled-option"
-                            label="Disabled Radio" hint="선택 불가" disabled />
+                        <AppChoice v-model="disabled.radio1" type="radio" name="disabled-plan" label="Disabled Radio"
+                            hint="선택 불가" disabled />
+
+                        <AppChoice v-model="disabled.radio2" type="radio" name="disabled-plan" label="Disabled Radio"
+                            hint="선택 불가" disabled />
                     </div>
                 </section>
 
@@ -163,8 +168,10 @@ const state = reactive({
 })
 
 const disabled = reactive({
-    checkbox: false,
-    radio: 'disabled-option' as string | number | null,
+    checkbox1: true,
+    checkbox2: false,
+    radio1: true,
+    radio2: false,
 })
 
 const chip = reactive({

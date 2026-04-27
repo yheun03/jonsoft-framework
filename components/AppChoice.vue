@@ -7,7 +7,9 @@
                 :aria-describedby="describedBy" @change="onChange" />
 
             <span class="app-choice__visual" aria-hidden="true">
-                <span class="app-choice__inner" />
+                <span v-if="isChecked" class="app-choice__inner">
+                    <Icon icon="mdi:check" />
+                </span>
             </span>
         </span>
 
