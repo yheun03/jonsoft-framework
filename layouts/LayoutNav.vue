@@ -35,7 +35,6 @@
 
 <script setup lang="ts">
 import PatternNavItem from '@/components/PatternNavItem.vue'
-import { MENUS } from '~/server/utils/menu-data'
 import logoSvg from '~/assets/icons/logo.svg?raw'
 
 type Menu = {
@@ -56,6 +55,12 @@ type MutableMenu = Omit<Menu, 'children'> & {
 type NavAction = {
     label: string
     icon: string
+}
+
+type AppRoute = {
+    path: string
+    name?: string | symbol | null
+    meta?: Record<string, unknown>
 }
 
 const headerActions: NavAction[] = [
@@ -103,7 +108,73 @@ function sortMenuTree(nodes: MutableMenu[]): MutableMenu[] {
         }))
 }
 
-const menuTree = computed(() => buildMenuTree(MENUS as readonly Menu[]))
+const router = useRouter()
+
+const ROUTE_LABEL_MAP: Record<string, string> = {
+    '/': '메인',
+    '/workspace': '워크스페이스',
+    '/demos/demo-button': '버튼 데모',
+    '/demos/demo-input': '인풋 데모',
+    '/demos/demo-grid': 'AG Grid 데모',
+    '/demos/demo-chart': '차트 데모',
+    '/demos/demo-progress': '프로그레스 데모',
+    '/demos/demo-datepicker': '데이트피커 데모',
+    '/demos/demo-select': '셀렉트 데모',
+    '/demos/demo-choice': '선택 컴포넌트 데모',
+    '/demos/demo-upload-image': '이미지 업로드 데모',
+    '/demos/demo-modal': '모달 데모',
+}
+
+function getRouteLabel(path: string, route: AppRoute): string {
+    if (ROUTE_LABEL_MAP[path]) return ROUTE_LABEL_MAP[path]
+
+    const metaTitle = route.meta?.title
+    if (typeof metaTitle === 'string' && metaTitle.trim()) return metaTitle
+
+    const segment = path.split('/').filter(Boolean).at(-1) ?? 'page'
+    return segment
+        .replace(/^demo-/, '')
+        .replace(/-/g, ' ')
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+}
+
+function isVisibleRoute(path: string): boolean {
+    if (!path) return false
+    if (path.includes(':')) return false
+    if (path === '/auth/sign-in' || path === '/auth/sign-up' || path === '/auth/find-pw') return false
+    if (path === '/demos') return false
+    return path === '/' || path === '/workspace' || path.startsWith('/demos/')
+}
+
+const menuTree = computed(() => {
+    const routes = router.getRoutes() as AppRoute[]
+    const visible = routes
+        .map((route) => route.path)
+        .filter((path, idx, arr) => arr.indexOf(path) === idx)
+        .sort((a, b) => a.localeCompare(b))
+        .filter(isVisibleRoute)
+
+    const flatMenus: Menu[] = [
+        { id: 'MENU_010000', depth: 1, order: 1, label: '메인', to: '/', newTab: false },
+        { id: 'MENU_010100', depth: 1, order: 2, label: '워크스페이스', to: '/workspace', newTab: false },
+        { id: 'MENU_020000', depth: 1, order: 3, label: '데모', to: '', newTab: false },
+    ]
+
+    const demoRoutes = visible.filter((path) => path.startsWith('/demos/'))
+    demoRoutes.forEach((path, index) => {
+        const route = routes.find((r) => r.path === path) ?? { path }
+        flatMenus.push({
+            id: `MENU_02${String(index + 1).padStart(4, '0')}`,
+            depth: 2,
+            order: index + 1,
+            label: getRouteLabel(path, route),
+            to: path,
+            newTab: false,
+        })
+    })
+
+    return buildMenuTree(flatMenus)
+})
 
 function getIconSvg(_icon?: string) {
     return null

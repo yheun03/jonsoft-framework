@@ -11,5 +11,5 @@
 </template>
 
 <script setup lang="ts">
-import LayoutNav from '~/layouts/nav.vue'
+import LayoutNav from '~/layouts/LayoutNav.vue'
 </script>
