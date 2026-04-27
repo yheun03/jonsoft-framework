@@ -2,178 +2,88 @@
 
 /* =========================================
    Component: LayoutNav
-   설명: 사이드 네비게이션
-   구조: BEM (Block / Element)
 ========================================= */
 
 .layout-nav {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 0;
 
     background: $gradient-primary;
     color: $gray-0;
 
-    display: grid;
-    min-height: 0;
-
-    grid-template-rows: auto 1fr auto;
-
-
     /* ----------------------------------------
-     Button override
-  ---------------------------------------- */
-
+       AppButton override
+    ---------------------------------------- */
     .app-button {
         border-radius: 4px;
+        color: $gray-0;
 
         &:hover {
-            background: rgba($gray-50, .1);
+            background: rgba($gray-50, 0.1);
         }
     }
 
-
     /* ----------------------------------------
-     Header
-  ---------------------------------------- */
-
+       Header
+    ---------------------------------------- */
     &__header {
-
-        .nav-logo {
-
-            padding: 16px 12px;
-
-            svg {
-                width: 100%;
-                height: auto;
-            }
-
-        }
-
-        .nav-actions {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        display: grid;
+        gap: 4px;
     }
 
+    &__logo {
+        padding: 16px 12px;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        padding-inline: 12px;
+    }
 
     /* ----------------------------------------
-     Body
-  ---------------------------------------- */
-
+       Body
+    ---------------------------------------- */
     &__body {
-
-        padding-inline: 12px;
-        padding-top: 10px;
-
         display: flex;
         flex-direction: column;
-
         min-height: 0;
         overflow: hidden auto;
 
+        padding-inline: 12px;
+        padding-top: 10px;
     }
-
-
-    /* ----------------------------------------
-     Footer
-  ---------------------------------------- */
-
-    &__footer {
-        padding: 12px 20px;
-    }
-
-
-    /* ========================================
-     Nav List
-  ======================================== */
 
     &__list-wrap {
-
-        flex: 1;
-
         display: flex;
+        flex: 1;
         flex-direction: column;
-
         min-height: 0;
-
     }
 
     &__list {
-
         display: flex;
         flex-direction: column;
-
         gap: 2px;
         width: 100%;
-
     }
 
-
     /* ----------------------------------------
-     Row
-  ---------------------------------------- */
-
-    &__row {
-
-        position: relative;
-
-        width: 100%;
-
+       Footer
+    ---------------------------------------- */
+    &__footer {
         display: flex;
         align-items: center;
-        gap: 4px;
-
-        padding: 4px;
-
-        &::after {
-
-            content: '';
-
-            position: absolute;
-
-            left: calc(-1 * var(--indent, 0px));
-            top: 0;
-
-            width: calc(100% + var(--indent, 0px));
-            height: 100%;
-
-            z-index: 0;
-
-            border-radius: 4px;
-
-            background: transparent;
-
-            transition: background .15s ease;
-
-        }
-
-        &:hover::after,
-        &:has(.router-link-active)::after {
-            background: rgba($gray-50, .1);
-        }
-
-        &>* {
-            z-index: 1;
-        }
-
+        justify-content: flex-start;
+        padding: 12px 20px;
     }
 
-
     /* ----------------------------------------
-     Label
-  ---------------------------------------- */
-
-    &__label {
-        flex: 1;
-    }
-
-
-    /* ----------------------------------------
-     Item
-  ---------------------------------------- */
-
+       Item
+    ---------------------------------------- */
     &__item {
-
         display: flex;
         flex-direction: column;
         gap: 2px;
@@ -181,7 +91,6 @@
         & & {
             padding-left: 20px;
         }
-
     }
 
     &__sublist {
@@ -190,69 +99,134 @@
         gap: 2px;
     }
 
-
     /* ----------------------------------------
-     Toggle
-  ---------------------------------------- */
-
-    &__toggle {
-
-        &.app-button--text {
-            color: $gray-0;
-        }
-
-        &-icon {
-
-            line-height: 1;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            transition: transform .16s ease-out;
-
-            svg {
-                width: 16px;
-                height: 16px;
-                display: block;
-            }
-
-            &.is-open {
-                transform: rotate(90deg);
-            }
-
-        }
-
-    }
-
-
-    /* ----------------------------------------
-     Link
-  ---------------------------------------- */
-
-    &__link {
-
-        width: 100%;
+       Row
+    ---------------------------------------- */
+    &__row {
+        position: relative;
 
         display: flex;
         align-items: center;
-
         gap: 4px;
+        width: 100%;
+        padding: 4px;
 
+        &::after {
+            content: "";
+
+            position: absolute;
+            top: 0;
+            left: calc(-1 * var(--indent, 0px));
+            z-index: 0;
+
+            width: calc(100% + var(--indent, 0px));
+            height: 100%;
+
+            border-radius: 4px;
+            background: transparent;
+            transition: background 0.15s ease;
+        }
+
+        &:hover::after,
+        &:has(.router-link-active)::after {
+            background: rgba($gray-50, 0.1);
+        }
+
+        >* {
+            z-index: 1;
+        }
+    }
+
+    &__label {
+        flex: 1;
+    }
+
+    /* ----------------------------------------
+       Link
+    ---------------------------------------- */
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        width: 100%;
+
+        padding: 0;
         border: 0;
         background: transparent;
 
-        padding: 0;
-
         text-align: left;
-
         cursor: pointer;
 
         span {
-            @include font(b3, rg);
             color: $gray-0;
+            @include font(b3, rg);
         }
-
     }
 
+    /* ----------------------------------------
+       Toggle
+    ---------------------------------------- */
+    &__toggle {
+        &.app-button--text {
+            color: $gray-0;
+        }
+    }
+
+    &__toggle-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        transition: transform 0.16s ease-out;
+
+        svg {
+            display: block;
+            width: 16px;
+            height: 16px;
+            color: currentColor;
+        }
+
+        &.is-open {
+            transform: rotate(90deg);
+        }
+    }
+}
+
+/* =========================================
+   Sub Block: Nav Logo
+========================================= */
+
+.nav-logo {
+    &__mark {
+        display: block;
+        width: 100%;
+
+        svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        svg,
+        svg * {
+            fill: $gray-0;
+        }
+    }
+}
+
+/* =========================================
+   Sub Block: Nav Action
+========================================= */
+
+.nav-action {
+    &.app-button {
+        color: $gray-0;
+    }
+
+    svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+        color: currentColor;
+    }
 }
