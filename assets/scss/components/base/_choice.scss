@@ -2,60 +2,56 @@
 
 /* =========================================
    Component: AppChoice
+   - checkbox / radio / chip selection
+   - BEM Structure
+   - Dart Sass 3.0 compatible
 ========================================= */
 
 .app-choice {
     display: inline-flex;
     align-items: flex-start;
     gap: 8px;
+    position: relative;
     cursor: pointer;
 
     @include font(b3, rg);
 
     /* ----------------------------------------
-       Base
+       Element: Control
     ---------------------------------------- */
     &__control {
         position: relative;
         flex: 0 0 auto;
     }
 
+    /* ----------------------------------------
+       Element: Input
+    ---------------------------------------- */
     &__input {
         position: absolute;
         inset: 0;
         margin: 0;
         opacity: 0;
         cursor: inherit;
-
-        &:focus-visible+.app-choice__visual {
-            outline: 2px solid $primary-300;
-            outline-offset: 2px;
-        }
-
-        &:disabled+.app-choice__visual {
-            border-color: $line-disabled;
-            background: $bg-regular;
-
-            .app-choice__inner {
-
-                svg path,
-                .app-choice__dot {
-                    fill: $color-05-gray-disabled;
-                    background: $color-05-gray-disabled;
-                }
-            }
-        }
     }
 
+    /* ----------------------------------------
+       Element: Visual
+    ---------------------------------------- */
     &__visual {
         display: grid;
         place-items: center;
         background: $bg-white;
         transition:
-            border-color .12s ease,
-            background-color .12s ease;
+            border-color 0.12s ease,
+            background-color 0.12s ease,
+            box-shadow 0.12s ease,
+            opacity 0.12s ease;
     }
 
+    /* ----------------------------------------
+       Element: Inner
+    ---------------------------------------- */
     &__inner {
         display: inline-flex;
         align-items: center;
@@ -65,9 +61,13 @@
     }
 
     &__dot {
+        display: block;
         border-radius: 999px;
     }
 
+    /* ----------------------------------------
+       Element: Body
+    ---------------------------------------- */
     &__body {
         display: grid;
         gap: 2px;
@@ -83,6 +83,14 @@
     }
 
     /* ----------------------------------------
+       Focus
+    ---------------------------------------- */
+    &__input:focus-visible+.app-choice__visual {
+        outline: 2px solid $primary-300;
+        outline-offset: 2px;
+    }
+
+    /* ----------------------------------------
        Size
     ---------------------------------------- */
     &--md {
@@ -93,6 +101,20 @@
 
         .app-choice__label {
             @include font(b3, rg);
+        }
+
+        &.app-choice--checkbox {
+            .app-choice__inner svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        &.app-choice--radio {
+            .app-choice__dot {
+                width: 8px;
+                height: 8px;
+            }
         }
     }
 
@@ -111,20 +133,42 @@
         .app-choice__hint {
             @include font(c3, rg);
         }
-    }
 
-    /* ----------------------------------------
-       Checkbox / Radio Base
-    ---------------------------------------- */
-    &--checkbox {
-        .app-choice__inner {
-            svg {
-                width: 16px;
-                height: 16px;
+        &.app-choice--checkbox {
+            .app-choice__inner svg {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        &.app-choice--radio {
+            .app-choice__dot {
+                width: 6px;
+                height: 6px;
             }
         }
     }
 
+    /* ----------------------------------------
+       Type: Checkbox
+    ---------------------------------------- */
+    &--checkbox {
+        .app-choice__inner {
+            svg {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            path {
+                fill: $bg-white;
+            }
+        }
+    }
+
+    /* ----------------------------------------
+       Type: Radio
+    ---------------------------------------- */
     &--radio {
 
         .app-choice__visual,
@@ -133,49 +177,25 @@
         }
     }
 
-    &--checkbox.app-choice--md {
-        .app-choice__visual {
-            border-radius: 4px;
-        }
-
-        .app-choice__inner svg {
-            width: 18px;
-            height: 18px;
-        }
-    }
-
-    &--checkbox.app-choice--sm {
-        .app-choice__visual {
-            border-radius: 3px;
-        }
-
-        .app-choice__inner svg {
-            width: 14px;
-            height: 14px;
-        }
-    }
-
-    &--radio.app-choice--md {
-        .app-choice__dot {
-            width: 8px;
-            height: 8px;
-        }
-    }
-
-    &--radio.app-choice--sm {
-        .app-choice__dot {
-            width: 6px;
-            height: 6px;
-        }
-    }
-
     /* ----------------------------------------
        UI Type A
-       - 비교적 가벼운 라인형
+       Checkbox: square
+       Radio: white bg + black dot
     ---------------------------------------- */
     &--ui-a {
+        &.app-choice--checkbox {
+            .app-choice__visual {
+                border: 1px solid $line-regular;
+                border-radius: 0;
+                background: $bg-white;
+            }
 
-        &.app-choice--checkbox,
+            .app-choice__input:checked+.app-choice__visual {
+                border-color: $bg-black;
+                background: $bg-black;
+            }
+        }
+
         &.app-choice--radio {
             .app-choice__visual {
                 border: 1px solid $line-regular;
@@ -184,16 +204,10 @@
 
             .app-choice__input:checked+.app-choice__visual {
                 border-color: $bg-black;
-                background: $bg-black;
+                background: $bg-white;
 
-                .app-choice__inner {
-                    svg path {
-                        fill: $bg-white;
-                    }
-
-                    .app-choice__dot {
-                        background: $bg-white;
-                    }
+                .app-choice__dot {
+                    background: $bg-black;
                 }
             }
         }
@@ -201,11 +215,24 @@
 
     /* ----------------------------------------
        UI Type B
-       - 더 두드러진 포인트형
+       Checkbox: round
+       Radio: black bg + white dot
     ---------------------------------------- */
     &--ui-b {
+        &.app-choice--checkbox {
+            .app-choice__visual {
+                border: 1px solid $gray-200;
+                border-radius: 999px;
+                background: $bg-white;
+            }
 
-        &.app-choice--checkbox,
+            .app-choice__input:checked+.app-choice__visual {
+                border-color: $bg-black;
+                background: $bg-black;
+                box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
+            }
+        }
+
         &.app-choice--radio {
             .app-choice__visual {
                 border: 1px solid $gray-200;
@@ -217,27 +244,39 @@
                 background: $bg-black;
                 box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
 
-                .app-choice__inner {
-                    svg path {
-                        fill: $bg-white;
-                    }
-
-                    .app-choice__dot {
-                        background: $bg-white;
-                    }
+                .app-choice__dot {
+                    background: $bg-white;
                 }
             }
         }
     }
 
     /* ----------------------------------------
-       State
+       Disabled
     ---------------------------------------- */
-    &.is-disabled {
-        cursor: not-allowed;
-        opacity: .6;
+    &__input:disabled+.app-choice__visual {
+        border-color: $line-disabled;
+        background: $bg-regular;
+
+        .app-choice__inner {
+            svg path {
+                fill: $color-05-gray-disabled;
+            }
+        }
+
+        .app-choice__dot {
+            background: $color-05-gray-disabled;
+        }
     }
 
+    &.is-disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    /* ----------------------------------------
+       State
+    ---------------------------------------- */
     &.is-error {
         .app-choice__visual {
             border-color: $status-error;
@@ -270,6 +309,8 @@
 
     /* ----------------------------------------
        Chip Variants
+       - keep input alive
+       - hide default visual only
     ---------------------------------------- */
     &--chip,
     &--chip-outline,
@@ -285,6 +326,20 @@
         @include font(b4, rg);
 
         .app-choice__control {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .app-choice__input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .app-choice__visual {
             display: none;
         }
 
