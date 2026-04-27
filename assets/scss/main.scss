@@ -112,6 +112,18 @@
         align-items: center;
     }
 
+    &-compare {
+        display: grid;
+        gap: 12px;
+
+        &__title {
+            font-size: 14px;
+            font-weight: 600;
+
+        }
+
+    }
+
     &-stack {
         display: grid;
         gap: 8px;
@@ -134,7 +146,8 @@
         gap: 12px;
         /* AG Grid token */
         --ag-border-radius: 12px;
-        & > [class*="ag-"] {
+
+        &>[class*="ag-"] {
             grid-column: span 3;
         }
 

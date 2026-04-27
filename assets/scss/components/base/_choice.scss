@@ -2,8 +2,6 @@
 
 /* =========================================
    Component: AppChoice
-   - checkbox / radio / chip selection
-   - BEM Structure
 ========================================= */
 
 .app-choice {
@@ -15,45 +13,19 @@
     @include font(b3, rg);
 
     /* ----------------------------------------
-       Element: Control
+       Base
     ---------------------------------------- */
     &__control {
         position: relative;
         flex: 0 0 auto;
     }
 
-    /* ----------------------------------------
-       Element: Input
-    ---------------------------------------- */
     &__input {
         position: absolute;
         inset: 0;
         margin: 0;
         opacity: 0;
         cursor: inherit;
-
-        &:checked+.app-choice__visual {
-            border-color: $bg-black;
-            background: $bg-black;
-
-            .app-choice__inner {
-                display: inline-flex;
-                width: 100%;
-                height: 100%;
-
-                align-items: center;
-                justify-content: center;
-
-                svg {
-                    width: 20px;
-                    aspect-ratio: 1;
-                }
-
-                path {
-                    fill: $bg-white;
-                }
-            }
-        }
 
         &:focus-visible+.app-choice__visual {
             outline: 2px solid $primary-300;
@@ -65,54 +37,37 @@
             background: $bg-regular;
 
             .app-choice__inner {
-                svg {
-                    path {
-                        fill: $color-05-gray-disabled;
-                    }
+
+                svg path,
+                .app-choice__dot {
+                    fill: $color-05-gray-disabled;
+                    background: $color-05-gray-disabled;
                 }
             }
         }
     }
 
-    /* ----------------------------------------
-       Element: Visual
-    ---------------------------------------- */
     &__visual {
         display: grid;
         place-items: center;
-        width: 22px;
-        height: 22px;
-
-        border: 1px solid $line-regular;
         background: $bg-white;
-
         transition:
             border-color .12s ease,
             background-color .12s ease;
     }
 
     &__inner {
-        width: 10px;
-        height: 10px;
-        border-radius: 2px;
-        background: transparent;
-        transition: background-color .12s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
     }
 
-    /* ----------------------------------------
-       Modifier: Radio
-    ---------------------------------------- */
-    &--radio {
-
-        .app-choice__visual,
-        .app-choice__inner {
-            border-radius: 999px;
-        }
+    &__dot {
+        border-radius: 999px;
     }
 
-    /* ----------------------------------------
-       Element: Body
-    ---------------------------------------- */
     &__body {
         display: grid;
         gap: 2px;
@@ -125,6 +80,154 @@
     &__hint {
         @include font(c2, rg);
         color: $gray-600;
+    }
+
+    /* ----------------------------------------
+       Size
+    ---------------------------------------- */
+    &--md {
+        .app-choice__visual {
+            width: 22px;
+            height: 22px;
+        }
+
+        .app-choice__label {
+            @include font(b3, rg);
+        }
+    }
+
+    &--sm {
+        gap: 6px;
+
+        .app-choice__visual {
+            width: 18px;
+            height: 18px;
+        }
+
+        .app-choice__label {
+            @include font(b4, rg);
+        }
+
+        .app-choice__hint {
+            @include font(c3, rg);
+        }
+    }
+
+    /* ----------------------------------------
+       Checkbox / Radio Base
+    ---------------------------------------- */
+    &--checkbox {
+        .app-choice__inner {
+            svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    }
+
+    &--radio {
+
+        .app-choice__visual,
+        .app-choice__inner {
+            border-radius: 999px;
+        }
+    }
+
+    &--checkbox.app-choice--md {
+        .app-choice__visual {
+            border-radius: 4px;
+        }
+
+        .app-choice__inner svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+
+    &--checkbox.app-choice--sm {
+        .app-choice__visual {
+            border-radius: 3px;
+        }
+
+        .app-choice__inner svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    &--radio.app-choice--md {
+        .app-choice__dot {
+            width: 8px;
+            height: 8px;
+        }
+    }
+
+    &--radio.app-choice--sm {
+        .app-choice__dot {
+            width: 6px;
+            height: 6px;
+        }
+    }
+
+    /* ----------------------------------------
+       UI Type A
+       - 비교적 가벼운 라인형
+    ---------------------------------------- */
+    &--ui-a {
+
+        &.app-choice--checkbox,
+        &.app-choice--radio {
+            .app-choice__visual {
+                border: 1px solid $line-regular;
+                background: $bg-white;
+            }
+
+            .app-choice__input:checked+.app-choice__visual {
+                border-color: $bg-black;
+                background: $bg-black;
+
+                .app-choice__inner {
+                    svg path {
+                        fill: $bg-white;
+                    }
+
+                    .app-choice__dot {
+                        background: $bg-white;
+                    }
+                }
+            }
+        }
+    }
+
+    /* ----------------------------------------
+       UI Type B
+       - 더 두드러진 포인트형
+    ---------------------------------------- */
+    &--ui-b {
+
+        &.app-choice--checkbox,
+        &.app-choice--radio {
+            .app-choice__visual {
+                border: 1px solid $gray-200;
+                background: $bg-white;
+            }
+
+            .app-choice__input:checked+.app-choice__visual {
+                border-color: $bg-black;
+                background: $bg-black;
+                box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.04);
+
+                .app-choice__inner {
+                    svg path {
+                        fill: $bg-white;
+                    }
+
+                    .app-choice__dot {
+                        background: $bg-white;
+                    }
+                }
+            }
+        }
     }
 
     /* ----------------------------------------
@@ -166,7 +269,7 @@
     }
 
     /* ----------------------------------------
-       Chip Variants Base
+       Chip Variants
     ---------------------------------------- */
     &--chip,
     &--chip-outline,
@@ -175,7 +278,6 @@
         align-items: center;
         gap: 6px;
         padding: 4px 12px;
-
         border: 1px solid transparent;
         border-radius: 999px;
         background-color: transparent;
@@ -195,16 +297,6 @@
         }
     }
 
-    /* ----------------------------------------
-       Variant: default
-    ---------------------------------------- */
-    &--default {
-        /* 기본 control 스타일 사용 */
-    }
-
-    /* ----------------------------------------
-       Variant: chip
-    ---------------------------------------- */
     &--chip {
         background-color: $gray-50;
         border-color: $gray-200;
@@ -219,9 +311,6 @@
         }
     }
 
-    /* ----------------------------------------
-       Variant: chip-outline
-    ---------------------------------------- */
     &--chip-outline {
         background-color: $gray-0;
         border-color: $gray-300;
@@ -236,9 +325,6 @@
         }
     }
 
-    /* ----------------------------------------
-       Variant: fill
-    ---------------------------------------- */
     &--fill {
         padding-inline: 10px;
         border-radius: 8px;
@@ -255,9 +341,6 @@
         }
     }
 
-    /* ----------------------------------------
-       Variant: ghost
-    ---------------------------------------- */
     &--ghost {
         border-color: transparent;
         background-color: transparent;
