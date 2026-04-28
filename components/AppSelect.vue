@@ -1,48 +1,56 @@
 <template>
-    <div ref="rootEl" :class="rootClasses">
-        <!-- label -->
-        <label v-if="label" class="form-field__label app-select__label" :for="triggerId">
+    <div :class="[
+        'form-field',
+        'app-select',
+        `app-select--${size}`,
+        `app-select--shape-${shape}`,
+        {
+            'app-select--open': isOpen,
+            'is-readonly': readonly,
+            'is-disabled': disabled,
+            [`is-${state}`]: state
+        }
+    ]" ref="rootEl">
+
+        <label v-if="label" class="form-field__label app-select__label" :for="selectId">
             {{ label }}
         </label>
 
-        <!-- control -->
         <div class="form-field__control app-select__control">
-            <button :id="triggerId" ref="triggerEl" type="button" class="app-select__trigger" :name="name"
-                :disabled="disabled" :aria-invalid="state === 'error'" :aria-describedby="describedBy"
-                :aria-expanded="isOpen" :aria-controls="menuId" aria-haspopup="listbox" @click="toggle"
-                @keydown="onTriggerKeydown">
+            <button :id="selectId" class="app-select__trigger" type="button" :name="name" :disabled="disabled"
+                :aria-invalid="state === 'error'" :aria-describedby="describedBy" :aria-expanded="isOpen"
+                :aria-readonly="readonly || undefined" aria-haspopup="listbox" @click="toggle">
                 <span class="app-select__value" :class="{ 'app-select__value--placeholder': !selectedOption }">
-                    <span v-if="selectedOption" v-html="selectedOption.label" />
-                    <span v-else>{{ placeholder }}</span>
+                    {{ selectedOption?.label ?? placeholder }}
                 </span>
 
                 <span class="app-select__icon app-select__icon--right" aria-hidden="true">
                     <slot name="iconRight">
-                        <Icon icon="mdi:chevron-down" />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </slot>
                 </span>
             </button>
 
-            <ul v-if="isOpen" :id="menuId" class="app-select__menu" role="listbox" :aria-labelledby="triggerId">
-                <li v-if="placeholder && !required" :id="getOptionId('__placeholder__')" class="app-select__option"
+            <ul v-if="isOpen" class="app-select__menu" role="listbox">
+                <li v-if="placeholder && !required" class="app-select__option"
                     :class="{ 'is-selected': modelValue === null }" role="option" :aria-selected="modelValue === null"
-                    style="display: none;" @click="selectNull">
+                    @click="selectValue(null)">
                     {{ placeholder }}
                 </li>
 
-                <li v-for="opt in options" :id="getOptionId(opt.value)" :key="getOptionId(opt.value)" class="app-select__option"
-                    :class="{
-                        'is-selected': modelValue === opt.value,
-                        'is-disabled': !!opt.disabled
-                    }" role="option" :aria-selected="modelValue === opt.value" :aria-disabled="!!opt.disabled"
-                    @click="selectOption(opt)">
-                    <span v-html="opt.label" />
+                <li v-for="opt in options" :key="opt.value" class="app-select__option" :class="{
+                    'is-selected': modelValue === opt.value,
+                    'is-disabled': !!opt.disabled
+                }" role="option" :aria-selected="modelValue === opt.value" @click="selectValue(opt)">
+                    {{ opt.label }}
                 </li>
             </ul>
         </div>
 
-        <!-- hint -->
-        <p v-if="hint" :id="hintId" class="form-field__hint app-select__hint">
+        <p v-if="hint" class="form-field__hint app-select__hint" :id="hintId">
             {{ hint }}
         </p>
     </div>
@@ -65,19 +73,15 @@ const props = withDefaults(
     defineProps<{
         modelValue: string | number | boolean | null
         options: AppSelectOption[]
-
         label?: string
         hint?: string
-
         placeholder?: string
         required?: boolean
-
         size?: SelectSize
         shape?: SelectShape
         state?: SelectState
-
         disabled?: boolean
-
+        readonly?: boolean
         id?: string
         name?: string
     }>(),
@@ -87,146 +91,50 @@ const props = withDefaults(
         state: null,
         placeholder: '선택하세요',
         required: false,
-        disabled: false
-    }
+        disabled: false,
+        readonly: false,
+    },
 )
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: string | number | boolean | null): void
-    (e: 'change', value: string | number | boolean | null): void
+    (e: 'change', ev: Event): void
 }>()
 
 const fallbackId = useId()
-
 const rootEl = ref<HTMLElement | null>(null)
-const triggerEl = ref<HTMLButtonElement | null>(null)
 const isOpen = ref(false)
 
-const triggerId = computed(() => props.id ?? `app-select-${fallbackId}`)
-const menuId = computed(() => `${triggerId.value}-menu`)
-const hintId = computed(() => `${triggerId.value}-hint`)
+const selectId = computed(() => props.id ?? `app-select-${fallbackId}`)
+const hintId = computed(() => `hint-${selectId.value}`)
+const describedBy = computed(() => props.hint ? hintId.value : undefined)
+const selectedOption = computed(() => props.options.find((opt) => opt.value === props.modelValue) ?? null)
 
-const describedBy = computed(() => {
-    return props.hint ? hintId.value : undefined
-})
-
-const selectedOption = computed(() => {
-    return props.options.find((opt) => opt.value === props.modelValue) ?? null
-})
-
-const rootClasses = computed(() => [
-    'form-field',
-    'app-select',
-    `app-select--${props.size}`,
-    `app-select--shape-${props.shape}`,
-    {
-        'app-select--open': isOpen.value,
-        'is-disabled': props.disabled,
-        [`is-${props.state}`]: props.state
-    }
-])
-
-function getOptionId(value: string | number | boolean | null) {
-    return `${triggerId.value}-option-${String(value)}`
-}
-
-function open() {
-    if (props.disabled) return
-    isOpen.value = true
+function toggle() {
+    if (props.disabled || props.readonly) return
+    isOpen.value = !isOpen.value
 }
 
 function close() {
     isOpen.value = false
 }
 
-function toggle() {
-    if (props.disabled) return
-    isOpen.value = !isOpen.value
-}
+function selectValue(option: AppSelectOption | null) {
+    if (props.disabled || props.readonly) return
+    if (option?.disabled) return
 
-function updateValue(value: string | number | boolean | null) {
-    emit('update:modelValue', value)
-    emit('change', value)
+    emit('update:modelValue', option ? option.value : null)
+    emit('change', new Event('change'))
     close()
-}
-
-function selectNull() {
-    if (props.required) return
-    updateValue(null)
-}
-
-function selectOption(option: AppSelectOption) {
-    if (option.disabled) return
-    updateValue(option.value)
-}
-
-function focusNextEnabledOption(direction: 'next' | 'prev') {
-    const enabledOptions = props.options.filter((opt) => !opt.disabled)
-
-    if (!enabledOptions.length) return
-
-    const currentIndex = enabledOptions.findIndex((opt) => opt.value === props.modelValue)
-
-    if (direction === 'next') {
-        const nextIndex = currentIndex < enabledOptions.length - 1 ? currentIndex + 1 : 0
-        updateValue(enabledOptions[nextIndex].value)
-        return
-    }
-
-    const prevIndex = currentIndex > 0 ? currentIndex - 1 : enabledOptions.length - 1
-    updateValue(enabledOptions[prevIndex].value)
-}
-
-function onTriggerKeydown(e: KeyboardEvent) {
-    if (props.disabled) return
-
-    switch (e.key) {
-        case 'Enter':
-        case ' ':
-            e.preventDefault()
-            toggle()
-            break
-
-        case 'Escape':
-            close()
-            break
-
-        case 'ArrowDown':
-            e.preventDefault()
-
-            if (!isOpen.value) {
-                open()
-                return
-            }
-
-            focusNextEnabledOption('next')
-            break
-
-        case 'ArrowUp':
-            e.preventDefault()
-
-            if (!isOpen.value) {
-                open()
-                return
-            }
-
-            focusNextEnabledOption('prev')
-            break
-    }
 }
 
 function onDocumentClick(e: MouseEvent) {
     if (!isOpen.value) return
-    if (!rootEl.value?.contains(e.target as Node)) {
-        close()
-    }
+    if (!rootEl.value?.contains(e.target as Node)) close()
 }
 
 function onDocumentKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') {
-        close()
-        triggerEl.value?.focus()
-    }
+    if (e.key === 'Escape') close()
 }
 
 onMounted(() => {

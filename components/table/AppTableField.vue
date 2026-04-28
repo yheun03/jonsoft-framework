@@ -13,7 +13,7 @@
 
         <template v-else-if="cell.type === 'select'">
             <AppSelect :model-value="selectValue(cell.key)" :options="cell.options ?? []"
-                :placeholder="cell.placeholder ?? '선택하세요'" :disabled="mergedDisabled"
+                :placeholder="cell.placeholder ?? '선택하세요'" :readonly="mergedReadonly" :disabled="mergedDisabled"
                 @update:model-value="(value) => updateField(cell.key, value)" />
         </template>
 
@@ -24,7 +24,7 @@
         </template>
 
         <template v-else-if="cell.type === 'button'">
-            <AppButton variant="outline" :disabled="mergedDisabled" @click="emitFieldAction">
+            <AppButton variant="outline" :disabled="mergedDisabled || mergedReadonly" @click="emitFieldAction">
                 {{ cell.buttonText ?? '버튼' }}
             </AppButton>
         </template>
@@ -35,8 +35,8 @@
                     :placeholder="cell.placeholder" :readonly="mergedReadonly" :disabled="mergedDisabled"
                     @update:model-value="(value) => updateField(cell.key, value)" />
 
-                <AppButton class="app-table-field__inline-button" variant="outline" :disabled="mergedDisabled"
-                    @click="emitFieldAction">
+                <AppButton class="app-table-field__inline-button" variant="outline"
+                    :disabled="mergedDisabled || mergedReadonly" @click="emitFieldAction">
                     {{ cell.buttonText ?? '검색' }}
                 </AppButton>
             </div>
@@ -48,8 +48,8 @@
                     :placeholder="cell.placeholder" :readonly="mergedReadonly" :disabled="mergedDisabled"
                     @update:model-value="(value) => updateField(cell.key, value)" />
 
-                <AppButton class="app-table-field__inline-button" variant="outline" :disabled="mergedDisabled"
-                    @click="emitFieldAction">
+                <AppButton class="app-table-field__inline-button" variant="outline"
+                    :disabled="mergedDisabled || mergedReadonly" @click="emitFieldAction">
                     {{ cell.buttonText ?? '검색' }}
                 </AppButton>
 
@@ -77,8 +77,8 @@
                     {{ cell.text || stringValue(cell.key) }}
                 </span>
 
-                <AppButton class="app-table-field__inline-button" variant="outline" :disabled="mergedDisabled"
-                    @click="emitFieldAction">
+                <AppButton class="app-table-field__inline-button" variant="outline"
+                    :disabled="mergedDisabled || mergedReadonly" @click="emitFieldAction">
                     {{ cell.buttonText ?? '버튼' }}
                 </AppButton>
             </div>
@@ -88,7 +88,7 @@
             <div class="app-table-field__choice-group">
                 <AppChoice v-for="option in cell.options ?? []" :key="String(option.value)"
                     :model-value="choiceValue(cell.key)" type="radio" :name="`radio-${cell.key}`" :value="option.value"
-                    :label="option.label" :disabled="mergedDisabled || !!option.disabled"
+                    :label="option.label" :readonly="mergedReadonly" :disabled="mergedDisabled || !!option.disabled"
                     @update:model-value="(value) => updateField(cell.key, value)" />
             </div>
         </template>
@@ -97,26 +97,19 @@
             <div class="app-table-field__choice-group">
                 <AppChoice v-for="option in cell.options ?? []" :key="String(option.value)" type="checkbox"
                     :model-value="includesCheckboxValue(cell.key, option.value)" :label="option.label"
-                    :disabled="mergedDisabled || !!option.disabled"
+                    :readonly="mergedReadonly" :disabled="mergedDisabled || !!option.disabled"
                     @update:model-value="(checked) => updateCheckboxValue(cell.key, option.value, checked)" />
             </div>
         </template>
 
         <template v-else-if="cell.type === 'date'">
-            <AppDatePicker :model-value="dateValue(cell.key)" :disabled="mergedDisabled"
+            <AppDatePicker :model-value="dateValue(cell.key)" :readonly="mergedReadonly" :disabled="mergedDisabled"
                 @update:model-value="(value) => updateField(cell.key, value)" />
         </template>
 
         <template v-else-if="cell.type === 'range_date'">
-            <div class="app-table-field__inline app-table-field__inline--date-range">
-                <AppDatePicker class="app-table-field__inline-input" :model-value="dateValue(cell.startKey)"
-                    :disabled="mergedDisabled" @update:model-value="(value) => updateField(cell.startKey, value)" />
-
-                <span class="app-table-field__range-separator">~</span>
-
-                <AppDatePicker class="app-table-field__inline-input" :model-value="dateValue(cell.endKey)"
-                    :disabled="mergedDisabled" @update:model-value="(value) => updateField(cell.endKey, value)" />
-            </div>
+            <AppDatePicker :model-value="rangeValue(cell.key)" mode="range" :readonly="mergedReadonly"
+                :disabled="mergedDisabled" @update:model-value="(value) => updateField(cell.key, value)" />
         </template>
 
         <template v-else-if="cell.type === 'phone'">
@@ -150,6 +143,7 @@
 
 <script setup lang="ts">
 import type { AppTableCell } from '~/core/types/table'
+import type { DateRangeValue } from '~/components/base/AppDatePicker.vue'
 
 const props = withDefaults(
     defineProps<{
@@ -203,6 +197,21 @@ function choiceValue(key?: string) {
 function dateValue(key?: string) {
     const value = getValue(key)
     return typeof value === 'string' ? value : null
+}
+
+function rangeValue(key?: string): DateRangeValue | null {
+    const value = getValue(key)
+
+    if (
+        value &&
+        typeof value === 'object' &&
+        'start' in (value as Record<string, unknown>) &&
+        'end' in (value as Record<string, unknown>)
+    ) {
+        return value as DateRangeValue
+    }
+
+    return null
 }
 
 function updateField(key: string | undefined, value: unknown) {

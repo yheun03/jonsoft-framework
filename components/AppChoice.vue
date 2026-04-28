@@ -1,11 +1,11 @@
 <template>
     <label :class="rootClasses">
-        <span class="app-choice__control">
+        <span v-if="showIndicator" class="app-choice__control">
             <input :id="inputId" class="app-choice__input" :type="type" :name="name" :value="inputValue"
                 :checked="isChecked" :disabled="disabled" :aria-invalid="state === 'error'"
-                :aria-describedby="describedBy" @change="onChange" />
+                :aria-describedby="describedBy" :aria-readonly="readonly || undefined" @change="onChange" />
 
-            <span v-if="showIndicator" class="app-choice__visual" aria-hidden="true">
+            <span class="app-choice__visual" aria-hidden="true">
                 <span v-if="isChecked" class="app-choice__inner">
                     <template v-if="type === 'checkbox'">
                         <Icon icon="mdi:check" />
@@ -45,11 +45,12 @@ const props = withDefaults(
     defineProps<{
         type?: ChoiceType
         modelValue: boolean | string | number | null
-        value?: string | number | boolean | null
+        value?: string | number
         name?: string
         label?: string
         hint?: string
         disabled?: boolean
+        readonly?: boolean
         id?: string
         variant?: ChoiceVariant
         state?: ChoiceState
@@ -61,6 +62,7 @@ const props = withDefaults(
         variant: 'default',
         state: null,
         disabled: false,
+        readonly: false,
         size: 'md',
         uiType: 'a',
     },
@@ -97,12 +99,18 @@ const rootClasses = computed(() => [
     `app-choice--ui-${props.uiType}`,
     {
         'is-disabled': props.disabled,
+        'is-readonly': props.readonly,
         'is-checked': isChecked.value,
         [`is-${props.state}`]: props.state,
     },
 ])
 
 function onChange(event: Event) {
+    if (props.readonly) {
+        event.preventDefault()
+        return
+    }
+
     const target = event.target as HTMLInputElement
 
     if (props.type === 'checkbox') {

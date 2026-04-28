@@ -413,4 +413,28 @@
             }
         }
     }
+
+    &.is-readonly {
+
+        .app-choice__visual {
+
+            background: $bg-light;
+
+        }
+
+        .app-choice__label,
+
+        .app-choice__hint {
+
+            color: $gray-700;
+
+        }
+
+        .app-choice__input {
+
+            cursor: default;
+
+        }
+
+    }
 }

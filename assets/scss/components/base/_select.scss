@@ -191,4 +191,60 @@ $select-sizes: (
             padding-inline: 0;
         }
     }
+
+    &.is-readonly {
+
+        .app-select__trigger {
+
+            cursor: default;
+
+        }
+
+        .app-select__control {
+
+            background: $bg-light;
+
+        }
+
+        .app-select__value {
+
+            color: $gray-700;
+
+        }
+
+        .app-select__icon {
+
+            opacity: 0.5;
+
+        }
+
+    }
+
+    &.is-disabled {
+
+        .app-select__trigger {
+
+            cursor: not-allowed;
+
+        }
+
+        .app-select__control {
+
+            background: $bg-regular;
+
+        }
+
+        .app-select__value {
+
+            color: $color-05-gray-disabled;
+
+        }
+
+        .app-select__icon {
+
+            opacity: 0.4;
+
+        }
+
+    }
 }

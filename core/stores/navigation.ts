@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { createNavigationMenus } from '~/core/domain/navigation/menu-source';
 import type { NavigationMenu } from '~/core/domain/navigation/types';
 import { buildNavigationTree, translateNavigationMenus } from '~/core/domain/navigation/services';
 import { useI18nText } from '~/core/composables/useI18nText';
@@ -25,8 +26,12 @@ export const useNavigationStore = defineStore('navigation', () => {
 
         isLoading.value = true;
         try {
-            const response = await api.get<MenusResponse>('/api/menus');
-            menus.value = response?.menus ?? [];
+            if (import.meta.server) {
+                menus.value = createNavigationMenus();
+            } else {
+                const response = await api.get<MenusResponse>('/api/menus');
+                menus.value = response?.menus ?? [];
+            }
             isLoaded.value = true;
         } finally {
             isLoading.value = false;

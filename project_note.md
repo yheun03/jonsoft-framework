@@ -107,3 +107,4 @@ const data = await api.get<MyType>('/api/menus');
 - 2026-04-28: `useModalViewer()`와 PDF/이미지 뷰어 콘텐츠를 추가해 `AppUploadFile`의 PDF 미리보기와 `AppUploadImage`의 이미지 미리보기 모달을 연결했습니다.
 - 2026-04-28: `pages/demos/demo-modal.vue`에 이미지/PDF 뷰어 예제를 추가해 업로드 컴포넌트 밖에서도 뷰어 모달 사용 방식을 바로 확인할 수 있게 했습니다.
 - 2026-04-28: `AppTable` 기본 stacked 컬럼 폭과 `AppTableField`의 select/email 처리 로직을 보정해 빈 값 placeholder와 이메일 입력 레이아웃이 의도대로 동작하게 했습니다.
+- 2026-04-28: 메뉴 seed를 `core/domain/navigation/menu-source.ts`로 분리하고 SSR/prerender에서는 `navigation` 스토어가 이를 직접 사용하게 바꿔 static 빌드 중 `/api/menus` 404 경고를 줄였습니다.

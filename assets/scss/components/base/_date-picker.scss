@@ -131,9 +131,65 @@ $date-picker-sizes: (
        State
     ------------------------- */
 
-    &.is-disabled {
+
+
+
+
+    &.is-error {
+
         .app-date-picker__field {
-            cursor: not-allowed;
+
+            border-color: $status-error;
+
         }
+
+    }
+
+    &.is-warning {
+
+        .app-date-picker__field {
+
+            border-color: $status-warning;
+
+        }
+
+    }
+
+    &.is-success {
+
+        .app-date-picker__field {
+
+            border-color: $status-success;
+
+        }
+
+    }
+
+    &.is-readonly {
+
+        .app-date-picker__field {
+
+            background: $bg-light;
+
+            color: $gray-700;
+
+            cursor: default;
+
+        }
+
+    }
+
+    &.is-disabled {
+
+        .app-date-picker__field {
+
+            background: $gray-100;
+
+            color: $gray-500;
+
+            cursor: not-allowed;
+
+        }
+
     }
 }
