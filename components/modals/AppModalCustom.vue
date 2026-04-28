@@ -26,16 +26,7 @@ const props = withDefaults(
         isTop?: boolean
     }>(),
     {
-        title: '',
         componentProps: () => ({}),
-        width: '560px',
-        height: undefined,
-        zIndex: 2000,
-        overlay: true,
-        closable: true,
-        closeOnDim: true,
-        closeOnEsc: true,
-        isTop: true,
     },
 )
 

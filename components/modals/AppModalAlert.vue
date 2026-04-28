@@ -19,35 +19,20 @@
 <script setup lang="ts">
 import AppModalBase from './AppModalBase.vue'
 
-const props = withDefaults(
-    defineProps<{
-        id: number
-        title?: string
-        message?: string
-        confirmText?: string
-        width?: string
-        height?: string
-        zIndex?: number
-        overlay?: boolean
-        closable?: boolean
-        closeOnDim?: boolean
-        closeOnEsc?: boolean
-        isTop?: boolean
-    }>(),
-    {
-        title: '안내',
-        message: '',
-        confirmText: '확인',
-        width: '420px',
-        height: undefined,
-        zIndex: 2000,
-        overlay: true,
-        closable: true,
-        closeOnDim: true,
-        closeOnEsc: true,
-        isTop: true,
-    },
-)
+const props = defineProps<{
+    id: number
+    title?: string
+    message?: string
+    confirmText?: string
+    width?: string
+    height?: string
+    zIndex?: number
+    overlay?: boolean
+    closable?: boolean
+    closeOnDim?: boolean
+    closeOnEsc?: boolean
+    isTop?: boolean
+}>()
 
 const emit = defineEmits<{
     (e: 'modal-close', id: number, reason?: 'esc' | 'backdrop' | 'close'): void

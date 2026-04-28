@@ -1,63 +1,54 @@
 import type { Component } from 'vue';
 
-export type ModalType = 'alert' | 'confirm' | 'custom' | 'image' | 'pdf';
+export type ModalType = 'alert' | 'confirm' | 'custom';
 export type ModalCloseReason = 'esc' | 'backdrop' | 'close' | 'cancel' | 'confirm';
 
-export type ModalBaseItem = {
-    id: number;
-    type: ModalType;
+export type ModalCommonOptions = {
     title?: string;
     width?: string;
     height?: string;
     overlay?: boolean;
+    closable?: boolean;
     closeOnDim?: boolean;
     closeOnEsc?: boolean;
-    closable?: boolean;
+    keepOnConfirm?: boolean;
     onClose?: (reason?: ModalCloseReason) => void;
 };
 
-export type AlertModalItem = ModalBaseItem & {
+export type AlertModalInput = ModalCommonOptions & {
     type: 'alert';
     message?: string;
     confirmText?: string;
     onConfirm?: () => void;
 };
 
-export type ConfirmModalItem = ModalBaseItem & {
+export type ConfirmModalInput = ModalCommonOptions & {
     type: 'confirm';
     message?: string;
     confirmText?: string;
     cancelText?: string;
-    autoClose?: boolean;
     onConfirm?: () => void;
     onCancel?: () => void;
 };
 
-export type CustomModalItem = ModalBaseItem & {
+export type CustomModalInput = ModalCommonOptions & {
     type: 'custom';
     component: Component;
     componentProps?: Record<string, unknown>;
 };
 
-export type ImageModalItem = ModalBaseItem & {
-    type: 'image';
-    imageUrl: string;
-    imageAlt?: string;
-    imageName?: string;
+export type ModalOpenPayload = AlertModalInput | ConfirmModalInput | CustomModalInput;
+
+export type AlertModalItem = AlertModalInput & {
+    id: number;
 };
 
-export type PdfModalItem = ModalBaseItem & {
-    type: 'pdf';
-    pdfUrl: string;
-    downloadName?: string;
-    emptyMessage?: string;
+export type ConfirmModalItem = ConfirmModalInput & {
+    id: number;
 };
 
-export type ModalItem = AlertModalItem | ConfirmModalItem | CustomModalItem | ImageModalItem | PdfModalItem;
+export type CustomModalItem = CustomModalInput & {
+    id: number;
+};
 
-export type ModalOpenPayload =
-    | Omit<AlertModalItem, 'id'>
-    | Omit<ConfirmModalItem, 'id'>
-    | Omit<CustomModalItem, 'id'>
-    | Omit<ImageModalItem, 'id'>
-    | Omit<PdfModalItem, 'id'>;
+export type ModalItem = AlertModalItem | ConfirmModalItem | CustomModalItem;

@@ -6,7 +6,7 @@
                     <h1 class="page-demo__title">{{ title }}</h1>
                     <p class="page-demo__desc">
                         modal host + store 기반 모달 데모입니다.
-                        페이지에서는 개별 모달 컴포넌트를 직접 렌더링하지 않고,
+                        개별 모달 컴포넌트를 직접 렌더링하지 않고,
                         handler에서 <code>modalOpen(...)</code>만 호출해 Alert / Confirm / Custom 모달을 엽니다.
                     </p>
                 </header>
@@ -37,7 +37,7 @@
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Alert Props</h2>
                     <p class="page-demo-card__desc">
-                        title, message, confirmText, closeOnDim, closeOnEsc, closable 속성 조합 예시입니다.
+                        title, message, confirmText, closeOnDim, closeOnEsc, closable 조합 예시입니다.
                     </p>
 
                     <div class="page-demo-actions">
@@ -51,6 +51,10 @@
 
                         <AppButton variant="outline" @click="handleOpenAlertCustomText">
                             버튼 텍스트 변경
+                        </AppButton>
+
+                        <AppButton variant="outline" @click="handleOpenNestedAlert">
+                            Alert 중첩 열기
                         </AppButton>
                     </div>
                 </section>
@@ -74,6 +78,10 @@
                         <AppButton variant="outline" @click="handleOpenConfirmNoEscClose">
                             ESC 닫기 제한
                         </AppButton>
+
+                        <AppButton variant="outline" @click="handleOpenNestedConfirm">
+                            Confirm 중첩 열기
+                        </AppButton>
                     </div>
                 </section>
 
@@ -82,27 +90,16 @@
                     <h2 class="page-demo-card__title">Custom Modal</h2>
                     <p class="page-demo-card__desc">
                         component와 componentProps를 전달해 원하는 내용을 렌더링하는 방식입니다.
-                        실무에서는 bodyRenderer보다 별도 컴포넌트 전달 방식이 유지보수에 유리합니다.
+                        실무에서는 별도 컴포넌트 전달 방식이 유지보수에 유리합니다.
                     </p>
 
                     <div class="page-demo-actions">
                         <AppButton variant="fill" @click="handleOpenCustom">
                             Custom 열기
                         </AppButton>
-                    </div>
-                </section>
 
-                <!-- STACK -->
-                <section class="page-demo-card">
-                    <h2 class="page-demo-card__title">Nested Stack</h2>
-                    <p class="page-demo-card__desc">
-                        Confirm 안에서 Alert를 다시 여는 중첩 테스트입니다.
-                        마지막에 열린 모달이 최상단이며, ESC / dim / close는 최상단 모달만 닫혀야 합니다.
-                    </p>
-
-                    <div class="page-demo-actions">
-                        <AppButton variant="fill" @click="handleOpenNestedConfirm">
-                            Confirm(중첩 유도) 열기
+                        <AppButton variant="outline" @click="handleOpenNestedCustom">
+                            Custom 중첩 열기
                         </AppButton>
                     </div>
                 </section>
@@ -154,13 +151,7 @@ function handleOpenAlert() {
 function handleOpenAlertBasic() {
     modalStore.modalOpen({
         type: 'alert',
-        title: '안내',
         message: '간단한 안내 메시지입니다.',
-        confirmText: '확인',
-        width: '420px',
-        closeOnDim: true,
-        closeOnEsc: true,
-        closable: true,
         onConfirm: () => {
             lastAction.value = 'alert:confirm'
         },
@@ -175,11 +166,9 @@ function handleOpenAlertNoClose() {
         type: 'alert',
         title: '닫기 제한 Alert',
         message: 'dim 클릭과 ESC로는 닫히지 않습니다.',
-        confirmText: '확인',
-        width: '420px',
+        closable: false,
         closeOnDim: false,
         closeOnEsc: false,
-        closable: false,
         onConfirm: () => {
             lastAction.value = 'alert:no-close:confirm'
         },
@@ -195,15 +184,39 @@ function handleOpenAlertCustomText() {
         title: '버튼 텍스트 변경',
         message: 'confirmText 속성으로 버튼 문구를 변경할 수 있습니다.',
         confirmText: '이해했습니다',
-        width: '440px',
-        closeOnDim: true,
-        closeOnEsc: true,
-        closable: true,
         onConfirm: () => {
             lastAction.value = 'alert:custom-text:confirm'
         },
         onClose: (reason) => {
             lastAction.value = `alert:custom-text:${reason ?? 'unknown'}`
+        },
+    })
+}
+
+function handleOpenNestedAlert() {
+    modalStore.modalOpen({
+        type: 'alert',
+        title: '1차 Alert',
+        message: '확인을 누르면 이 Alert는 유지한 채 상단에 Alert를 하나 더 엽니다.',
+        confirmText: '상단 Alert 열기',
+        keepOnConfirm: true,
+        onConfirm: () => {
+            lastAction.value = 'alert:nested:confirm'
+
+            modalStore.modalOpen({
+                type: 'alert',
+                title: '2차 Alert',
+                message: '이 Alert가 최상단입니다.',
+                onConfirm: () => {
+                    lastAction.value = 'alert:nested:top-confirm'
+                },
+                onClose: (reason) => {
+                    lastAction.value = `alert:nested:top-close:${reason ?? 'unknown'}`
+                },
+            })
+        },
+        onClose: (reason) => {
+            lastAction.value = `alert:nested:close:${reason ?? 'unknown'}`
         },
     })
 }
@@ -215,14 +228,7 @@ function handleOpenConfirm() {
 function handleOpenConfirmBasic() {
     modalStore.modalOpen({
         type: 'confirm',
-        title: '확인',
         message: '정말 진행할까요?',
-        confirmText: '확인',
-        cancelText: '취소',
-        width: '460px',
-        closeOnDim: true,
-        closeOnEsc: true,
-        closable: true,
         onConfirm: () => {
             lastAction.value = 'confirm:confirm'
 
@@ -230,14 +236,6 @@ function handleOpenConfirmBasic() {
                 type: 'alert',
                 title: 'Confirm 결과',
                 message: 'Confirm에서 확인을 눌렀습니다.',
-                confirmText: '확인',
-                width: '420px',
-                onConfirm: () => {
-                    lastAction.value = 'confirm-result:confirm'
-                },
-                onClose: (reason) => {
-                    lastAction.value = `confirm-result:close:${reason ?? 'unknown'}`
-                },
             })
         },
         onCancel: () => {
@@ -254,12 +252,7 @@ function handleOpenConfirmNoDimClose() {
         type: 'confirm',
         title: '배경 닫기 제한',
         message: '배경 클릭으로는 닫히지 않습니다.',
-        confirmText: '확인',
-        cancelText: '취소',
-        width: '460px',
         closeOnDim: false,
-        closeOnEsc: true,
-        closable: true,
         onConfirm: () => {
             lastAction.value = 'confirm:no-dim:confirm'
         },
@@ -277,12 +270,7 @@ function handleOpenConfirmNoEscClose() {
         type: 'confirm',
         title: 'ESC 닫기 제한',
         message: 'ESC 키로는 닫히지 않습니다.',
-        confirmText: '확인',
-        cancelText: '취소',
-        width: '460px',
-        closeOnDim: true,
         closeOnEsc: false,
-        closable: true,
         onConfirm: () => {
             lastAction.value = 'confirm:no-esc:confirm'
         },
@@ -295,21 +283,55 @@ function handleOpenConfirmNoEscClose() {
     })
 }
 
+function handleOpenNestedConfirm() {
+    modalStore.modalOpen({
+        type: 'confirm',
+        title: '중첩 테스트',
+        message: '확인을 누르면 현재 Confirm은 유지한 채 상단에 Alert를 엽니다.',
+        confirmText: '상단 Alert 열기',
+        keepOnConfirm: true,
+        onConfirm: () => {
+            lastAction.value = 'confirm:nested:confirm'
+
+            modalStore.modalOpen({
+                type: 'alert',
+                title: '최상단 Alert',
+                message: '이 모달이 최상단입니다.',
+                onConfirm: () => {
+                    lastAction.value = 'confirm:nested:alert-confirm'
+                },
+                onClose: (reason) => {
+                    lastAction.value = `confirm:nested:alert-close:${reason ?? 'unknown'}`
+                },
+            })
+        },
+        onCancel: () => {
+            lastAction.value = 'confirm:nested:cancel'
+        },
+        onClose: (reason) => {
+            lastAction.value = `confirm:nested:close:${reason ?? 'unknown'}`
+        },
+    })
+}
+
 function handleOpenCustom() {
     modalStore.modalOpen({
         type: 'custom',
         title: '커스텀 모달',
         width: '640px',
-        height: 'auto',
-        closeOnDim: true,
-        closeOnEsc: true,
-        closable: true,
         component: ModalRendererExample,
         componentProps: {
             lastAction: lastAction.value,
             onAction: () => {
                 lastAction.value = 'custom:action'
                 modalStore.modalCloseTop('confirm')
+            },
+            onNestedAlert: () => {
+                modalStore.modalOpen({
+                    type: 'alert',
+                    title: 'Custom 내부 Alert',
+                    message: 'Custom 모달 위에 Alert가 열렸습니다.',
+                })
             },
         },
         onClose: (reason) => {
@@ -318,43 +340,34 @@ function handleOpenCustom() {
     })
 }
 
-function handleOpenNestedConfirm() {
+function handleOpenNestedCustom() {
     modalStore.modalOpen({
-        type: 'confirm',
-        title: '중첩 테스트',
-        message: '확인을 누르면 이 Confirm은 유지한 채 그 위에 Alert를 하나 더 엽니다.',
-        confirmText: '상단 Alert 열기',
-        cancelText: '취소',
-        width: '520px',
-        autoClose: false,
-        closeOnDim: true,
-        closeOnEsc: true,
-        closable: true,
-        onConfirm: () => {
-            lastAction.value = 'nested:confirm'
-
-            modalStore.modalOpen({
-                type: 'alert',
-                title: '최상단 Alert',
-                message: '이 모달이 최상단입니다. ESC / dim / close는 이 모달만 닫혀야 합니다.',
-                confirmText: '확인',
-                width: '460px',
-                closeOnDim: true,
-                closeOnEsc: true,
-                closable: true,
-                onConfirm: () => {
-                    lastAction.value = 'nested-alert:confirm'
-                },
-                onClose: (reason) => {
-                    lastAction.value = `nested-alert:close:${reason ?? 'unknown'}`
-                },
-            })
-        },
-        onCancel: () => {
-            lastAction.value = 'nested:cancel'
+        type: 'custom',
+        title: '1차 Custom',
+        keepOnConfirm: true,
+        component: ModalRendererExample,
+        componentProps: {
+            lastAction: lastAction.value,
+            onAction: () => {
+                lastAction.value = 'custom:nested:action'
+            },
+            onNestedAlert: () => {
+                modalStore.modalOpen({
+                    type: 'custom',
+                    title: '2차 Custom',
+                    width: '520px',
+                    component: ModalRendererExample,
+                    componentProps: {
+                        lastAction: 'nested custom open',
+                        onAction: () => {
+                            lastAction.value = 'custom:nested:second-action'
+                        },
+                    },
+                })
+            },
         },
         onClose: (reason) => {
-            lastAction.value = `nested:close:${reason ?? 'unknown'}`
+            lastAction.value = `custom:nested:close:${reason ?? 'unknown'}`
         },
     })
 }

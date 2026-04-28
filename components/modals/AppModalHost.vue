@@ -10,11 +10,10 @@
 
             <AppModalConfirm v-else-if="modalItem.type === 'confirm'" :id="modalItem.id" :title="modalItem.title"
                 :message="modalItem.message" :confirm-text="modalItem.confirmText" :cancel-text="modalItem.cancelText"
-                :auto-close="modalItem.autoClose" :width="modalItem.width" :height="modalItem.height"
-                :z-index="getModalZIndex(modalIndex)" :overlay="modalItem.overlay" :closable="modalItem.closable"
-                :close-on-dim="modalItem.closeOnDim" :close-on-esc="modalItem.closeOnEsc"
-                :is-top="isTopModal(modalItem.id)" @modal-close="handleModalClose" @modal-cancel="handleModalCancel"
-                @modal-confirm="handleModalConfirm" />
+                :width="modalItem.width" :height="modalItem.height" :z-index="getModalZIndex(modalIndex)"
+                :overlay="modalItem.overlay" :closable="modalItem.closable" :close-on-dim="modalItem.closeOnDim"
+                :close-on-esc="modalItem.closeOnEsc" :is-top="isTopModal(modalItem.id)" @modal-close="handleModalClose"
+                @modal-cancel="handleModalCancel" @modal-confirm="handleModalConfirm" />
 
             <AppModalCustom v-else-if="modalItem.type === 'custom'" :id="modalItem.id" :title="modalItem.title"
                 :component="modalItem.component" :component-props="modalItem.componentProps" :width="modalItem.width"

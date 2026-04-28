@@ -1,6 +1,37 @@
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { ModalItem, ModalOpenPayload, ModalCloseReason, ConfirmModalItem, AlertModalItem } from '~/core/types/modal';
+import type { AlertModalItem, ConfirmModalItem, CustomModalItem, ModalCloseReason, ModalItem, ModalOpenPayload } from '~/core/types/modal';
+
+const MODAL_DEFAULTS = {
+    common: {
+        overlay: true,
+        closable: true,
+        closeOnDim: true,
+        closeOnEsc: true,
+        keepOnConfirm: false,
+        width: '560px',
+        height: undefined,
+    },
+    alert: {
+        title: '안내',
+        message: '',
+        confirmText: '확인',
+        width: '420px',
+    },
+    confirm: {
+        title: '확인',
+        message: '',
+        confirmText: '확인',
+        cancelText: '취소',
+        width: '460px',
+    },
+    custom: {
+        title: '',
+        width: '560px',
+        height: undefined,
+        componentProps: {},
+    },
+} as const;
 
 export const useModalStore = defineStore('modal', () => {
     const modals = ref<ModalItem[]>([]);
@@ -15,17 +46,39 @@ export const useModalStore = defineStore('modal', () => {
         return sequence.value;
     }
 
-    function modalOpen(payload: ModalOpenPayload) {
-        const modal: ModalItem = {
-            id: createId(),
-            overlay: true,
-            closeOnDim: true,
-            closeOnEsc: true,
-            closable: true,
-            width: '560px',
-            ...payload,
-        } as ModalItem;
+    function normalizePayload(payload: ModalOpenPayload): ModalItem {
+        const common = MODAL_DEFAULTS.common;
 
+        switch (payload.type) {
+            case 'alert':
+                return {
+                    id: createId(),
+                    ...common,
+                    ...MODAL_DEFAULTS.alert,
+                    ...payload,
+                } as AlertModalItem;
+
+            case 'confirm':
+                return {
+                    id: createId(),
+                    ...common,
+                    ...MODAL_DEFAULTS.confirm,
+                    ...payload,
+                } as ConfirmModalItem;
+
+            case 'custom':
+                return {
+                    id: createId(),
+                    ...common,
+                    ...MODAL_DEFAULTS.custom,
+                    ...payload,
+                    componentProps: payload.componentProps ?? {},
+                } as CustomModalItem;
+        }
+    }
+
+    function modalOpen(payload: ModalOpenPayload) {
+        const modal = normalizePayload(payload);
         modals.value.push(modal);
         return modal.id;
     }
@@ -42,20 +95,23 @@ export const useModalStore = defineStore('modal', () => {
         const modal = modals.value.find((item) => item.id === id);
         if (!modal) return;
 
+        const shouldKeep = modal.keepOnConfirm === true;
+
         if (modal.type === 'alert') {
-            (modal as AlertModalItem).onConfirm?.();
-            modalClose(id, 'confirm');
+            if (!shouldKeep) {
+                modalClose(id, 'confirm');
+            }
+
+            modal.onConfirm?.();
             return;
         }
 
         if (modal.type === 'confirm') {
-            const confirmModal = modal as ConfirmModalItem;
-
-            confirmModal.onConfirm?.();
-
-            if (confirmModal.autoClose !== false) {
+            if (!shouldKeep) {
                 modalClose(id, 'confirm');
             }
+
+            modal.onConfirm?.();
         }
     }
 
@@ -64,7 +120,7 @@ export const useModalStore = defineStore('modal', () => {
         if (!modal) return;
 
         if (modal.type === 'confirm') {
-            (modal as ConfirmModalItem).onCancel?.();
+            modal.onCancel?.();
         }
 
         modalClose(id, 'cancel');
@@ -77,7 +133,7 @@ export const useModalStore = defineStore('modal', () => {
     }
 
     function clearAllModals() {
-        const ids = modals.value.map((modal) => modal.id);
+        const ids = modals.value.map((modal) => modal.id).reverse();
         ids.forEach((id) => modalClose(id, 'close'));
     }
 
