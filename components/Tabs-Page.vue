@@ -18,19 +18,19 @@
             <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" icon-only
                 aria-label="왼쪽 탭으로 이동" @click="moveToLeftTab">
                 <template #iconLeft>
-                    <Icon icon="mdi:chevron-left" />
+                    <Icon width="20" icon="mdi:chevron-left" />
                 </template>
             </AppButton>
             <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" icon-only
                 aria-label="오른쪽 탭으로 이동" @click="moveToRightTab">
                 <template #iconLeft>
-                    <Icon icon="mdi:chevron-right" />
+                    <Icon width="20" icon="mdi:chevron-right" />
                 </template>
             </AppButton>
             <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" icon-only
                 aria-label="다른 탭 닫기" @click="closeOtherTabs">
                 <template #iconLeft>
-                    <Icon icon="mdi:close" />
+                    <Icon width="20" icon="mdi:close" />
                 </template>
             </AppButton>
         </div>
@@ -106,35 +106,3 @@ async function onClose(e: MouseEvent, key: string) {
     }
 }
 </script>
-
-<style scoped>
-.route-tabs {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.route-tabs__scroller {
-    min-width: 0;
-    flex: 1;
-    overflow-x: auto;
-    overflow-y: hidden;
-}
-
-.route-tabs__list {
-    display: inline-flex;
-    flex-wrap: nowrap;
-    min-width: max-content;
-}
-
-.route-tabs__actions {
-    display: inline-flex;
-    gap: 6px;
-    flex-shrink: 0;
-    position: sticky;
-    right: 0;
-    z-index: 1;
-    background: var(--js-color-surface-primary, #fff);
-    padding-left: 6px;
-}
-</style>
