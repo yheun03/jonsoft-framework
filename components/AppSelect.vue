@@ -30,7 +30,7 @@
                     {{ placeholder }}
                 </li>
 
-                <li v-for="opt in options" :id="getOptionId(opt.value)" :key="opt.value" class="app-select__option"
+                <li v-for="opt in options" :id="getOptionId(opt.value)" :key="getOptionId(opt.value)" class="app-select__option"
                     :class="{
                         'is-selected': modelValue === opt.value,
                         'is-disabled': !!opt.disabled
@@ -52,7 +52,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 export type AppSelectOption = {
-    value: string
+    value: string | number | boolean | null
     label: string
     disabled?: boolean
 }
@@ -63,7 +63,7 @@ type SelectState = 'error' | 'warning' | 'success' | null
 
 const props = withDefaults(
     defineProps<{
-        modelValue: string | null
+        modelValue: string | number | boolean | null
         options: AppSelectOption[]
 
         label?: string
@@ -92,8 +92,8 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: string | null): void
-    (e: 'change', value: string | null): void
+    (e: 'update:modelValue', value: string | number | boolean | null): void
+    (e: 'change', value: string | number | boolean | null): void
 }>()
 
 const fallbackId = useId()
@@ -126,8 +126,8 @@ const rootClasses = computed(() => [
     }
 ])
 
-function getOptionId(value: string) {
-    return `${triggerId.value}-option-${value}`
+function getOptionId(value: string | number | boolean | null) {
+    return `${triggerId.value}-option-${String(value)}`
 }
 
 function open() {
@@ -144,7 +144,7 @@ function toggle() {
     isOpen.value = !isOpen.value
 }
 
-function updateValue(value: string | null) {
+function updateValue(value: string | number | boolean | null) {
     emit('update:modelValue', value)
     emit('change', value)
     close()

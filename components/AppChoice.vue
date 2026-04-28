@@ -45,7 +45,7 @@ const props = withDefaults(
     defineProps<{
         type?: ChoiceType
         modelValue: boolean | string | number | null
-        value?: string | number
+        value?: string | number | boolean | null
         name?: string
         label?: string
         hint?: string

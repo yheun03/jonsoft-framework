@@ -23,6 +23,8 @@ export default defineNuxtConfig({
     },
 
     components: [
+        // table 컴포넌트는 AppTable / AppTableField 이름으로 사용
+        { path: '~/components/table', pathPrefix: false },
         // 모든 전역 컴포넌트를 components 루트에서 자동 등록
         { path: '~/components', pathPrefix: true },
     ],
@@ -74,9 +76,6 @@ export default defineNuxtConfig({
     // GitHub Pages 배포 대응
     nitro: {
         preset: 'static',
-        handlers: [
-            { route: '/api/menus', handler: '~/core/server/api/menus.get.ts' },
-            { route: '/api/export/excel', handler: '~/core/server/api/export/excel.post.ts' },
-        ],
+        scanDirs: ['core/server'],
     },
 });
