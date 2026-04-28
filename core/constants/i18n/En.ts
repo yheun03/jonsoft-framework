@@ -27,6 +27,7 @@ const En = {
     'nav.demo.uploadImage': 'Image Upload Demo',
     'nav.demo.uploadFile': 'File Upload Demo',
     'nav.demo.modal': 'Modal Demo',
+    'nav.demo.table': 'Table Demo',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'Review all AppButton props in one place.',
@@ -50,6 +51,9 @@ const En = {
     'demo.uploadFile.desc': 'Test general file upload, remove, multiple selection, and change events.',
     'demo.modal.title': 'Modal Demo',
     'demo.modal.desc': 'Verify Alert/Confirm/Custom modals and stack behavior (ESC/backdrop/close button).',
+    'demo.table.title': 'AppTable',
+    'demo.table.desc':
+        'Demo page that showcases all cell types supported by AppTableField at once. Each row renders cell.type in the th and the corresponding field component in the td.',
 };
 
 export default En;

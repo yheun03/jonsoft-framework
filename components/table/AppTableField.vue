@@ -87,8 +87,9 @@
         <template v-else-if="cell.type === 'radio'">
             <div class="app-table-field__choice-group">
                 <AppChoice v-for="option in cell.options ?? []" :key="String(option.value)"
-                    :model-value="choiceValue(cell.key)" type="radio" :name="`radio-${cell.key}`" :value="option.value"
-                    :label="option.label" :readonly="mergedReadonly" :disabled="mergedDisabled || !!option.disabled"
+                    :model-value="choiceValue(cell.key)" type="radio" :name="`radio-${cell.key}`"
+                    :value="radioOptionValue(option.value)" :label="option.label" :readonly="mergedReadonly"
+                    :disabled="mergedDisabled || !!option.disabled"
                     @update:model-value="(value) => updateField(cell.key, value)" />
             </div>
         </template>
@@ -143,7 +144,7 @@
 
 <script setup lang="ts">
 import type { AppTableCell } from '~/core/types/table'
-import type { DateRangeValue } from '~/components/base/AppDatePicker.vue'
+import type { DateRangeValue } from '~/components/AppDatePicker.vue'
 
 const props = withDefaults(
     defineProps<{
@@ -192,6 +193,10 @@ function choiceValue(key?: string) {
     return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || value === null
         ? value
         : null
+}
+
+function radioOptionValue(value: string | number | boolean | null) {
+    return typeof value === 'string' || typeof value === 'number' ? value : undefined
 }
 
 function dateValue(key?: string) {

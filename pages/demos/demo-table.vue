@@ -3,14 +3,8 @@
         <div class="page-demo-layout">
             <main class="page-demo-main">
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">
-                        AppTable
-                    </h1>
-
-                    <p class="page-demo__desc">
-                        AppTableField가 지원하는 셀 타입들을 한 번에 확인하는 데모입니다.
-                        각 행의 <code>th</code>에는 <code>cell.type</code>이, <code>td</code>에는 해당 타입의 컴포넌트가 렌더링됩니다.
-                    </p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- BASIC TYPES -->
@@ -19,8 +13,9 @@
                         Basic Types
                     </h2>
 
-                    <p class="page-demo-card__desc">
-                        text / input / select / textarea 기본 타입 예시입니다.
+                    <p class="page-demo__desc">
+                        AppTableField가 지원하는 셀 타입들을 한 번에 확인하는 데모입니다.
+                        각 행의 <code>th</code>에는 <code>cell.type</code>이, <code>td</code>에는 해당 타입의 컴포넌트가 렌더링됩니다.
                     </p>
 
                     <AppTable :model-value="basicForm" :rows="basicRows" title="Basic" default-label-width="160px"
@@ -123,6 +118,7 @@
 
 <script setup lang="ts">
 import type { AppTableOption, AppTableRow } from '~/core/types/table'
+const { title, description } = useDemoI18n('select')
 
 const selectOptions: AppTableOption[] = [
     { label: '선택하세요', value: null },

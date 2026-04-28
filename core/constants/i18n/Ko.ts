@@ -27,6 +27,7 @@ const Ko = {
     'nav.demo.uploadImage': '이미지 업로드 데모',
     'nav.demo.uploadFile': '파일 업로드 데모',
     'nav.demo.modal': '모달 데모',
+    'nav.demo.table': '테이블 데모',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'AppButton 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
@@ -50,6 +51,9 @@ const Ko = {
     'demo.uploadFile.desc': '일반 파일 업로드/삭제/다중 선택 및 change 이벤트를 확인합니다.',
     'demo.modal.title': 'Modal Demo',
     'demo.modal.desc': 'Alert / Confirm / Custom 모달과 스택(ESC/배경/X) 동작을 확인합니다.',
+    'demo.table.title': 'AppTable',
+    'demo.table.desc':
+        'AppTableField가 지원하는 셀 타입들을 한 번에 확인하는 데모입니다. 각 행의 th에는 cell.type이, td에는 해당 타입의 컴포넌트가 렌더링됩니다.',
 };
 
 export default Ko;
