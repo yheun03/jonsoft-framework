@@ -10,5 +10,5 @@ import { AG_GRID_LOCALE_KR } from '@ag-grid-community/locale'
 ModuleRegistry.registerModules([AllCommunityModule])
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR)
+    nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR)
 })

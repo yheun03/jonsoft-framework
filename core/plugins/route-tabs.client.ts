@@ -1,5 +1,5 @@
 import { useRouteTabsStore } from '~/core/stores/route-tabs'
-import { getRouteLabel, type AppRoute } from '~/router/route-meta'
+import { getRouteLabel, type AppRoute } from '~/core/router/route-meta'
 import type { RouteLocationNormalized } from 'vue-router'
 
 export default defineNuxtPlugin(() => {
@@ -22,8 +22,5 @@ export default defineNuxtPlugin(() => {
     }
 
     router.afterEach((to) => track(to))
-
-    // 초기 진입 시 현재 라우트도 탭에 포함
     track(router.currentRoute.value)
 })
-

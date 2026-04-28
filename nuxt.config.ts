@@ -27,6 +27,15 @@ export default defineNuxtConfig({
         { path: '~/components', pathPrefix: true },
     ],
 
+    // 실무형 구조: 플러그인을 core 내부에서 명시 로딩
+    plugins: [
+        '~/core/plugins/axios',
+        '~/core/plugins/iconify',
+        '~/core/plugins/ag-grid.client',
+        '~/core/plugins/route-tabs.client',
+        '~/core/plugins/global-css-no-inline.client',
+    ],
+
     vite: {
         build: {
             cssCodeSplit: false,
@@ -63,6 +72,10 @@ export default defineNuxtConfig({
 
     // GitHub Pages 배포 대응
     nitro: {
-        preset: "static"
-    }
+        preset: 'static',
+        handlers: [
+            { route: '/api/menus', handler: '~/core/server/api/menus.get.ts' },
+            { route: '/api/export/excel', handler: '~/core/server/api/export/excel.post.ts' },
+        ],
+    },
 })

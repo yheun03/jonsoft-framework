@@ -1,6 +1,6 @@
-import type { NavAction } from './nav.types'
+import type { NavigationAction } from '~/core/types/navigation'
 
-export const NAV_HEADER_ACTIONS: NavAction[] = [
+export const NAVIGATION_HEADER_ACTIONS: NavigationAction[] = [
     { label: '메모 추가', icon: 'mdi:pencil-outline' },
     { label: '메모 폴더 추가', icon: 'mdi:folder-plus-outline' },
     { label: '메모 필터 적용', icon: 'mdi:filter-variant' },

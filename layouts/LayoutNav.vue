@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import PatternNavItem from '@/components/PatternNavItem.vue'
 import logoSvg from '~/assets/icons/logo.svg?raw'
-import { useNavMenu } from '~/navigation/useNavMenu'
+import { useNavigation } from '~/core/composables/useNavigation'
 
-const { headerActions, menuTree, getIconSvg } = useNavMenu()
+const { headerActions, menuTree, getIconSvg } = useNavigation()
 </script>

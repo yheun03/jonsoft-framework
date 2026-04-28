@@ -29,10 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import type { NavMenu } from '~/navigation/nav.types'
+import type { NavigationMenu } from '~/core/types/navigation'
 
 const props = defineProps<{
-    item: NavMenu
+    item: NavigationMenu
     getIconSvg: (icon?: string) => string | null
 }>()
 
