@@ -14,7 +14,7 @@
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Basic</h2>
                     <p class="page-demo-card__desc">
-                        가장 기본적인 이미지 업로드 예시입니다.
+                        가장 기본적인 이미지 업로드 예시입니다. 업로드 후 각 항목의 미리보기 버튼으로 이미지 뷰어 모달을 열 수 있습니다.
                     </p>
 
                     <div class="page-demo-row">

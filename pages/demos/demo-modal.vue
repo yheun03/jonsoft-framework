@@ -104,6 +104,24 @@
                     </div>
                 </section>
 
+                <!-- VIEWER -->
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">Viewer Modal</h2>
+                    <p class="page-demo-card__desc">
+                        이미지/PDF 미리보기처럼 `custom` 모달을 재사용하는 예시입니다.
+                    </p>
+
+                    <div class="page-demo-actions">
+                        <AppButton variant="fill" @click="handleOpenImageViewer">
+                            이미지 뷰어 열기
+                        </AppButton>
+
+                        <AppButton variant="outline" @click="handleOpenPdfViewer">
+                            PDF 뷰어 열기
+                        </AppButton>
+                    </div>
+                </section>
+
                 <!-- CONTROL -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Store Control</h2>
@@ -137,10 +155,12 @@
 
 <script setup lang="ts">
 import ModalRendererExample from '~/components/demo/modal/ModalRendererExample.vue'
+import { useModalViewer } from '~/core/composables/useModalViewer'
 import { useModalStore } from '~/core/stores/modal'
 
 const { title } = useDemoI18n('modal')
 const modalStore = useModalStore()
+const { openImageViewer, openPdfViewer } = useModalViewer()
 
 const lastAction = ref('-')
 
@@ -370,6 +390,23 @@ function handleOpenNestedCustom() {
             lastAction.value = `custom:nested:close:${reason ?? 'unknown'}`
         },
     })
+}
+
+function handleOpenImageViewer() {
+    openImageViewer({
+        name: '샘플 이미지',
+        url: 'https://picsum.photos/1200/800?random=31',
+        alt: 'modal viewer sample image',
+    })
+    lastAction.value = 'viewer:image:open'
+}
+
+function handleOpenPdfViewer() {
+    openPdfViewer({
+        name: '샘플 PDF',
+        path: '/samples/project-overview.pdf',
+    })
+    lastAction.value = 'viewer:pdf:open'
 }
 
 function handleCloseTop() {

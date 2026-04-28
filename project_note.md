@@ -104,3 +104,5 @@ const data = await api.get<MyType>('/api/menus');
 
 - 2026-04-28: `core/types/modal.ts`에 모달 공통 props/event reason 타입을 모아 모달 컴포넌트들의 중복 선언을 줄였습니다.
 - 2026-04-28: `core/stores/modal.ts`와 `components/modals/AppModalHost.vue`를 공통 경로로 정리해 분기 수를 줄이면서 기존 Alert/Confirm/Custom 동작은 유지했습니다.
+- 2026-04-28: `useModalViewer()`와 PDF/이미지 뷰어 콘텐츠를 추가해 `AppUploadFile`의 PDF 미리보기와 `AppUploadImage`의 이미지 미리보기 모달을 연결했습니다.
+- 2026-04-28: `pages/demos/demo-modal.vue`에 이미지/PDF 뷰어 예제를 추가해 업로드 컴포넌트 밖에서도 뷰어 모달 사용 방식을 바로 확인할 수 있게 했습니다.

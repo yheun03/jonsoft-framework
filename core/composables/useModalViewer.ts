@@ -1,0 +1,56 @@
+import PdfViewerContent from '~/components/modals/PdfViewerContent.vue'
+import ImageViewerContent from '~/components/modals/ImageViewerContent.vue'
+import { useModalStore } from '~/core/stores/modal'
+
+type ImageViewerSource = {
+    name?: string
+    url?: string
+    alt?: string
+}
+
+type PdfViewerSource = {
+    name?: string
+    path?: string
+    file?: File
+}
+
+export function useModalViewer() {
+    const modalStore = useModalStore()
+
+    function openImageViewer(source: ImageViewerSource) {
+        if (!source.url) return
+
+        modalStore.modalOpen({
+            type: 'custom',
+            title: source.name || '이미지 미리보기',
+            width: '960px',
+            component: ImageViewerContent,
+            componentProps: {
+                src: source.url,
+                alt: source.alt || source.name || '이미지 미리보기',
+            },
+        })
+    }
+
+    function openPdfViewer(source: PdfViewerSource) {
+        if (!source.path && !source.file) return
+
+        modalStore.modalOpen({
+            type: 'custom',
+            title: source.name || 'PDF 미리보기',
+            width: '1100px',
+            height: '80vh',
+            component: PdfViewerContent,
+            componentProps: {
+                src: source.path,
+                file: source.file,
+                fileName: source.name,
+            },
+        })
+    }
+
+    return {
+        openImageViewer,
+        openPdfViewer,
+    }
+}

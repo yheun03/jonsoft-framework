@@ -55,6 +55,11 @@
                 </div>
 
                 <div class="app-image-upload__item-actions">
+                    <AppButton v-if="uploadItem.url" variant="text" size="sm" ariaLabel="이미지 미리보기"
+                        @click="previewItem(uploadItem)">
+                        미리보기
+                    </AppButton>
+
                     <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" :disabled="disabled"
                         ariaLabel="파일 삭제" @click="removeItem(uploadItem.id)">
                         <template #iconLeft>
@@ -72,6 +77,8 @@
 </template>
 
 <script setup lang="ts">
+import { useModalViewer } from '~/core/composables/useModalViewer'
+
 type ReadMode = 'dataUrl' | 'objectUrl'
 type AppImageUploadValue = string | AppImageUploadItem
 type AppImageUploadModelValue = AppImageUploadValue | AppImageUploadValue[] | null
@@ -125,6 +132,7 @@ const emit = defineEmits<{
 const fileInput = ref<HTMLInputElement | null>(null)
 const dragOver = ref(false)
 const objectUrls = ref<string[]>([])
+const { openImageViewer } = useModalViewer()
 
 const rootClasses = computed(() => ({
     'is-disabled': props.disabled,
@@ -317,6 +325,14 @@ function removeItem(id: string) {
 
     emit('remove', target)
     emitValue(items.value.filter((uploadItem) => uploadItem.id !== id))
+}
+
+function previewItem(item: AppImageUploadItem) {
+    openImageViewer({
+        name: item.name,
+        url: item.url,
+        alt: item.alt,
+    })
 }
 
 function clearAll() {

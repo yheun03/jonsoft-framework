@@ -10,7 +10,7 @@
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">Basic</h2>
                     <p class="page-demo-card__desc">
-                        가장 기본적인 단일 파일 업로드 예시입니다.
+                        가장 기본적인 단일 파일 업로드 예시입니다. PDF 파일은 항목의 미리보기 버튼으로 PDF 뷰어 모달을 열 수 있습니다.
                     </p>
 
                     <div class="page-demo-row">

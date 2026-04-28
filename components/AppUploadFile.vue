@@ -51,6 +51,11 @@
                 </div>
 
                 <div class="app-file-upload__item-actions">
+                    <AppButton v-if="isPdfItem(uploadItem)" variant="text" size="sm" ariaLabel="PDF 미리보기"
+                        @click="previewPdf(uploadItem)">
+                        미리보기
+                    </AppButton>
+
                     <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" :disabled="disabled"
                         ariaLabel="파일 삭제" @click="removeItem(uploadItem.id)">
                         <template #iconLeft>
@@ -68,6 +73,8 @@
 </template>
 
 <script setup lang="ts">
+import { useModalViewer } from '~/core/composables/useModalViewer'
+
 type AppUploadFileValue = string | AppUploadFileItem
 type AppUploadFileModelValue = AppUploadFileValue | AppUploadFileValue[] | null
 
@@ -116,6 +123,7 @@ const emit = defineEmits<{
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const dragOver = ref(false)
+const { openPdfViewer } = useModalViewer()
 
 const rootClasses = computed(() => ({
     'is-disabled': props.disabled,
@@ -279,6 +287,20 @@ function removeItem(id: string) {
 
     emit('remove', target)
     emitValue(items.value.filter((uploadItem) => uploadItem.id !== id))
+}
+
+function isPdfItem(item: AppUploadFileItem) {
+    const name = item.name.toLowerCase()
+    const path = item.path?.toLowerCase() ?? ''
+    return item.type === 'application/pdf' || name.endsWith('.pdf') || path.endsWith('.pdf')
+}
+
+function previewPdf(item: AppUploadFileItem) {
+    openPdfViewer({
+        name: item.name,
+        path: item.path,
+        file: item.file,
+    })
 }
 
 function clearAll() {
