@@ -1,19 +1,26 @@
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import { getRequestURL } from 'h3';
 
 export default defineNuxtPlugin(() => {
     const config = useRuntimeConfig();
+    const event = useRequestEvent();
+    const requestUrl = event ? getRequestURL(event) : null;
+    const apiBase = config.public.apiBase as string;
+    const baseURL = import.meta.client
+        ? apiBase
+        : apiBase.startsWith('http')
+          ? apiBase
+          : `${requestUrl?.origin ?? 'http://localhost'}${apiBase.startsWith('/') ? apiBase : `/${apiBase}`}`;
 
     const api: AxiosInstance = axios.create({
-        baseURL: config.public.apiBase as string,
+        baseURL,
         timeout: 10000,
         headers: { 'Content-Type': 'application/json' },
     });
 
     api.interceptors.request.use(
-        (req) => {
-            return req;
-        },
+        (req) => req,
         (error) => Promise.reject(error),
     );
 
@@ -26,9 +33,3 @@ export default defineNuxtPlugin(() => {
         provide: { api },
     };
 });
-
-declare module '#app' {
-    interface NuxtApp {
-        $api: AxiosInstance;
-    }
-}

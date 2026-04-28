@@ -1,5 +1,4 @@
-// types/api/menu.ts
-export interface Menu {
+export interface NavigationMenu {
     id: string;
     parentId?: string | null;
     label: string;
@@ -9,5 +8,10 @@ export interface Menu {
     icon?: string;
     newTab?: boolean;
     depth: number;
-    children?: Menu[];
+    children?: NavigationMenu[];
 }
+
+export type NavigationAction = {
+    label: string;
+    icon: string;
+};

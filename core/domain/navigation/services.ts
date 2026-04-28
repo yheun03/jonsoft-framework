@@ -1,14 +1,22 @@
-import type { NavigationMenu } from '~/core/types/navigation';
+import type { NavigationMenu } from '~/core/domain/navigation/types';
 
 type MutableNavigationMenu = Omit<NavigationMenu, 'children'> & {
     children?: MutableNavigationMenu[];
 };
 
+export function translateNavigationMenus(items: readonly NavigationMenu[], t?: (key: string, fallback?: string) => string): NavigationMenu[] {
+    if (!t) return [...items];
+    return items.map((item) => ({
+        ...item,
+        label: item.labelKey ? t(item.labelKey, item.label) : item.label,
+        children: item.children ? translateNavigationMenus(item.children, t) : undefined,
+    }));
+}
+
 export function buildNavigationTree(items: readonly NavigationMenu[]): NavigationMenu[] {
     const nodeMap = new Map<string, MutableNavigationMenu>();
     const roots: MutableNavigationMenu[] = [];
 
-    // 1) 노드 생성: API 원본 순서와 관계없이 먼저 전체 노드를 준비
     for (const item of items) {
         nodeMap.set(item.id, {
             ...item,
@@ -16,7 +24,6 @@ export function buildNavigationTree(items: readonly NavigationMenu[]): Navigatio
         });
     }
 
-    // 2) parentId 기준으로 트리 연결
     for (const item of items) {
         const node = nodeMap.get(item.id);
         if (!node) continue;
@@ -29,7 +36,6 @@ export function buildNavigationTree(items: readonly NavigationMenu[]): Navigatio
 
         const parent = nodeMap.get(parentId);
         if (!parent) {
-            // 부모 누락 데이터는 루트로 강등해 화면 유실을 방지
             roots.push(node);
             continue;
         }

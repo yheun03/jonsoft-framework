@@ -1,4 +1,4 @@
-import type { Menu } from '~/core/types/api/menu';
+import type { NavigationMenu } from '~/core/domain/navigation/types';
 type MenuEntity = {
     id: string;
     parentId: string | null;
@@ -124,7 +124,7 @@ const MENU_SEED: MenuEntity[] = [
     },
 ];
 
-function createMenus(): Menu[] {
+function createMenus(): NavigationMenu[] {
     return MENU_SEED.filter((row) => row.isActive)
         .sort((a, b) => {
             if (a.depth !== b.depth) return a.depth - b.depth;

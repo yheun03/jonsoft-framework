@@ -1,4 +1,4 @@
-import type { NavigationAction } from '~/core/types/navigation';
+import type { NavigationAction } from '~/core/domain/navigation/types';
 
 export const NAVIGATION_HEADER_ACTIONS: NavigationAction[] = [
     { label: '메모 추가', icon: 'mdi:pencil-outline' },

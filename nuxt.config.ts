@@ -30,10 +30,10 @@ export default defineNuxtConfig({
     // 실무형 구조: 플러그인을 core 내부에서 명시 로딩
     plugins: [
         '~/core/plugins/preferences.client',
-        '~/core/plugins/axios',
+        '~/core/app/plugins/axios',
         '~/core/plugins/iconify',
         '~/core/plugins/ag-grid.client',
-        '~/core/plugins/route-tabs.client',
+        '~/core/app/plugins/route-tabs.client',
         '~/core/plugins/global-css-no-inline.client',
     ],
 

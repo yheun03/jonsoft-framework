@@ -1,6 +1,18 @@
 declare module '@toast-ui/editor' {
-    import Editor from '@toast-ui/editor/types/index';
+    export type EditorOptions = {
+        el: HTMLElement;
+        height?: string;
+        initialEditType?: 'markdown' | 'wysiwyg';
+        previewStyle?: 'vertical' | 'tab';
+        initialValue?: string;
+        usageStatistics?: boolean;
+    };
 
-    export * from '@toast-ui/editor/types/index';
-    export default Editor;
+    export default class Editor {
+        constructor(options: EditorOptions);
+        on(eventName: 'change', handler: () => void): void;
+        getMarkdown(): string;
+        setMarkdown(markdown: string, cursorToEnd?: boolean): void;
+        destroy(): void;
+    }
 }

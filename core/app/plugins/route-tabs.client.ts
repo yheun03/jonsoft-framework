@@ -1,5 +1,5 @@
 import { useRouteTabsStore } from '~/core/stores/route-tabs';
-import { getRouteLabel, type AppRoute } from '~/core/router/route-meta';
+import { getRouteTitle, isVisibleRoute } from '~/core/app/router/route-meta';
 import type { RouteLocationNormalized } from 'vue-router';
 
 export default defineNuxtPlugin(() => {
@@ -8,11 +8,13 @@ export default defineNuxtPlugin(() => {
 
     const track = (to: RouteLocationNormalized) => {
         if (!to.path) return;
-        const title =
-            getRouteLabel(to.path, { path: to.path, meta: to.meta as Record<string, unknown> } as AppRoute) ??
-            (typeof to.meta?.title === 'string' ? (to.meta.title as string) : null) ??
-            (typeof to.name === 'string' ? to.name : null) ??
-            to.path;
+        if (!isVisibleRoute(to.path)) return;
+
+        const title = getRouteTitle({
+            path: to.path,
+            name: to.name,
+            meta: to.meta as Record<string, unknown>,
+        });
 
         store.visit({
             key: to.fullPath,

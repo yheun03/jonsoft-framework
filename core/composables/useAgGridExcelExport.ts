@@ -1,4 +1,5 @@
 import type { GridApi } from 'ag-grid-community';
+import { useApi } from '~/core/composables/useApi';
 
 type ExportColumn = { field: string; headerName: string };
 type ExportRow = Record<string, unknown>;
@@ -54,6 +55,7 @@ async function downloadBlobAsFile(blob: Blob, filename: string) {
 
 export function useAgGridExcelExport(options?: { origin?: string }) {
     const origin = options?.origin ?? 'A1';
+    const api = useApi();
 
     async function requestExcelDownload(params: {
         gridId: string;
@@ -66,10 +68,9 @@ export function useAgGridExcelExport(options?: { origin?: string }) {
         const fileName = makeExportFileName(fileNameBase);
         const sheetName = params.sheetName ?? params.gridId;
 
-        const res = await $fetch<Blob>('/api/export/excel', {
-            method: 'POST',
-            responseType: 'blob',
-            body: {
+        const res = await api.post<Blob>(
+            '/api/export/excel',
+            {
                 gridId: params.gridId,
                 columns: params.columns,
                 rows: params.rows,
@@ -77,7 +78,8 @@ export function useAgGridExcelExport(options?: { origin?: string }) {
                 sheetName,
                 origin,
             },
-        });
+            { responseType: 'blob' },
+        );
 
         await downloadBlobAsFile(res, `${fileName}.xlsx`);
     }

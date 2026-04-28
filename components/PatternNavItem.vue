@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationMenu } from '~/core/types/navigation'
+import type { NavigationMenu } from '~/core/domain/navigation/types'
 
 const props = defineProps<{
     item: NavigationMenu
