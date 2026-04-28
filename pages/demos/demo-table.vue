@@ -156,6 +156,7 @@ const buttonForm = ref<Record<string, unknown>>({
 const choiceForm = ref<Record<string, unknown>>({
     radioValue: 'pass',
     checkboxValue: ['option1'],
+    toggleValue: true,
 })
 
 const dateForm = ref<Record<string, unknown>>({
@@ -307,6 +308,16 @@ const choiceRows: AppTableRow[] = [
                 key: 'checkboxValue',
                 type: 'checkbox',
                 options: checkboxOptions,
+            },
+        ],
+    },
+    {
+        cells: [
+            {
+                label: 'toggle',
+                key: 'toggleValue',
+                type: 'toggle',
+                text: '활성화',
             },
         ],
     },

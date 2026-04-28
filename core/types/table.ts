@@ -7,6 +7,7 @@ export type AppTableOption = {
 export type AppTableFieldType =
     | 'text'
     | 'input'
+    | 'toggle'
     | 'button'
     | 'input_button'
     | 'input_button-text'

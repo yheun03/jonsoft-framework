@@ -11,6 +11,12 @@
                 :disabled="mergedDisabled" @update:model-value="(value) => updateField(cell.key, value)" />
         </template>
 
+        <template v-else-if="cell.type === 'toggle'">
+            <AppChoice type="checkbox" :model-value="booleanValue(cell.key)" :label="cell.text ?? cell.label"
+                :readonly="mergedReadonly" :disabled="mergedDisabled"
+                @update:model-value="(value) => updateField(cell.key, value)" />
+        </template>
+
         <template v-else-if="cell.type === 'select'">
             <AppSelect :model-value="selectValue(cell.key)" :options="cell.options ?? []"
                 :placeholder="cell.placeholder ?? '선택하세요'" :readonly="mergedReadonly" :disabled="mergedDisabled"
@@ -181,6 +187,10 @@ function getValue(key?: string) {
 function stringValue(key?: string) {
     const value = getValue(key)
     return typeof value === 'string' || typeof value === 'number' ? String(value) : ''
+}
+
+function booleanValue(key?: string) {
+    return Boolean(getValue(key))
 }
 
 function selectValue(key?: string) {
