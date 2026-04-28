@@ -49,7 +49,7 @@ const En = {
     'demo.uploadFile.title': 'File Upload Demo',
     'demo.uploadFile.desc': 'Test general file upload, remove, multiple selection, and change events.',
     'demo.modal.title': 'Modal Demo',
-    'demo.modal.desc': 'Verify Alert/Confirm modals and stack behavior (ESC/backdrop/close button).',
+    'demo.modal.desc': 'Verify Alert/Confirm/Custom modals and stack behavior (ESC/backdrop/close button).',
 };
 
 export default En;

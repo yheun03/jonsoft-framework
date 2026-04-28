@@ -6,9 +6,15 @@
         </NuxtLayout>
         <NuxtPage v-else :key="route.fullPath" />
     </div>
+
+
+    <AppModalHost />
 </template>
 
 <script setup lang="ts">
+
+import AppModalHost from '~/components/modals/AppModalHost.vue'
+
 const route = useRoute()
 
 const useLayout = computed(() => {

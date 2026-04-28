@@ -49,7 +49,7 @@ const Ko = {
     'demo.uploadFile.title': 'File Upload Demo',
     'demo.uploadFile.desc': '일반 파일 업로드/삭제/다중 선택 및 change 이벤트를 확인합니다.',
     'demo.modal.title': 'Modal Demo',
-    'demo.modal.desc': 'Alert / Confirm 모달과 스택(ESC/배경/X) 동작을 확인합니다.',
+    'demo.modal.desc': 'Alert / Confirm / Custom 모달과 스택(ESC/배경/X) 동작을 확인합니다.',
 };
 
 export default Ko;
