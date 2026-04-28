@@ -4,11 +4,11 @@
  * - 스타일 로드
  * - 한국어 로케일을 기본값으로 provide
  */
-import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community'
-import { AG_GRID_LOCALE_KR } from '@ag-grid-community/locale'
+import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
+import { AG_GRID_LOCALE_KR } from '@ag-grid-community/locale';
 
-ModuleRegistry.registerModules([AllCommunityModule])
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export default defineNuxtPlugin((nuxtApp) => {
-    nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR)
-})
+    nuxtApp.provide('agGridLocale', AG_GRID_LOCALE_KR);
+});

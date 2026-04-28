@@ -29,6 +29,7 @@ export default defineNuxtConfig({
 
     // 실무형 구조: 플러그인을 core 내부에서 명시 로딩
     plugins: [
+        '~/core/plugins/preferences.client',
         '~/core/plugins/axios',
         '~/core/plugins/iconify',
         '~/core/plugins/ag-grid.client',
@@ -78,4 +79,4 @@ export default defineNuxtConfig({
             { route: '/api/export/excel', handler: '~/core/server/api/export/excel.post.ts' },
         ],
     },
-})
+});

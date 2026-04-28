@@ -3,8 +3,8 @@
         <div class="page-demo-layout">
             <main class="page-demo-main">
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">Modal Demo</h1>
-                    <p class="page-demo__desc">Alert / Confirm 모달과 스택(ESC/배경/X) 동작을 확인합니다.</p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <section class="page-demo-card">
@@ -51,6 +51,8 @@
 </template>
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('modal')
+
 const alertOpen = ref(false)
 const confirmOpen = ref(false)
 const confirmNestedOpen = ref(false)

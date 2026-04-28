@@ -5,14 +5,9 @@
 
                 <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">
-                        AppDatePicker
-                    </h1>
+                    <h1 class="page-demo__title">{{ title }}</h1>
 
-                    <p class="page-demo__desc">
-                        Flatpickr 기반 DatePicker 컴포넌트입니다.
-                        mode / size / shape / state / disabled / min / max 속성을 지원합니다.
-                    </p>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- BASIC -->
@@ -252,6 +247,8 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 import type { DateRangeValue } from '~/components/AppDatePicker.vue'
+
+const { title, description } = useDemoI18n('datepicker')
 
 const min = '2026-04-01'
 const max = '2026-12-31'

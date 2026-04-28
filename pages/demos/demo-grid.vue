@@ -6,8 +6,8 @@
             <main class="page-demo-main">
 
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">AG Grid Demo</h1>
-                    <p class="page-demo__desc">AppGridToolbar 기반 Grid UI 패턴</p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- GRID 1 -->
@@ -109,13 +109,14 @@
 
 
 <script setup lang="ts">
-
 import type { ColDef } from 'ag-grid-community'
 
 import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
 import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
 import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
 import AppGridCellImage from '~/components/AppGrid/Cell/Image.vue'
+
+const { title, description } = useDemoI18n('grid')
 
 
 /* 행 높이 동적 처리 */
@@ -284,7 +285,7 @@ const columns3: ColDef[] = [
         field: 'state',
         headerName: '상태',
         cellRenderer: AppGridCellChoice,
-        suppressMenu: true,
+        suppressHeaderMenuButton: true,
         sortable: false,
         filter: false,
         cellRendererParams: {

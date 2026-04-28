@@ -1,30 +1,33 @@
-import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
-import type { NavigationMenu } from '~/core/types/navigation'
-import { buildNavigationTree } from '~/core/utils/navigation-tree'
+import { defineStore } from 'pinia';
+import { computed, ref } from 'vue';
+import type { NavigationMenu } from '~/core/types/navigation';
+import { buildNavigationTree } from '~/core/utils/navigation-tree';
+import { useI18nText } from '~/core/composables/useI18nText';
 
 type MenusResponse = {
-    menus: NavigationMenu[]
-}
+    menus: NavigationMenu[];
+};
 
 export const useNavigationStore = defineStore('navigation', () => {
-    const menus = ref<NavigationMenu[]>([])
-    const isLoading = ref(false)
-    const isLoaded = ref(false)
+    const { t } = useI18nText();
+    const menus = ref<NavigationMenu[]>([]);
+    const isLoading = ref(false);
+    const isLoaded = ref(false);
 
-    const menuTree = computed(() => buildNavigationTree(menus.value))
+    const localizedMenus = computed(() => translateMenus(menus.value, t));
+    const menuTree = computed(() => buildNavigationTree(localizedMenus.value));
 
     async function fetchMenus(force = false) {
-        if (isLoading.value) return
-        if (isLoaded.value && !force) return
+        if (isLoading.value) return;
+        if (isLoaded.value && !force) return;
 
-        isLoading.value = true
+        isLoading.value = true;
         try {
-            const response = await $fetch<MenusResponse>('/api/menus')
-            menus.value = response?.menus ?? []
-            isLoaded.value = true
+            const response = await $fetch<MenusResponse>('/api/menus');
+            menus.value = response?.menus ?? [];
+            isLoaded.value = true;
         } finally {
-            isLoading.value = false
+            isLoading.value = false;
         }
     }
 
@@ -34,5 +37,14 @@ export const useNavigationStore = defineStore('navigation', () => {
         isLoading,
         isLoaded,
         fetchMenus,
-    }
-})
+    };
+});
+
+function translateMenus(items: NavigationMenu[], t?: (key: string, fallback?: string) => string): NavigationMenu[] {
+    if (!t) return items;
+    return items.map((item) => ({
+        ...item,
+        label: item.labelKey ? t(item.labelKey, item.label) : item.label,
+        children: item.children ? translateMenus(item.children, t) : undefined,
+    }));
+}

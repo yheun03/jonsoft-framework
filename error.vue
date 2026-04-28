@@ -104,6 +104,7 @@ function goBack() {
         linear-gradient(180deg, $gray-0, $primary-50);
     color: $gray-900;
 }
+
 .app-error__card {
     width: min(560px, 100%);
     border: 1px solid rgba($primary-200, 0.9);
@@ -123,6 +124,7 @@ function goBack() {
     gap: 12px;
     margin-bottom: 12px;
 }
+
 .app-error__badge {
     display: inline-flex;
     align-items: center;
@@ -153,6 +155,7 @@ function goBack() {
     background: rgba($primary-500, 0.14);
     border-color: rgba($primary-500, 0.22);
 }
+
 .app-error__badge[data-code='500'],
 .app-error__badge[data-code='501'],
 .app-error__badge[data-code='502'],
@@ -168,6 +171,7 @@ function goBack() {
     height: 44px;
     flex: 0 0 auto;
 }
+
 .app-error__orb {
     position: absolute;
     border-radius: 999px;
@@ -179,12 +183,14 @@ function goBack() {
         radial-gradient(circle at 50% 50%, rgba($primary-200, 0.60), rgba($primary-200, 0.0) 62%);
     box-shadow: 0 18px 46px rgba($primary-700, 0.24);
 }
+
 .app-error__orb--a {
     width: 34px;
     height: 34px;
     right: 18px;
     top: 0px;
 }
+
 .app-error__orb--b {
     width: 22px;
     height: 22px;
@@ -192,6 +198,7 @@ function goBack() {
     top: 18px;
     opacity: 0.8;
 }
+
 .app-error__orb--c {
     width: 16px;
     height: 16px;
@@ -205,27 +212,32 @@ function goBack() {
     @include font(t4, sb);
     line-height: 1.2;
 }
+
 .app-error__message {
     margin: 0 0 18px;
     @include font(b3, rg);
     color: rgba($gray-900, 0.68);
     line-height: 1.55;
 }
+
 .app-error__actions {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
 }
+
 .app-error__debug {
     margin-top: 18px;
     border-top: 1px dashed rgba($gray-900, 0.14);
     padding-top: 14px;
 }
+
 .app-error__debug summary {
     cursor: pointer;
     color: rgba($gray-900, 0.78);
     @include font(btn3, sb);
 }
+
 .app-error__debug pre {
     white-space: pre-wrap;
     word-break: break-word;
@@ -236,6 +248,4 @@ function goBack() {
     border-radius: 14px;
     margin: 10px 0 0;
 }
-
 </style>
-

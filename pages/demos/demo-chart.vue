@@ -3,14 +3,9 @@
         <div class="page-demo-layout">
             <main class="page-demo-main">
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">
-                        AppChart
-                    </h1>
+                    <h1 class="page-demo__title">{{ title }}</h1>
 
-                    <p class="page-demo__desc">
-                        Chart.js 기반 차트 컴포넌트입니다.
-                        line / bar / doughnut / semi-doughnut / pie 타입을 지원합니다.
-                    </p>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- LINE -->
@@ -90,6 +85,8 @@
 
 <script setup lang="ts">
 import type { ChartData } from 'chart.js'
+
+const { title, description } = useDemoI18n('chart')
 
 const lineLabels = ['1월', '2월', '3월', '4월', '5월', '6월']
 const pieLabels = ['A', 'B', 'C', 'D']

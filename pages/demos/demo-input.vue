@@ -4,9 +4,8 @@
             <main class="page-demo-main">
                 <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">AppInput</h1>
-                    <p class="page-demo__desc">Text 입력을 위한 기본 Input 컴포넌트입니다.size / shape / icon / state / disabled /
-                        readonly 상태를 지원합니다.</p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- BASIC -->
@@ -115,6 +114,7 @@
 
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('input')
 
 const basic = ref('')
 const email = ref('')

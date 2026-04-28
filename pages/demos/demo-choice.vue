@@ -5,14 +5,9 @@
 
                 <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">
-                        AppChoice
-                    </h1>
+                    <h1 class="page-demo__title">{{ title }}</h1>
 
-                    <p class="page-demo__desc">
-                        checkbox / radio / chip 계열 선택 컴포넌트입니다.
-                        실제 화면에서 자주 쓰는 패턴 기준으로 구성하여, 어떤 상황에서 어떤 조합으로 써야 하는지 바로 확인할 수 있습니다.
-                    </p>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- CHECKBOX -->
@@ -298,6 +293,8 @@
 </template>
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('choice')
+
 type ChoiceValue = string | number | null
 
 const checkbox = reactive({

@@ -3,9 +3,8 @@
         <div class="page-demo-layout">
             <main class="page-demo-main"> <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title"> AppSelect </h1>
-                    <p class="page-demo__desc"> 옵션 선택을 위한 기본 Select 컴포넌트입니다. size / shape / state / disabled 상태를 지원합니다.
-                    </p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header> <!-- BASIC -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title"> Basic </h2>
@@ -82,6 +81,8 @@
 </template>
 <script setup lang="ts">
 import type { AppSelectOption } from '~/components/AppSelect.vue'
+
+const { title, description } = useDemoI18n('select')
 
 const departmentOptions: AppSelectOption[] = [
     { value: 'dev', label: '개발' },

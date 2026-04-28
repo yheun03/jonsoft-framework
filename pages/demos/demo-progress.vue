@@ -5,14 +5,9 @@
 
                 <!-- HEADER -->
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">
-                        AppProgress
-                    </h1>
+                    <h1 class="page-demo__title">{{ title }}</h1>
 
-                    <p class="page-demo__desc">
-                        Linear Progress와 Gauge Progress 컴포넌트입니다.
-                        display / drag control 형태를 지원합니다.
-                    </p>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- LINEAR DISPLAY -->
@@ -132,6 +127,8 @@
 </template>
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('progress')
+
 const linearDisplayValue = 35
 
 const linearRangeDisplay = reactive({

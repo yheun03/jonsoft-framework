@@ -1,34 +1,34 @@
-import type { NavigationMenu } from '~/core/types/navigation'
+import type { NavigationMenu } from '~/core/types/navigation';
 
 type MutableNavigationMenu = Omit<NavigationMenu, 'children'> & {
-    children?: MutableNavigationMenu[]
-}
+    children?: MutableNavigationMenu[];
+};
 
 export function buildNavigationTree(items: readonly NavigationMenu[]): NavigationMenu[] {
-    const root: MutableNavigationMenu[] = []
-    const stack: MutableNavigationMenu[] = []
+    const root: MutableNavigationMenu[] = [];
+    const stack: MutableNavigationMenu[] = [];
 
     for (const item of items) {
         const node: MutableNavigationMenu = {
             ...item,
             children: item.children ? buildNavigationTree(item.children) : undefined,
-        }
+        };
 
         while (stack.length && stack[stack.length - 1].depth >= node.depth) {
-            stack.pop()
+            stack.pop();
         }
 
-        const parent = stack[stack.length - 1]
+        const parent = stack[stack.length - 1];
         if (parent) {
-            ;(parent.children ||= []).push(node)
+            (parent.children ||= []).push(node);
         } else {
-            root.push(node)
+            root.push(node);
         }
 
-        stack.push(node)
+        stack.push(node);
     }
 
-    return sortNavigationTree(root)
+    return sortNavigationTree(root);
 }
 
 function sortNavigationTree(nodes: MutableNavigationMenu[]): NavigationMenu[] {
@@ -37,5 +37,5 @@ function sortNavigationTree(nodes: MutableNavigationMenu[]): NavigationMenu[] {
         .map((node) => ({
             ...node,
             children: node.children ? sortNavigationTree(node.children) : undefined,
-        }))
+        }));
 }

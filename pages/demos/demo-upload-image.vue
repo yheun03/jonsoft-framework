@@ -3,23 +3,16 @@
         <div class="page-demo-layout">
             <main class="page-demo-main">
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">Image Field Demo</h1>
-                    <p class="page-demo__desc">이미지 업로드/미리보기/제거 및 change 이벤트를 확인합니다.</p>
+                    <h1 class="page-demo__title">{{ title }}</h1>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">기본</h2>
 
                     <div class="page-demo-row">
-                        <AppImageField
-                            v-model="imageUrl"
-                            :preview-size="48"
-                            empty-text="No Image"
-                            :max-size-bytes="maxSizeBytes"
-                            @change="onChange"
-                            @error="onError"
-                            @remove="onRemove"
-                        />
+                        <AppImageField v-model="imageUrl" :preview-size="48" empty-text="No Image"
+                            :max-size-bytes="maxSizeBytes" @change="onChange" @error="onError" @remove="onRemove" />
 
                         <div class="page-demo-stack">
                             <div class="page-demo-hint">현재 값 / 옵션</div>
@@ -41,23 +34,15 @@
 
                     <div class="page-demo-stack">
                         <div class="page-demo-row">
-                            <AppImageField
-                                v-model="imageUrl2"
-                                :preview-size="64"
-                                :disabled="disabled"
-                                read-mode="objectUrl"
-                                :allow-drop="true"
-                                empty-text="Drop here"
-                                @change="onChange2"
-                                @error="onError"
-                            />
+                            <AppImageField v-model="imageUrl2" :preview-size="64" :disabled="disabled"
+                                read-mode="objectUrl" :allow-drop="true" empty-text="Drop here" @change="onChange2"
+                                @error="onError" />
                             <div class="page-demo-hint">
                                 이 섹션은 `readMode="objectUrl"`이라 메모리/성능상 유리할 수 있어요. (컴포넌트가 자동 revoke 처리)
                             </div>
                         </div>
 
-                        <div
-                            style="
+                        <div style="
                                 width: 240px;
                                 height: 240px;
                                 border: 1px solid #eee;
@@ -66,9 +51,9 @@
                                 justify-content: center;
                                 overflow: hidden;
                                 background: #fafafa;
-                            "
-                        >
-                            <img v-if="imageUrl2" :src="imageUrl2" alt="" style="width: 100%; height: 100%; object-fit: cover;" />
+                            ">
+                            <img v-if="imageUrl2" :src="imageUrl2" alt=""
+                                style="width: 100%; height: 100%; object-fit: cover;" />
                             <div v-else style="font-size: 12px; color: #999;">No Image</div>
                         </div>
                     </div>
@@ -96,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('uploadImage')
+
 type FileMeta = {
     name: string
     type: string

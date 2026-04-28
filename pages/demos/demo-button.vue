@@ -5,13 +5,9 @@
             <main class="page-demo-main">
 
                 <header class="page-demo__header">
-                    <h1 class="page-demo__title">AppButton Demo</h1>
+                    <h1 class="page-demo__title">{{ title }}</h1>
 
-                    <p class="page-demo__desc">
-                        AppButton 컴포넌트의 모든 속성을 한 화면에서 확인합니다.
-                        <br />
-                        variant / tone / size / shape / icon / link / state 지원
-                    </p>
+                    <p class="page-demo__desc">{{ description }}</p>
                 </header>
 
                 <!-- -------------------------------------------------- -->
@@ -297,6 +293,7 @@
 </template>
 
 <script setup lang="ts">
+const { title, description } = useDemoI18n('button')
 
 type LogItem = { t: number; message: string }
 const logs = ref<LogItem[]>([])

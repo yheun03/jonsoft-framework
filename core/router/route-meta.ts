@@ -7,6 +7,7 @@ export type AppRoute = {
 export const ROUTE_LABEL_MAP: Record<string, string> = {
     '/': '메인',
     '/workspace': '워크스페이스',
+    '/settings': '설정',
     '/demos/demo-button': '버튼 데모',
     '/demos/demo-input': '인풋 데모',
     '/demos/demo-grid': 'AG Grid 데모',
@@ -39,5 +40,5 @@ export function isVisibleRoute(path: string): boolean {
     if (path.includes(':')) return false;
     if (ROUTE_HIDDEN_PATHS.includes(path as (typeof ROUTE_HIDDEN_PATHS)[number])) return false;
 
-    return path === '/' || path === '/workspace' || path.startsWith('/demos/');
+    return path === '/' || path === '/workspace' || path === '/settings' || path.startsWith('/demos/');
 }
