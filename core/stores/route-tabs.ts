@@ -5,6 +5,7 @@ export type RouteTab = {
     key: string;
     path: string;
     title: string;
+    labelKey?: string;
 };
 
 export const useRouteTabsStore = defineStore('route-tabs', () => {
@@ -13,11 +14,12 @@ export const useRouteTabsStore = defineStore('route-tabs', () => {
 
     const activeTab = computed(() => (activeKey.value ? tabs.value.find((t) => t.key === activeKey.value) : null) ?? null);
 
-    function visit(tab: { key: string; path: string; title: string }, opts?: { activate?: boolean }) {
+    function visit(tab: { key: string; path: string; title: string; labelKey?: string }, opts?: { activate?: boolean }) {
         const existing = tabs.value.find((t) => t.key === tab.key);
         if (existing) {
             existing.path = tab.path;
             existing.title = tab.title;
+            existing.labelKey = tab.labelKey;
         } else {
             tabs.value.push({ ...tab });
         }

@@ -1,16 +1,19 @@
 import { useRouteTabsStore } from '~/core/stores/route-tabs';
+import { useNavigationStore } from '~/core/stores/navigation';
 import { getRouteTitle, isVisibleRoute } from '~/core/app/router/route-meta';
 import type { RouteLocationNormalized } from 'vue-router';
 
 export default defineNuxtPlugin(() => {
     const router = useRouter();
     const store = useRouteTabsStore();
+    const navigationStore = useNavigationStore();
 
     const track = (to: RouteLocationNormalized) => {
         if (!to.path) return;
         if (!isVisibleRoute(to.path)) return;
 
-        const title = getRouteTitle({
+        const menu = navigationStore.menus.find((item) => item.to === to.path);
+        const title = menu?.label ?? getRouteTitle({
             path: to.path,
             name: to.name,
             meta: to.meta as Record<string, unknown>,
@@ -20,6 +23,7 @@ export default defineNuxtPlugin(() => {
             key: to.fullPath,
             path: to.fullPath,
             title,
+            labelKey: menu?.labelKey,
         });
     };
 
