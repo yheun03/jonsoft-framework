@@ -18,28 +18,18 @@
 
 <script setup lang="ts">
 import AppModalBase from './AppModalBase.vue'
+import type { ModalBaseProps, ModalCloseEvent, ModalViewCloseReason } from '~/core/types/modal'
 
-const props = defineProps<{
-    id: number
-    title?: string
+const props = defineProps<ModalBaseProps & {
     message?: string
     confirmText?: string
-    width?: string
-    height?: string
-    zIndex?: number
-    overlay?: boolean
-    closable?: boolean
-    closeOnDim?: boolean
-    closeOnEsc?: boolean
-    isTop?: boolean
 }>()
 
-const emit = defineEmits<{
-    (e: 'modal-close', id: number, reason?: 'esc' | 'backdrop' | 'close'): void
+const emit = defineEmits<ModalCloseEvent & {
     (e: 'modal-confirm', id: number): void
 }>()
 
-function onClose(id: number, reason: 'esc' | 'backdrop' | 'close') {
+function onClose(id: number, reason: ModalViewCloseReason) {
     emit('modal-close', id, reason)
 }
 

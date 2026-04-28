@@ -33,6 +33,12 @@ const MODAL_DEFAULTS = {
     },
 } as const;
 
+const MODAL_TYPE_DEFAULTS = {
+    alert: MODAL_DEFAULTS.alert,
+    confirm: MODAL_DEFAULTS.confirm,
+    custom: MODAL_DEFAULTS.custom,
+} as const;
+
 export const useModalStore = defineStore('modal', () => {
     const modals = ref<ModalItem[]>([]);
     const sequence = ref(0);
@@ -47,34 +53,35 @@ export const useModalStore = defineStore('modal', () => {
     }
 
     function normalizePayload(payload: ModalOpenPayload): ModalItem {
-        const common = MODAL_DEFAULTS.common;
+        const base = {
+            id: createId(),
+            ...MODAL_DEFAULTS.common,
+            ...MODAL_TYPE_DEFAULTS[payload.type],
+            ...payload,
+        };
 
-        switch (payload.type) {
-            case 'alert':
-                return {
-                    id: createId(),
-                    ...common,
-                    ...MODAL_DEFAULTS.alert,
-                    ...payload,
-                } as AlertModalItem;
-
-            case 'confirm':
-                return {
-                    id: createId(),
-                    ...common,
-                    ...MODAL_DEFAULTS.confirm,
-                    ...payload,
-                } as ConfirmModalItem;
-
-            case 'custom':
-                return {
-                    id: createId(),
-                    ...common,
-                    ...MODAL_DEFAULTS.custom,
-                    ...payload,
-                    componentProps: payload.componentProps ?? {},
-                } as CustomModalItem;
+        if (payload.type === 'alert') {
+            return base as AlertModalItem;
         }
+
+        if (payload.type === 'confirm') {
+            return base as ConfirmModalItem;
+        }
+
+        return {
+            ...base,
+            componentProps: payload.componentProps ?? {},
+        } as CustomModalItem;
+    }
+
+    function findModal(id: number) {
+        return modals.value.find((modal) => modal.id === id);
+    }
+
+    function removeModal(id: number) {
+        const index = modals.value.findIndex((modal) => modal.id === id);
+        if (index < 0) return null;
+        return modals.value.splice(index, 1)[0] ?? null;
     }
 
     function modalOpen(payload: ModalOpenPayload) {
@@ -84,45 +91,26 @@ export const useModalStore = defineStore('modal', () => {
     }
 
     function modalClose(id: number, reason: ModalCloseReason = 'close') {
-        const index = modals.value.findIndex((modal) => modal.id === id);
-        if (index < 0) return;
-
-        const [target] = modals.value.splice(index, 1);
+        const target = removeModal(id);
         target?.onClose?.(reason);
     }
 
     function modalConfirm(id: number) {
-        const modal = modals.value.find((item) => item.id === id);
-        if (!modal) return;
-
+        const modal = findModal(id);
+        if (!modal || modal.type === 'custom') return;
         const shouldKeep = modal.keepOnConfirm === true;
 
-        if (modal.type === 'alert') {
-            if (!shouldKeep) {
-                modalClose(id, 'confirm');
-            }
-
-            modal.onConfirm?.();
-            return;
+        if (!shouldKeep) {
+            modalClose(id, 'confirm');
         }
 
-        if (modal.type === 'confirm') {
-            if (!shouldKeep) {
-                modalClose(id, 'confirm');
-            }
-
-            modal.onConfirm?.();
-        }
+        modal.onConfirm?.();
     }
 
     function modalCancel(id: number) {
-        const modal = modals.value.find((item) => item.id === id);
-        if (!modal) return;
-
-        if (modal.type === 'confirm') {
-            modal.onCancel?.();
-        }
-
+        const modal = findModal(id);
+        if (!modal || modal.type !== 'confirm') return;
+        modal.onCancel?.();
         modalClose(id, 'cancel');
     }
 

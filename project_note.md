@@ -101,3 +101,6 @@ const data = await api.get<MyType>('/api/menus');
 ---
 
 필요 시 이 문서에 “어디에 무엇을 추가했고 왜 그렇게 했는지”만 1~2줄로 누적 기록합니다.
+
+- 2026-04-28: `core/types/modal.ts`에 모달 공통 props/event reason 타입을 모아 모달 컴포넌트들의 중복 선언을 줄였습니다.
+- 2026-04-28: `core/stores/modal.ts`와 `components/modals/AppModalHost.vue`를 공통 경로로 정리해 분기 수를 줄이면서 기존 Alert/Confirm/Custom 동작은 유지했습니다.
