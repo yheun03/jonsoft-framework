@@ -41,7 +41,7 @@
                     {{ placeholder }}
                 </li>
 
-                <li v-for="opt in options" :key="opt.value" class="app-select__option" :class="{
+                <li v-for="opt in options" :key="getOptionKey(opt)" class="app-select__option" :class="{
                     'is-selected': modelValue === opt.value,
                     'is-disabled': !!opt.disabled
                 }" role="option" :aria-selected="modelValue === opt.value" @click="selectValue(opt)">
@@ -109,6 +109,10 @@ const selectId = computed(() => props.id ?? `app-select-${fallbackId}`)
 const hintId = computed(() => `hint-${selectId.value}`)
 const describedBy = computed(() => props.hint ? hintId.value : undefined)
 const selectedOption = computed(() => props.options.find((opt) => opt.value === props.modelValue) ?? null)
+
+function getOptionKey(option: AppSelectOption) {
+    return `option-${String(option.value)}`
+}
 
 function toggle() {
     if (props.disabled || props.readonly) return
