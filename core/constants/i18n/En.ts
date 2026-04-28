@@ -25,6 +25,7 @@ const En = {
     'nav.demo.select': 'Select Demo',
     'nav.demo.choice': 'Choice Components Demo',
     'nav.demo.uploadImage': 'Image Upload Demo',
+    'nav.demo.uploadFile': 'File Upload Demo',
     'nav.demo.modal': 'Modal Demo',
 
     'demo.button.title': 'AppButton Demo',
@@ -45,6 +46,8 @@ const En = {
     'demo.choice.desc': 'Selection components for checkbox, radio, and chip patterns used in real screens.',
     'demo.uploadImage.title': 'Image Field Demo',
     'demo.uploadImage.desc': 'Test image upload, preview, remove, and change events.',
+    'demo.uploadFile.title': 'File Upload Demo',
+    'demo.uploadFile.desc': 'Test general file upload, remove, multiple selection, and change events.',
     'demo.modal.title': 'Modal Demo',
     'demo.modal.desc': 'Verify Alert/Confirm modals and stack behavior (ESC/backdrop/close button).',
 };

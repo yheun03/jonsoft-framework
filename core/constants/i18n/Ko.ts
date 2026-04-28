@@ -25,6 +25,7 @@ const Ko = {
     'nav.demo.select': '셀렉트 데모',
     'nav.demo.choice': '선택 컴포넌트 데모',
     'nav.demo.uploadImage': '이미지 업로드 데모',
+    'nav.demo.uploadFile': '파일 업로드 데모',
     'nav.demo.modal': '모달 데모',
 
     'demo.button.title': 'AppButton Demo',
@@ -45,6 +46,8 @@ const Ko = {
     'demo.choice.desc': 'checkbox / radio / chip 계열 선택 컴포넌트입니다. 자주 쓰는 패턴 기준 조합을 확인할 수 있습니다.',
     'demo.uploadImage.title': 'Image Field Demo',
     'demo.uploadImage.desc': '이미지 업로드/미리보기/제거 및 change 이벤트를 확인합니다.',
+    'demo.uploadFile.title': 'File Upload Demo',
+    'demo.uploadFile.desc': '일반 파일 업로드/삭제/다중 선택 및 change 이벤트를 확인합니다.',
     'demo.modal.title': 'Modal Demo',
     'demo.modal.desc': 'Alert / Confirm 모달과 스택(ESC/배경/X) 동작을 확인합니다.',
 };

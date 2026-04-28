@@ -75,6 +75,7 @@ import AppGridCellSelect from '~/components/AppGrid/Cell/Select.vue'
 import AppGridCellInput from '~/components/AppGrid/Cell/Input.vue'
 import AppGridCellChoice from '~/components/AppGrid/Cell/Choice.vue'
 import AppGridCellImage from '~/components/AppGrid/Cell/Image.vue'
+import AppGridCellFile from '~/components/AppGrid/Cell/File.vue'
 
 const { title, description } = useDemoI18n('grid')
 
@@ -82,6 +83,13 @@ const { title, description } = useDemoI18n('grid')
 /* 행 높이 동적 처리 */
 
 const getRowHeight = (params: any) => {
+    if (Array.isArray(params.data?.attachments) && params.data.attachments.length) {
+        return 260
+    }
+
+    if (params.data?.manualFile) {
+        return 140
+    }
 
     if (Array.isArray(params.data?.productGallery) && params.data.productGallery.length) {
         return 240
@@ -231,6 +239,33 @@ const columns3: ColDef[] = [
     },
 
     {
+        field: 'manualFile',
+        headerName: '매뉴얼',
+        width: 240,
+        cellRenderer: AppGridCellFile,
+        cellRendererParams: {
+            triggerText: '매뉴얼 업로드',
+            hint: '단일 파일',
+            accept: '.pdf,.doc,.docx',
+            multiple: false,
+        }
+    },
+
+    {
+        field: 'attachments',
+        headerName: '첨부파일',
+        width: 260,
+        cellRenderer: AppGridCellFile,
+        cellRendererParams: {
+            triggerText: '첨부파일 업로드',
+            hint: '최대 3개',
+            accept: '.pdf,.xlsx,.zip',
+            multiple: true,
+            maxCount: 3,
+        }
+    },
+
+    {
         field: 'product',
         headerName: '상품명'
     },
@@ -319,6 +354,11 @@ const rows3 = [
             'https://picsum.photos/80?random=111',
             'https://picsum.photos/80?random=112'
         ],
+        manualFile: '/samples/notebook-manual.pdf',
+        attachments: [
+            '/samples/notebook-spec.pdf',
+            '/samples/notebook-warranty.pdf'
+        ],
         product: '노트북',
         category: '전자기기',
         price: 1200000,
@@ -334,6 +374,11 @@ const rows3 = [
             'https://picsum.photos/80?random=122',
             'https://picsum.photos/80?random=123'
         ],
+        manualFile: '/samples/keyboard-manual.docx',
+        attachments: [
+            '/samples/keyboard-layout.pdf',
+            '/samples/keyboard-price.xlsx'
+        ],
         product: '키보드',
         category: '주변기기',
         price: 120000,
@@ -346,6 +391,10 @@ const rows3 = [
         productImage: 'https://picsum.photos/80?random=103',
         productGallery: [
             'https://picsum.photos/80?random=131'
+        ],
+        manualFile: '/samples/mouse-manual.pdf',
+        attachments: [
+            '/samples/mouse-guide.pdf'
         ],
         product: '마우스',
         category: '주변기기',
@@ -363,6 +412,12 @@ const rows3 = [
             'https://picsum.photos/80?random=143',
             'https://picsum.photos/80?random=144'
         ],
+        manualFile: '/samples/monitor-manual.pdf',
+        attachments: [
+            '/samples/monitor-install.pdf',
+            '/samples/monitor-driver.zip',
+            '/samples/monitor-checklist.xlsx'
+        ],
         product: '모니터',
         category: '전자기기',
         price: 420000,
@@ -374,6 +429,8 @@ const rows3 = [
         productId: 'P-005',
         productImage: 'https://picsum.photos/80?random=105',
         productGallery: [],
+        manualFile: '/samples/tablet-manual.pdf',
+        attachments: [],
         product: '태블릿',
         category: '전자기기',
         price: 780000,
