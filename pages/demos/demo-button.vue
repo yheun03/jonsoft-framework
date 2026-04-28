@@ -208,7 +208,7 @@
 
                     <div class="page-demo-row">
 
-                        <AppButton variant="text" to="/demos/input-demo">
+                        <AppButton variant="text" to="/demos/demo-input">
                             내부 라우팅
                         </AppButton>
 

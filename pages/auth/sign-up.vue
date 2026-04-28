@@ -40,7 +40,7 @@
 
                     <div class="login__helper">
                         <span class="login__helper-text">이미 계정이 있으신가요?</span>
-                        <NuxtLink class="login__link" to="/login">로그인</NuxtLink>
+                        <NuxtLink class="login__link" to="/auth/sign-in">로그인</NuxtLink>
                     </div>
                 </form>
             </div>
@@ -72,6 +72,6 @@ const canSubmit = computed(() => {
 
 function onSubmit() {
     // 데모: 실제 가입 연동 전까지는 로그인으로 이동
-    navigateTo('/login')
+    navigateTo('/auth/sign-in')
 }
 </script>

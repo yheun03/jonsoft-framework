@@ -30,9 +30,9 @@
                     </AppButton>
 
                     <div class="login__helper">
-                        <NuxtLink class="login__link" to="/login">로그인으로 돌아가기</NuxtLink>
+                        <NuxtLink class="login__link" to="/auth/sign-in">로그인으로 돌아가기</NuxtLink>
                         <span class="login__helper-sep" aria-hidden="true">·</span>
-                        <NuxtLink class="login__link" to="/signup">가입하기</NuxtLink>
+                        <NuxtLink class="login__link" to="/auth/sign-up">가입하기</NuxtLink>
                     </div>
                 </form>
             </div>
@@ -52,6 +52,6 @@ const canSubmit = computed(() => email.value.trim().length > 0)
 
 function onSubmit() {
     // 데모: 실제 메일 발송 연동 전까지는 안내 화면 대신 로그인으로 이동
-    navigateTo('/login')
+    navigateTo('/auth/sign-in')
 }
 </script>

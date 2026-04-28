@@ -19,7 +19,7 @@
                 </p>
                 <div class="home__hero-actions">
                     <AppButton as="a" href="/workspace" size="lg" variant="fill">워크스페이스 시작</AppButton>
-                    <AppButton as="a" href="/demos" size="lg" variant="outline">UI 데모 보기</AppButton>
+                    <AppButton as="a" href="/demos/demo-button" size="lg" variant="outline">UI 데모 보기</AppButton>
                 </div>
             </div>
         </header>
@@ -34,7 +34,7 @@
                     <p class="home__card-desc">프로젝트 탭, 작업 흐름, 생산성 도구를 한 화면에서 관리합니다.</p>
                 </NuxtLink>
 
-                <NuxtLink class="home__card" to="/demos">
+                <NuxtLink class="home__card" to="/demos/demo-button">
                     <span class="home__card-icon" aria-hidden="true">
                         <Icon icon="mdi:widgets-outline" />
                     </span>

@@ -28,7 +28,7 @@
 
                     <div class="login__row">
                         <AppChoice v-model="rememberMe" type="checkbox" label="로그인 상태 유지" />
-                        <NuxtLink class="login__link" to="/forgot-password">비밀번호를 잊으셨나요?</NuxtLink>
+                        <NuxtLink class="login__link" to="/auth/find-pw">비밀번호를 잊으셨나요?</NuxtLink>
                     </div>
 
                     <AppButton class="login__submit" type="submit" variant="fill" size="lg" :disabled="!canSubmit">
@@ -37,7 +37,7 @@
 
                     <div class="login__footer">
                         <span class="login__footer-text">계정이 없으신가요?</span>
-                        <NuxtLink class="login__link" to="/signup">가입하기</NuxtLink>
+                        <NuxtLink class="login__link" to="/auth/sign-up">가입하기</NuxtLink>
                     </div>
                 </form>
             </div>
