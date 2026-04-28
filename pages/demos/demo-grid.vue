@@ -1,108 +1,68 @@
 <template>
-
     <div class="page-demo">
         <div class="page-demo-layout">
-
             <main class="page-demo-main">
-
                 <header class="page-demo__header">
                     <h1 class="page-demo__title">{{ title }}</h1>
                     <p class="page-demo__desc">{{ description }}</p>
-                </header>
-
-                <!-- GRID 1 -->
+                </header> <!-- GRID 1 -->
                 <section class="page-demo-card">
-
                     <h2 class="page-demo-card__title">사용자 목록</h2>
-
                     <AppGridToolbar target="grid1">
-
                         <AppGridSearch>
-
                             <AppInput v-model="search1.name" name="name" placeholder="이름 검색" />
                             <AppInput v-model="search1.department" name="department" placeholder="부서 검색" />
-
                         </AppGridSearch>
-
                         <AppGridDownload />
-
                     </AppGridToolbar>
-
                     <ClientOnly>
-
                         <AppGrid grid-id="grid1" class="page-demo-grid" :row-data="rows1" :column-defs="columns1"
                             :default-col-def="defaultColDef" :get-row-height="getRowHeight" row-selection="multiple"
                             animate-rows :style="{ height: '320px', width: '100%' }" />
-
                     </ClientOnly>
-
-                </section>
-
-
-
-                <!-- GRID 2 -->
+                </section> <!-- GRID 2 -->
                 <section class="page-demo-card">
-
                     <h2 class="page-demo-card__title">주문 목록</h2>
-
                     <AppGridToolbar target="grid2">
-
                         <AppGridSearch>
-
                             <AppInput v-model="search2.product" name="product" placeholder="상품 검색" />
-
                             <AppChoice v-model="search2.status" type="radio" name="status" value="READY"
                                 label="READY" />
                             <AppChoice v-model="search2.status" type="radio" name="status" value="DELIVERY"
                                 label="DELIVERY" />
                             <AppChoice v-model="search2.status" type="radio" name="status" value="DONE" label="DONE" />
-
                         </AppGridSearch>
-
                         <AppGridDownload />
-
                     </AppGridToolbar>
-
                     <ClientOnly>
-
                         <AppGrid grid-id="grid2" class="page-demo-grid" :row-data="rows2" :column-defs="columns2"
                             :default-col-def="defaultColDef" :get-row-height="getRowHeight" row-selection="multiple"
                             animate-rows :style="{ height: '320px', width: '100%' }" />
-
                     </ClientOnly>
-
-                </section>
-
-
-
-                <!-- GRID 3 -->
+                </section> <!-- GRID 3 -->
                 <section class="page-demo-card">
-
                     <h2 class="page-demo-card__title">상품 조회 (단순 그리드)</h2>
-
                     <AppGridToolbar target="grid3">
-
                         <AppGridSearch>
                             <AppInput v-model="search3.product" name="product" placeholder="상품 검색" />
                         </AppGridSearch>
-
                         <AppGridDownload />
-
                     </AppGridToolbar>
-
                     <ClientOnly>
-
                         <AppGrid grid-id="grid3" class="page-demo-grid" :row-data="rows3" :column-defs="columns3"
                             :default-col-def="defaultColDef" :get-row-height="getRowHeight" animate-rows
                             :style="{ height: '320px', width: '100%' }" />
-
                     </ClientOnly>
-
                 </section>
-
             </main>
         </div>
     </div>
+
+    <LayoutBottomFixed>
+        <template #right>
+            <AppButton>test</AppButton>
+        </template>
+    </LayoutBottomFixed>
 
 </template>
 
