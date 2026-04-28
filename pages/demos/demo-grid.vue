@@ -83,6 +83,10 @@ const { title, description } = useDemoI18n('grid')
 
 const getRowHeight = (params: any) => {
 
+    if (Array.isArray(params.data?.productGallery) && params.data.productGallery.length) {
+        return 240
+    }
+
     if (params.data?.productImage) {
         return 100
     }
@@ -203,9 +207,27 @@ const columns3: ColDef[] = [
 
     {
         field: 'productImage',
-        headerName: '상품이미지',
-        width: 110,
-        cellRenderer: AppGridCellImage
+        headerName: '대표이미지',
+        width: 220,
+        cellRenderer: AppGridCellImage,
+        cellRendererParams: {
+            triggerText: '대표 이미지 업로드',
+            hint: '단일 이미지',
+            multiple: false
+        }
+    },
+
+    {
+        field: 'productGallery',
+        headerName: '상세이미지',
+        width: 260,
+        cellRenderer: AppGridCellImage,
+        cellRendererParams: {
+            triggerText: '상세 이미지 업로드',
+            hint: '최대 4개',
+            multiple: true,
+            maxCount: 4
+        }
     },
 
     {
@@ -292,7 +314,11 @@ const rows3 = [
 
     {
         productId: 'P-001',
-        productImage: 'https://picsum.photos/80',
+        productImage: 'https://picsum.photos/80?random=101',
+        productGallery: [
+            'https://picsum.photos/80?random=111',
+            'https://picsum.photos/80?random=112'
+        ],
         product: '노트북',
         category: '전자기기',
         price: 1200000,
@@ -302,7 +328,12 @@ const rows3 = [
 
     {
         productId: 'P-002',
-        productImage: 'https://picsum.photos/80',
+        productImage: 'https://picsum.photos/80?random=102',
+        productGallery: [
+            'https://picsum.photos/80?random=121',
+            'https://picsum.photos/80?random=122',
+            'https://picsum.photos/80?random=123'
+        ],
         product: '키보드',
         category: '주변기기',
         price: 120000,
@@ -312,7 +343,10 @@ const rows3 = [
 
     {
         productId: 'P-003',
-        productImage: 'https://picsum.photos/80',
+        productImage: 'https://picsum.photos/80?random=103',
+        productGallery: [
+            'https://picsum.photos/80?random=131'
+        ],
         product: '마우스',
         category: '주변기기',
         price: 35000,
@@ -322,7 +356,13 @@ const rows3 = [
 
     {
         productId: 'P-004',
-        productImage: 'https://picsum.photos/80',
+        productImage: 'https://picsum.photos/80?random=104',
+        productGallery: [
+            'https://picsum.photos/80?random=141',
+            'https://picsum.photos/80?random=142',
+            'https://picsum.photos/80?random=143',
+            'https://picsum.photos/80?random=144'
+        ],
         product: '모니터',
         category: '전자기기',
         price: 420000,
@@ -332,7 +372,8 @@ const rows3 = [
 
     {
         productId: 'P-005',
-        productImage: 'https://picsum.photos/80',
+        productImage: 'https://picsum.photos/80?random=105',
+        productGallery: [],
         product: '태블릿',
         category: '전자기기',
         price: 780000,
