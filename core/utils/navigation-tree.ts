@@ -5,30 +5,39 @@ type MutableNavigationMenu = Omit<NavigationMenu, 'children'> & {
 };
 
 export function buildNavigationTree(items: readonly NavigationMenu[]): NavigationMenu[] {
-    const root: MutableNavigationMenu[] = [];
-    const stack: MutableNavigationMenu[] = [];
+    const nodeMap = new Map<string, MutableNavigationMenu>();
+    const roots: MutableNavigationMenu[] = [];
 
+    // 1) 노드 생성: API 원본 순서와 관계없이 먼저 전체 노드를 준비
     for (const item of items) {
-        const node: MutableNavigationMenu = {
+        nodeMap.set(item.id, {
             ...item,
-            children: item.children ? buildNavigationTree(item.children) : undefined,
-        };
-
-        while (stack.length && stack[stack.length - 1].depth >= node.depth) {
-            stack.pop();
-        }
-
-        const parent = stack[stack.length - 1];
-        if (parent) {
-            (parent.children ||= []).push(node);
-        } else {
-            root.push(node);
-        }
-
-        stack.push(node);
+            children: undefined,
+        });
     }
 
-    return sortNavigationTree(root);
+    // 2) parentId 기준으로 트리 연결
+    for (const item of items) {
+        const node = nodeMap.get(item.id);
+        if (!node) continue;
+
+        const parentId = item.parentId ?? null;
+        if (!parentId) {
+            roots.push(node);
+            continue;
+        }
+
+        const parent = nodeMap.get(parentId);
+        if (!parent) {
+            // 부모 누락 데이터는 루트로 강등해 화면 유실을 방지
+            roots.push(node);
+            continue;
+        }
+
+        (parent.children ||= []).push(node);
+    }
+
+    return sortNavigationTree(roots);
 }
 
 function sortNavigationTree(nodes: MutableNavigationMenu[]): NavigationMenu[] {

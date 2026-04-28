@@ -41,6 +41,7 @@ const NuxtLinkComp = resolveComponent('NuxtLink')
 const hasChildren = computed(() => Boolean(props.item.children?.length))
 const hasLink = computed(() => Boolean(props.item.to?.trim()))
 const isExternalLink = computed(() => Boolean(props.item.newTab && hasLink.value))
+const isButtonRow = computed(() => !hasLink.value)
 
 const submenuId = computed(() => `submenu-${props.item.id}`)
 const iconSvg = computed(() => props.getIconSvg(props.item.icon))
@@ -57,7 +58,7 @@ const itemStyle = computed(() => ({
 }))
 
 const linkTag = computed(() => {
-    if (!hasLink.value && hasChildren.value) {
+    if (isButtonRow.value) {
         return 'button'
     }
 
@@ -69,7 +70,7 @@ const linkTag = computed(() => {
 })
 
 const linkAttrs = computed(() => {
-    if (!hasLink.value && hasChildren.value) {
+    if (isButtonRow.value) {
         return { type: 'button' }
     }
 
@@ -93,9 +94,9 @@ function toggleOpen() {
 }
 
 function onClickRow(event: MouseEvent) {
-    if (!hasLink.value && hasChildren.value) {
+    if (isButtonRow.value) {
         event.preventDefault()
-        toggleOpen()
+        if (hasChildren.value) toggleOpen()
     }
 }
 </script>

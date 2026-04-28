@@ -1,6 +1,7 @@
 // types/api/menu.ts
 export interface Menu {
     id: string;
+    parentId?: string | null;
     label: string;
     labelKey?: string;
     to: string;
