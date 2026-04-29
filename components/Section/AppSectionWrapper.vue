@@ -1,5 +1,5 @@
 <template>
-    <section class="app-section-wrapper" :class="wrapperClasses" :style="wrapperStyle">
+    <section class="app-section-wrapper" :class="wrapperClassName" :style="wrapperStyle">
         <header v-if="hasHeader" class="app-section-wrapper__header">
             <slot name="header">
                 <div class="app-section-wrapper__header-text">
@@ -27,6 +27,9 @@
 <script setup lang="ts">
 type SectionDirection = 'row' | 'column'
 type SectionRatio = number[] | string | null
+type SectionGap = number | string
+
+const slots = useSlots()
 
 const props = withDefaults(
     defineProps<{
@@ -59,17 +62,13 @@ function normalizeRatio(value: SectionRatio) {
     return value
 }
 
-const hasHeader = computed(() => {
-    return !!props.title || !!props.desc || !!useSlots().header
-})
+const hasHeader = computed(() => !!props.title || !!props.desc || !!slots.header)
 
-const wrapperClasses = computed(() => [
-    `app-section-wrapper--${props.direction}`,
-])
+const wrapperClassName = computed(() => `app-section-wrapper--${props.direction}`)
 
 const wrapperStyle = computed(() => {
     return {
-        '--app-section-wrapper-gap': normalizeGap(props.gap),
+        '--app-section-wrapper-gap': normalizeGap(props.gap as SectionGap),
         '--app-section-wrapper-template': normalizeRatio(props.ratio),
     }
 })

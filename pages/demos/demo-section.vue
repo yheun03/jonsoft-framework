@@ -8,101 +8,76 @@
                     </h1>
 
                     <p class="page-demo__desc">
-                        AppSection 컴포넌트군의 핵심 속성(direction, ratio, gap)을
-                        실시간으로 확인할 수 있는 데모입니다.
+                        AppSection / AppSectionWrapper의 기본 구조와 direction, ratio, gap
+                        속성을 정적으로 확인하는 데모입니다.
                     </p>
                 </header>
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Section Playground
+                        Basic Section
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        컨트롤 값을 변경하면 wrapper/section 레이아웃이 즉시 반영됩니다.
+                        AppSection의 기본 Header / Body / Footer 구성입니다.
                     </p>
 
-                    <div class="section-demo-controls">
-                        <label class="section-demo-control">
-                            <span>wrapper.direction</span>
-                            <select v-model="controls.wrapperDirection">
-                                <option value="column">column</option>
-                                <option value="row">row</option>
-                            </select>
-                        </label>
+                    <AppSection class="section-demo__section-demo" title="Account Summary" desc="기본 column, gap=12">
+                        <AppSectionHeader>
+                            <div class="section-demo-box section-demo-box--header">
+                                <strong>Header</strong>
+                                <span>사용자 요약 정보</span>
+                            </div>
+                        </AppSectionHeader>
 
-                        <label class="section-demo-control">
-                            <span>wrapper.gap</span>
-                            <input v-model.number="controls.wrapperGap" type="number" min="0" step="2">
-                        </label>
+                        <AppSectionBody>
+                            <div class="section-demo-box section-demo-box--body">
+                                <strong>Body</strong>
+                                <span>기본 콘텐츠 영역</span>
+                            </div>
+                        </AppSectionBody>
 
-                        <label class="section-demo-control">
-                            <span>wrapper.ratio</span>
-                            <input v-model="controls.wrapperRatioText" type="text" placeholder="2 1">
-                        </label>
+                        <AppSectionFooter>
+                            <div class="section-demo-box section-demo-box--footer">
+                                <strong>Footer</strong>
+                                <span>액션 버튼 / 안내 문구</span>
+                            </div>
+                        </AppSectionFooter>
+                    </AppSection>
+                </section>
 
-                        <label class="section-demo-control">
-                            <span>section.direction</span>
-                            <select v-model="controls.sectionDirection">
-                                <option value="column">column</option>
-                                <option value="row">row</option>
-                            </select>
-                        </label>
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Wrapper Column
+                    </h2>
 
-                        <label class="section-demo-control">
-                            <span>section.gap</span>
-                            <input v-model.number="controls.sectionGap" type="number" min="0" step="2">
-                        </label>
+                    <p class="page-demo-card__desc">
+                        AppSectionWrapper 세로 배치 예시입니다.
+                    </p>
 
-                        <label class="section-demo-control">
-                            <span>section.ratio</span>
-                            <input v-model="controls.sectionRatioText" type="text" placeholder="1 1">
-                        </label>
-                    </div>
-
-                    <AppSectionWrapper class="section-demo__wrapper-demo" title="Playground Wrapper"
-                        desc="header slot + dynamic props" :direction="controls.wrapperDirection"
-                        :ratio="wrapperRatio" :gap="controls.wrapperGap">
+                    <AppSectionWrapper class="section-demo__wrapper-demo" title="Project Status"
+                        desc="direction='column' / gap='24'" direction="column" :gap="24">
                         <template #header>
                             <div class="section-demo-box section-demo-box--wrapper-header">
-                                <strong>AppSectionWrapper Header</strong>
-                                <span>direction: {{ controls.wrapperDirection }}</span>
-                                <span>ratio: {{ formatRatio(wrapperRatio) }}</span>
-                                <span>gap: {{ controls.wrapperGap }}px</span>
+                                <strong>Wrapper Header</strong>
+                                <span>프로젝트 상태 요약 영역</span>
                             </div>
                         </template>
 
-                        <AppSection class="section-demo__section-demo" title="Section A" desc="header/body/footer"
-                            :direction="controls.sectionDirection" :ratio="sectionRatio" :gap="controls.sectionGap">
-                            <AppSectionHeader>
-                                <div class="section-demo-box section-demo-box--header">
-                                    <strong>AppSectionHeader</strong>
-                                    <span>section metadata</span>
-                                </div>
-                            </AppSectionHeader>
-
+                        <AppSection class="section-demo__section-demo" title="Overview" desc="첫 번째 섹션" :gap="12">
                             <AppSectionBody>
                                 <div class="section-demo-box section-demo-box--body">
-                                    <strong>AppSectionBody</strong>
-                                    <span>direction: {{ controls.sectionDirection }}</span>
-                                    <span>ratio: {{ formatRatio(sectionRatio) }}</span>
+                                    <strong>Body</strong>
+                                    <span>진행률 / 핵심 지표</span>
                                 </div>
                             </AppSectionBody>
-
-                            <AppSectionFooter>
-                                <div class="section-demo-box section-demo-box--footer">
-                                    <strong>AppSectionFooter</strong>
-                                    <span>gap: {{ controls.sectionGap }}px</span>
-                                </div>
-                            </AppSectionFooter>
                         </AppSection>
 
-                        <AppSection class="section-demo__section-demo" title="Section B" desc="body only section"
-                            :direction="controls.sectionDirection" :ratio="sectionRatio" :gap="controls.sectionGap">
+                        <AppSection class="section-demo__section-demo" title="Issues" desc="두 번째 섹션" :gap="12">
                             <AppSectionBody>
                                 <div class="section-demo-box section-demo-box--body">
-                                    <strong>AppSectionBody</strong>
-                                    <span>body only 구성</span>
+                                    <strong>Body</strong>
+                                    <span>이슈 목록 / 우선순위</span>
                                 </div>
                             </AppSectionBody>
                         </AppSection>
@@ -111,29 +86,66 @@
 
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Repeated Sections
+                        Wrapper Row + Ratio
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        동일한 props를 가진 section을 반복 렌더링하는 예시입니다.
+                        AppSectionWrapper 가로 배치와 ratio, gap 조합 예시입니다.
                     </p>
 
-                    <AppSectionWrapper class="section-demo__wrapper-demo" title="v-for Example" desc="반복 섹션 예시"
-                        :direction="controls.wrapperDirection" :gap="controls.wrapperGap">
+                    <AppSectionWrapper class="section-demo__wrapper-demo" title="Dashboard Layout"
+                        desc="direction='row' / ratio='2fr 1fr' / gap='20'" direction="row" :ratio="[2, 1]" :gap="20">
                         <template #header>
                             <div class="section-demo-box section-demo-box--wrapper-header">
-                                <strong>AppSectionWrapper Header</strong>
-                                <span>반복 리스트 상위 그룹</span>
+                                <strong>Wrapper Header</strong>
+                                <span>메인 + 사이드 패널 레이아웃</span>
                             </div>
                         </template>
 
+                        <AppSection class="section-demo__section-demo" title="Main Panel" desc="ratio 2" :gap="10">
+                            <AppSectionBody>
+                                <div class="section-demo-box section-demo-box--body">
+                                    <strong>2fr</strong>
+                                    <span>메인 콘텐츠 영역</span>
+                                </div>
+                            </AppSectionBody>
+                        </AppSection>
+
+                        <AppSection class="section-demo__section-demo" title="Side Panel" desc="ratio 1" :gap="10">
+                            <AppSectionBody>
+                                <div class="section-demo-box section-demo-box--body">
+                                    <strong>1fr</strong>
+                                    <span>보조 정보 영역</span>
+                                </div>
+                            </AppSectionBody>
+                        </AppSection>
+                    </AppSectionWrapper>
+                </section>
+
+                <section class="page-demo-card">
+                    <h2 class="page-demo-card__title">
+                        Section Row + Repeat
+                    </h2>
+
+                    <p class="page-demo-card__desc">
+                        AppSection 내부 row 배치와 반복 렌더링을 함께 확인합니다.
+                    </p>
+
+                    <AppSectionWrapper class="section-demo__wrapper-demo" title="Weekly Tasks" desc="반복 section 예시"
+                        direction="column" :gap="16">
                         <AppSection v-for="item in repeatedSections" :key="item.id" class="section-demo__section-demo"
-                            :title="item.title" :desc="item.desc" :direction="controls.sectionDirection"
-                            :ratio="sectionRatio" :gap="controls.sectionGap">
+                            :title="item.title" :desc="item.desc" direction="row" :ratio="[1, 1]" :gap="8">
                             <AppSectionBody>
                                 <div class="section-demo-box section-demo-box--body">
                                     <strong>{{ item.label }}</strong>
                                     <span>{{ item.note }}</span>
+                                </div>
+                            </AppSectionBody>
+
+                            <AppSectionBody>
+                                <div class="section-demo-box section-demo-box--body">
+                                    <strong>Detail</strong>
+                                    <span>추가 설명 영역</span>
                                 </div>
                             </AppSectionBody>
                         </AppSection>
@@ -157,17 +169,6 @@
 </template>
 
 <script setup lang="ts">
-type DemoDirection = 'row' | 'column'
-
-const controls = reactive({
-    wrapperDirection: 'column' as DemoDirection,
-    wrapperGap: 20,
-    wrapperRatioText: '2 1',
-    sectionDirection: 'row' as DemoDirection,
-    sectionGap: 10,
-    sectionRatioText: '1 1',
-})
-
 const repeatedSections = ref([
     {
         id: 1,
@@ -192,44 +193,33 @@ const repeatedSections = ref([
     },
 ])
 
-function parseRatio(value: string) {
-    const parsed = value
-        .split(/[,\s]+/)
-        .map((item) => Number(item))
-        .filter((item) => Number.isFinite(item) && item > 0)
-
-    return parsed.length > 0 ? parsed : null
-}
-
-function formatRatio(ratio: number[] | null) {
-    if (!ratio || ratio.length === 0) return 'auto'
-
-    return ratio.map((item) => `${item}fr`).join(' ')
-}
-
-const wrapperRatio = computed(() => {
-    if (controls.wrapperDirection === 'column') return null
-    return parseRatio(controls.wrapperRatioText)
-})
-
-const sectionRatio = computed(() => {
-    if (controls.sectionDirection === 'column') return null
-    return parseRatio(controls.sectionRatioText)
-})
-
 const output = computed(() =>
     JSON.stringify(
         {
-            playground: {
+            examples: {
                 wrapper: {
-                    direction: controls.wrapperDirection,
-                    ratio: formatRatio(wrapperRatio.value),
-                    gap: `${controls.wrapperGap}px`,
+                    column: {
+                        direction: 'column',
+                        ratio: 'auto',
+                        gap: '24px',
+                    },
+                    row: {
+                        direction: 'row',
+                        ratio: '2fr 1fr',
+                        gap: '20px',
+                    },
                 },
                 section: {
-                    direction: controls.sectionDirection,
-                    ratio: formatRatio(sectionRatio.value),
-                    gap: `${controls.sectionGap}px`,
+                    column: {
+                        direction: 'column',
+                        ratio: 'auto',
+                        gap: '12px',
+                    },
+                    row: {
+                        direction: 'row',
+                        ratio: '1fr 1fr',
+                        gap: '8px',
+                    },
                 },
             },
             repeat: {
@@ -245,34 +235,6 @@ const output = computed(() =>
 
 <style lang="scss" scoped>
 .section-demo {
-    &-controls {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-bottom: 16px;
-    }
-
-    &-control {
-        display: grid;
-        gap: 6px;
-
-        span {
-            font-size: 13px;
-            color: #334155;
-        }
-
-        input,
-        select {
-            width: 100%;
-            height: 34px;
-            padding: 0 10px;
-            border: 1px solid rgba(100, 116, 139, 0.35);
-            border-radius: 8px;
-            background: #fff;
-            color: #0f172a;
-        }
-    }
-
     &__wrapper-demo {
         padding: 16px;
         border: 1px solid rgba(168, 85, 247, 0.24);

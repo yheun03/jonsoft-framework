@@ -1,5 +1,5 @@
 <template>
-    <section class="app-section" :class="sectionClasses" :style="sectionStyle">
+    <section class="app-section" :class="sectionClassName" :style="sectionStyle">
         <header v-if="hasDefaultHeader" class="app-section__header">
             <div class="app-section__header-text">
                 <h3 v-if="title" class="app-section__title">
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 type SectionDirection = 'row' | 'column'
 type SectionRatio = number[] | string | null
+type SectionGap = number | string
 
 const props = withDefaults(
     defineProps<{
@@ -55,13 +56,11 @@ function normalizeRatio(value: SectionRatio) {
 
 const hasDefaultHeader = computed(() => !!props.title || !!props.desc)
 
-const sectionClasses = computed(() => [
-    `app-section--${props.direction}`,
-])
+const sectionClassName = computed(() => `app-section--${props.direction}`)
 
 const sectionStyle = computed(() => {
     return {
-        '--app-section-gap': normalizeGap(props.gap),
+        '--app-section-gap': normalizeGap(props.gap as SectionGap),
         '--app-section-template': normalizeRatio(props.ratio),
     }
 })
