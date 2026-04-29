@@ -267,4 +267,3 @@ export const useNavigationStore = defineStore('navigation', () => {
         fetchMenus,
     };
 });
-

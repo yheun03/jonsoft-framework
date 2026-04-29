@@ -28,8 +28,7 @@
                             <td class="app-table__td" :class="getTdClasses(cell)" :colspan="getInlineValueColspan(cell)"
                                 :rowspan="getRowspan(cell)">
                                 <slot v-if="cell.slot" :name="cell.slot" :cell="cell" :row="row" :model="modelValue"
-                                    :value="getModelValue(cell.key)"
-                                    :update-value="createValueUpdater(cell.key)" />
+                                    :value="getModelValue(cell.key)" :update-value="createValueUpdater(cell.key)" />
 
                                 <AppTableField v-else :cell="cell" :model-value="modelValue" :readonly="readonly"
                                     :disabled="disabled" @update-field="handleUpdateField"
@@ -64,8 +63,7 @@
                                 class="app-table__td app-table__td--stacked" :class="getTdClasses(cell)"
                                 :colspan="getStackedSpan(cell)">
                                 <slot v-if="cell.slot" :name="cell.slot" :cell="cell" :row="row" :model="modelValue"
-                                    :value="getModelValue(cell.key)"
-                                    :update-value="createValueUpdater(cell.key)" />
+                                    :value="getModelValue(cell.key)" :update-value="createValueUpdater(cell.key)" />
 
                                 <AppTableField v-else :cell="cell" :model-value="modelValue" :readonly="readonly"
                                     :disabled="disabled" @update-field="handleUpdateField"
@@ -80,21 +78,23 @@
 </template>
 
 <script setup lang="ts">
-import type { AppTableCell, AppTableRow } from '~/core/types/table'
+import type { AppTableCell, AppTableRow } from '~/core/type/table';
+
+type AppTableProps = {
+    title?: string;
+    description?: string;
+    rows?: AppTableRow[];
+    modelValue: Record<string, unknown>;
+    colWidths?: string[];
+    readonly?: boolean;
+    disabled?: boolean;
+    defaultLabelWidth?: string;
+    layout?: 'inline' | 'stacked';
+    stackedLabelWidth?: string;
+};
 
 const props = withDefaults(
-    defineProps<{
-        title?: string
-        description?: string
-        rows?: AppTableRow[]
-        modelValue: Record<string, unknown>
-        colWidths?: string[]
-        readonly?: boolean
-        disabled?: boolean
-        defaultLabelWidth?: string
-        layout?: 'inline' | 'stacked'
-        stackedLabelWidth?: string
-    }>(),
+    defineProps<AppTableProps>(),
     {
         title: '',
         description: '',

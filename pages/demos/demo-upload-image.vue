@@ -80,8 +80,8 @@
                     </p>
 
                     <div class="page-demo-row">
-                        <AppUploadImage v-model="multiple.images" multiple :max-count="3"
-                            @change="onMultipleChange" @error="onError" @remove="onRemove" />
+                        <AppUploadImage v-model="multiple.images" multiple :max-count="3" @change="onMultipleChange"
+                            @error="onError" @remove="onRemove" />
 
                         <div class="page-demo-stack">
                             <div class="page-demo-hint">
@@ -148,8 +148,8 @@
                         </div>
 
                         <div class="page-demo-stack">
-                            <AppUploadImage v-model="drop.disabled" :allow-drop="false"
-                                @change="onDropDisabledChange" @error="onError" />
+                            <AppUploadImage v-model="drop.disabled" :allow-drop="false" @change="onDropDisabledChange"
+                                @error="onError" />
 
                             <div class="page-demo-hint">
                                 드롭 비허용 상태입니다.
@@ -177,8 +177,7 @@
 
                         <div class="page-demo-stack">
                             <AppUploadImage v-model="rules.maxSizeImage" :max-size-bytes="rules.maxSizeBytes"
-                                @change="onRulesSizeChange"
-                                @error="onError" />
+                                @change="onRulesSizeChange" @error="onError" />
 
                             <div class="page-demo-hint">
                                 <strong>maxSizeBytes</strong> 속성으로 최대 용량을 제한합니다.

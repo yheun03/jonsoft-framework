@@ -46,4 +46,3 @@ export const usePreferencesStore = defineStore('preferences', () => {
         hydrate,
     };
 });
-

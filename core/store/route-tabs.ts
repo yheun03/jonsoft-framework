@@ -57,4 +57,3 @@ export const useRouteTabsStore = defineStore('route-tabs', () => {
         reset,
     };
 });
-

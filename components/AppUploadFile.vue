@@ -56,8 +56,8 @@
                         미리보기
                     </AppButton>
 
-                    <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }" :disabled="disabled"
-                        ariaLabel="파일 삭제" @click="removeItem(uploadItem.id)">
+                    <AppButton variant="text" size="custom" :custom-size="{ width: 28, height: 28 }"
+                        :disabled="disabled" ariaLabel="파일 삭제" @click="removeItem(uploadItem.id)">
                         <template #iconLeft>
                             <Icon icon="mdi:close" aria-hidden="true" />
                         </template>

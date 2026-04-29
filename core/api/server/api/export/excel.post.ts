@@ -51,13 +51,7 @@ export default defineEventHandler(async (event) => {
 
     // Nitro/h3 환경에서 헤더 헬퍼(setResponseHeader)가 타입에 없을 수 있어
     // 서버 res 객체에 직접 세팅합니다.
-    event.node.res.setHeader(
-        'Content-Disposition',
-        `attachment; filename="export.xlsx"; filename*=UTF-8''${encoded}`,
-    );
-    event.node.res.setHeader(
-        'Content-Type',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
+    event.node.res.setHeader('Content-Disposition', `attachment; filename="export.xlsx"; filename*=UTF-8''${encoded}`);
+    event.node.res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     return buffer;
 });

@@ -8,8 +8,8 @@
 </template>
 
 <script setup lang="ts">
-import { useModalStore } from '~/core/stores/modal'
-import type { ModalItem, ModalType, ModalViewCloseReason } from '~/core/types/modal'
+import { useModalStore } from '~/core/store/modal'
+import type { ModalItem, ModalType, ModalViewCloseReason } from '~/core/type/modal'
 import AppModalAlert from './AppModalAlert.vue'
 import AppModalConfirm from './AppModalConfirm.vue'
 import AppModalCustom from './AppModalCustom.vue'

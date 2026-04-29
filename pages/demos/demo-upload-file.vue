@@ -14,7 +14,8 @@
                     </p>
 
                     <div class="page-demo-row">
-                        <AppUploadFile v-model="basic.file" @change="onBasicChange" @error="onError" @remove="onRemove" />
+                        <AppUploadFile v-model="basic.file" @change="onBasicChange" @error="onError"
+                            @remove="onRemove" />
 
                         <div class="page-demo-stack">
                             <div class="page-demo-hint">

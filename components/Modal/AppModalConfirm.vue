@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import AppModalBase from './AppModalBase.vue'
-import type { ModalBaseProps, ModalCloseEvent, ModalViewCloseReason } from '~/core/types/modal'
+import type { ModalBaseProps, ModalCloseEvent, ModalViewCloseReason } from '~/core/type/modal'
 
 const props = defineProps<ModalBaseProps & {
     message?: string
