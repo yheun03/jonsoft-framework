@@ -18,8 +18,8 @@
                     워크스페이스, 컴포넌트 데모, 가이드 페이지로 빠르게 이동할 수 있습니다.
                 </p>
                 <div class="home__hero-actions">
-                    <AppButton as="a" href="/workspace" size="lg" variant="fill">워크스페이스 시작</AppButton>
-                    <AppButton as="a" href="/demos/demo-button" size="lg" variant="outline">UI 데모 보기</AppButton>
+                    <AppButton to="/workspace" size="lg" variant="fill">워크스페이스 시작</AppButton>
+                    <AppButton to="/demos/demo-button" size="lg" variant="outline">UI 데모 보기</AppButton>
                 </div>
             </div>
         </header>
