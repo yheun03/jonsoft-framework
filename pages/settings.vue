@@ -39,10 +39,10 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import type { Locale } from '~/core/constants/i18n'
-import type { AppTheme } from '~/core/stores/preferences'
+import type { Locale } from '~/core/i18n'
+import type { AppTheme } from '~/core/store/preferences'
 import { useI18nText } from '~/core/composables/useI18nText'
-import { usePreferencesStore } from '~/core/stores/preferences'
+import { usePreferencesStore } from '~/core/store/preferences'
 
 const preferences = usePreferencesStore()
 const { locale, theme } = storeToRefs(preferences)

@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
+import { defineStore } from 'pinia';
 
 export type RouteTab = {
     key: string;
@@ -57,3 +57,4 @@ export const useRouteTabsStore = defineStore('route-tabs', () => {
         reset,
     };
 });
+

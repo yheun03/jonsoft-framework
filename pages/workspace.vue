@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import type Editor from '@toast-ui/editor'
-import { useWorkspaceStore } from '~/core/stores/workspace'
+import { useWorkspaceStore } from '~/core/store/workspace'
 
 const ws = useWorkspaceStore()
 

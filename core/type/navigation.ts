@@ -1,4 +1,20 @@
-import type { NavigationAction } from '~/core/domain/navigation/types';
+export interface NavigationMenu {
+    id: string;
+    parentId?: string | null;
+    label: string;
+    labelKey?: string;
+    to: string;
+    order: number;
+    icon?: string;
+    newTab?: boolean;
+    depth: number;
+    children?: NavigationMenu[];
+}
+
+export type NavigationAction = {
+    label: string;
+    icon: string;
+};
 
 export const NAVIGATION_HEADER_ACTIONS: NavigationAction[] = [
     { label: '메모 추가', icon: 'mdi:pencil-outline' },

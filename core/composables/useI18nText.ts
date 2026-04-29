@@ -1,6 +1,6 @@
 import { storeToRefs } from 'pinia';
-import { I18N_MESSAGES } from '~/core/constants/i18n';
-import { usePreferencesStore } from '~/core/stores/preferences';
+import { I18N_MESSAGES } from '~/core/i18n';
+import { usePreferencesStore } from '~/core/store/preferences';
 
 export function useI18nText() {
     const preferences = usePreferencesStore();

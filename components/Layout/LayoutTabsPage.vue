@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useRouteTabsStore } from '~/core/stores/route-tabs'
+import { useRouteTabsStore } from '~/core/store/route-tabs'
 import { useI18nText } from '~/core/composables/useI18nText'
 
 const router = useRouter()

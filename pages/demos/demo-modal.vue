@@ -155,7 +155,7 @@
 
 <script setup lang="ts">
 import { useModalViewer } from '~/core/composables/useModalViewer'
-import { useModalStore } from '~/core/stores/modal'
+import { useModalStore } from '~/core/store/modal'
 import ModalRendererExample from '~/pages/demos/modal/ModalRendererExample.vue'
 
 const { title } = useDemoI18n('modal')

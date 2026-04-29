@@ -1,6 +1,13 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import type { AlertModalItem, ConfirmModalItem, CustomModalItem, ModalCloseReason, ModalItem, ModalOpenPayload } from '~/core/types/modal';
+import type {
+    AlertModalItem,
+    ConfirmModalItem,
+    CustomModalItem,
+    ModalCloseReason,
+    ModalItem,
+    ModalOpenPayload,
+} from '~/core/type/modal';
 
 const MODAL_DEFAULTS = {
     common: {
@@ -136,3 +143,4 @@ export const useModalStore = defineStore('modal', () => {
         clearAllModals,
     };
 });
+

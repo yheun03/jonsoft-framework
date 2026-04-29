@@ -1,6 +1,6 @@
 import { storeToRefs } from 'pinia';
-import { NAVIGATION_HEADER_ACTIONS } from '~/core/constants/navigation';
-import { useNavigationStore } from '~/core/stores/navigation';
+import { NAVIGATION_HEADER_ACTIONS } from '~/core/type/navigation';
+import { useNavigationStore } from '~/core/store/navigation';
 
 export function useNavigation() {
     const store = useNavigationStore();

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import type { Locale } from '~/core/constants/i18n';
+import type { Locale } from '~/core/i18n';
 
 export type AppTheme = 'light' | 'dark';
 
@@ -46,3 +46,4 @@ export const usePreferencesStore = defineStore('preferences', () => {
         hydrate,
     };
 });
+

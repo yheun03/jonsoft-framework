@@ -1,6 +1,13 @@
-import type { NavigationMenu } from '~/core/domain/navigation/types';
+import { computed, ref } from 'vue';
+import { defineStore } from 'pinia';
+import { useI18nText } from '~/core/composables/useI18nText';
+import type { NavigationMenu } from '~/core/type/navigation';
 
-type MenuEntity = {
+type MutableNavigationMenu = Omit<NavigationMenu, 'children'> & {
+    children?: MutableNavigationMenu[];
+};
+
+type MenuSeedEntity = {
     id: string;
     parentId: string | null;
     depth: number;
@@ -12,7 +19,7 @@ type MenuEntity = {
     isActive: boolean;
 };
 
-const MENU_SEED: MenuEntity[] = [
+const MENU_SEED: MenuSeedEntity[] = [
     { id: 'MENU_010000', parentId: null, depth: 1, order: 1, to: '/', labelKey: 'nav.home', isActive: true },
     {
         id: 'MENU_010100',
@@ -161,7 +168,7 @@ const MENU_SEED: MenuEntity[] = [
     },
 ];
 
-export function createNavigationMenus(): NavigationMenu[] {
+function createNavigationMenus(): NavigationMenu[] {
     return MENU_SEED.filter((row) => row.isActive)
         .sort((a, b) => {
             if (a.depth !== b.depth) return a.depth - b.depth;
@@ -179,3 +186,85 @@ export function createNavigationMenus(): NavigationMenu[] {
             newTab: row.newTab ?? false,
         }));
 }
+
+function translateNavigationMenus(items: readonly NavigationMenu[], t?: (key: string, fallback?: string) => string): NavigationMenu[] {
+    if (!t) return [...items];
+    return items.map((item) => ({
+        ...item,
+        label: item.labelKey ? t(item.labelKey, item.label) : item.label,
+        children: item.children ? translateNavigationMenus(item.children, t) : undefined,
+    }));
+}
+
+function buildNavigationTree(items: readonly NavigationMenu[]): NavigationMenu[] {
+    const nodeMap = new Map<string, MutableNavigationMenu>();
+    const roots: MutableNavigationMenu[] = [];
+
+    for (const item of items) {
+        nodeMap.set(item.id, {
+            ...item,
+            children: undefined,
+        });
+    }
+
+    for (const item of items) {
+        const node = nodeMap.get(item.id);
+        if (!node) continue;
+
+        const parentId = item.parentId ?? null;
+        if (!parentId) {
+            roots.push(node);
+            continue;
+        }
+
+        const parent = nodeMap.get(parentId);
+        if (!parent) {
+            roots.push(node);
+            continue;
+        }
+
+        (parent.children ||= []).push(node);
+    }
+
+    const sortNavigationTree = (nodes: MutableNavigationMenu[]): NavigationMenu[] =>
+        [...nodes]
+            .sort((a, b) => a.order - b.order)
+            .map((node) => ({
+                ...node,
+                children: node.children ? sortNavigationTree(node.children) : undefined,
+            }));
+
+    return sortNavigationTree(roots);
+}
+
+export const useNavigationStore = defineStore('navigation', () => {
+    const { t } = useI18nText();
+    const menus = ref<NavigationMenu[]>([]);
+    const isLoading = ref(false);
+    const isLoaded = ref(false);
+
+    const localizedMenus = computed(() => translateNavigationMenus(menus.value, t));
+    const menuTree = computed(() => buildNavigationTree(localizedMenus.value));
+
+    async function fetchMenus(force = false) {
+        if (isLoading.value) return;
+        if (isLoaded.value && !force) return;
+
+        isLoading.value = true;
+        try {
+            menus.value = createNavigationMenus();
+            isLoaded.value = true;
+        } finally {
+            isLoading.value = false;
+        }
+    }
+
+    return {
+        menus,
+        menuTree,
+        isLoading,
+        isLoaded,
+        fetchMenus,
+    };
+});
+

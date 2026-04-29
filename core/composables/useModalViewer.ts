@@ -1,6 +1,6 @@
 import AppModalViewerPdf from '~/components/Modal/AppModalViewerPdf.vue';
 import AppModalViewerImage from '~/components/Modal/AppModalViewerImage.vue';
-import { useModalStore } from '~/core/stores/modal';
+import { useModalStore } from '~/core/store/modal';
 
 type ImageViewerSource = {
     name?: string;

@@ -1,4 +1,4 @@
-import { usePreferencesStore } from '~/core/stores/preferences';
+import { usePreferencesStore } from '~/core/store/preferences';
 
 export default defineNuxtPlugin(() => {
     const preferences = usePreferencesStore();

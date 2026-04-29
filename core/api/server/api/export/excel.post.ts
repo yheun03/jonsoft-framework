@@ -31,11 +31,13 @@ export default defineEventHandler(async (event) => {
             return v;
         }),
     );
+
     const aoa = [headerRow, ...dataRows];
     const origin = (body.origin || 'A1').toUpperCase();
     if (!/^[A-Z]+[1-9]\d*$/.test(origin)) {
         throw createError({ statusCode: 400, message: 'origin 형식이 올바르지 않습니다. 예: A1, B3' });
     }
+
     const ws = XLSX.utils.aoa_to_sheet([], {});
     XLSX.utils.sheet_add_aoa(ws, aoa, { origin });
     const wb = XLSX.utils.book_new();
@@ -46,7 +48,16 @@ export default defineEventHandler(async (event) => {
     const baseName = (body.fileName || gridId || 'export').replace(/[\\/:*?"<>|]/g, '_');
     const filename = baseName.toLowerCase().endsWith('.xlsx') ? baseName : `${baseName}.xlsx`;
     const encoded = encodeURIComponent(filename);
-    setResponseHeader(event, 'Content-Disposition', `attachment; filename="export.xlsx"; filename*=UTF-8''${encoded}`);
-    setResponseHeader(event, 'Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+    // Nitro/h3 환경에서 헤더 헬퍼(setResponseHeader)가 타입에 없을 수 있어
+    // 서버 res 객체에 직접 세팅합니다.
+    event.node.res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="export.xlsx"; filename*=UTF-8''${encoded}`,
+    );
+    event.node.res.setHeader(
+        'Content-Type',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
     return buffer;
 });

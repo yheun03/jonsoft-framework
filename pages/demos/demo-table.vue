@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import type { AppTableOption, AppTableRow } from '~/core/types/table'
+import type { AppTableOption, AppTableRow } from '~/core/type/table'
 const { title, description } = useDemoI18n('select')
 
 const selectOptions: AppTableOption[] = [
