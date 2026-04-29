@@ -30,6 +30,7 @@ const Ko = {
     'nav.demo.table': '테이블 데모',
     'nav.demo.section': '섹션 데모',
     'nav.demo.accordian': '아코디언 데모',
+    'nav.demo.tabs': '탭 데모',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'AppButton 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
@@ -60,6 +61,8 @@ const Ko = {
     'demo.section.desc': 'AppSection 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
     'demo.accordian.title': 'AppAccordion',
     'demo.accordian.desc': 'AppAccordion 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
+    'demo.tabs.title': 'AppTabs',
+    'demo.tabs.desc': 'AppTabs 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
 };
 
 export default Ko;

@@ -158,6 +158,15 @@ const MENU_SEED: MenuSeedEntity[] = [
         isActive: true,
     },
     {
+        id: 'MENU_020015',
+        parentId: 'MENU_020000',
+        depth: 2,
+        order: 14,
+        to: '/demos/demo-tabs',
+        labelKey: 'nav.demo.tabs',
+        isActive: true,
+    },
+    {
         id: 'MENU_030000',
         parentId: null,
         depth: 1,
