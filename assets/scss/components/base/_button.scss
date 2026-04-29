@@ -54,12 +54,14 @@ $btn-text-sizes: (
 
     @else if $variant ==outline {
 
-        --btn-bg: transparent;
+        --btn-bg: #{$gray-0};
         --btn-fg:#{$color};
         --btn-bd:#{$color};
 
-        --btn-bg-hover:#{rgba($color,.06)};
-        --btn-bg-active:#{rgba($color,.10)};
+        --btn-bg-hover:#{rgba($gray-0,.6)};
+        --btn-bg-active:#{rgba($gray-0,.8)};
+        // --btn-bg-hover:#{rgba($gray-0,.06)};
+        // --btn-bg-active:#{rgba($gray-0,.10)};
 
         --btn-fg-hover:#{$hover};
         --btn-fg-active:#{$active};
