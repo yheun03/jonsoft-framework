@@ -1,24 +1,24 @@
-import PdfViewerContent from '~/components/modals/PdfViewerContent.vue'
-import ImageViewerContent from '~/components/modals/ImageViewerContent.vue'
-import { useModalStore } from '~/core/stores/modal'
+import PdfViewerContent from '~/components/Modal/PdfViewerContent.vue';
+import ImageViewerContent from '~/components/Modal/ImageViewerContent.vue';
+import { useModalStore } from '~/core/stores/modal';
 
 type ImageViewerSource = {
-    name?: string
-    url?: string
-    alt?: string
-}
+    name?: string;
+    url?: string;
+    alt?: string;
+};
 
 type PdfViewerSource = {
-    name?: string
-    path?: string
-    file?: File
-}
+    name?: string;
+    path?: string;
+    file?: File;
+};
 
 export function useModalViewer() {
-    const modalStore = useModalStore()
+    const modalStore = useModalStore();
 
     function openImageViewer(source: ImageViewerSource) {
-        if (!source.url) return
+        if (!source.url) return;
 
         modalStore.modalOpen({
             type: 'custom',
@@ -29,11 +29,11 @@ export function useModalViewer() {
                 src: source.url,
                 alt: source.alt || source.name || '이미지 미리보기',
             },
-        })
+        });
     }
 
     function openPdfViewer(source: PdfViewerSource) {
-        if (!source.path && !source.file) return
+        if (!source.path && !source.file) return;
 
         modalStore.modalOpen({
             type: 'custom',
@@ -46,11 +46,11 @@ export function useModalViewer() {
                 file: source.file,
                 fileName: source.name,
             },
-        })
+        });
     }
 
     return {
         openImageViewer,
         openPdfViewer,
-    }
+    };
 }

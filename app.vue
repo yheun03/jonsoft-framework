@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 
-import AppModalHost from '~/components/modals/AppModalHost.vue'
+import AppModalHost from '~/components/Modal/AppModalHost.vue'
 
 const route = useRoute()
 
