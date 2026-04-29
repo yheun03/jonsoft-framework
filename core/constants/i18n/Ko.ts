@@ -28,6 +28,7 @@ const Ko = {
     'nav.demo.uploadFile': '파일 업로드 데모',
     'nav.demo.modal': '모달 데모',
     'nav.demo.table': '테이블 데모',
+    'nav.demo.section': '섹션 데모',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'AppButton 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
@@ -54,6 +55,8 @@ const Ko = {
     'demo.table.title': 'AppTable',
     'demo.table.desc':
         'AppTableField가 지원하는 셀 타입들을 한 번에 확인하는 데모입니다. 각 행의 th에는 cell.type이, td에는 해당 타입의 컴포넌트가 렌더링됩니다.',
+    'demo.section.title': 'AppSection',
+    'demo.section.desc': 'AppSection 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
 };
 
 export default Ko;

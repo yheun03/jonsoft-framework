@@ -28,6 +28,7 @@ const En = {
     'nav.demo.uploadFile': 'File Upload Demo',
     'nav.demo.modal': 'Modal Demo',
     'nav.demo.table': 'Table Demo',
+    'nav.demo.section': 'Section Demo',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'Review all AppButton props in one place.',
@@ -54,6 +55,8 @@ const En = {
     'demo.table.title': 'AppTable',
     'demo.table.desc':
         'Demo page that showcases all cell types supported by AppTableField at once. Each row renders cell.type in the th and the corresponding field component in the td.',
+    'demo.section.title': 'AppSection',
+    'demo.section.desc': 'Demo page that showcases all section types supported by AppSection at once.',
 };
 
 export default En;

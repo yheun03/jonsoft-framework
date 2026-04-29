@@ -133,6 +133,15 @@ const MENU_SEED: MenuEntity[] = [
         isActive: true,
     },
     {
+        id: 'MENU_020013',
+        parentId: 'MENU_020000',
+        depth: 2,
+        order: 12,
+        to: '/demos/demo-section',
+        labelKey: 'nav.demo.section',
+        isActive: true,
+    },
+    {
         id: 'MENU_030000',
         parentId: null,
         depth: 1,

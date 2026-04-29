@@ -24,6 +24,7 @@ export default defineNuxtConfig({
 
     components: [
         { path: '~/components/Table', pathPrefix: false },
+        { path: '~/components/Section', pathPrefix: false },
         { path: '~/components/Layout', pathPrefix: false },
         { path: '~/components/Modal', pathPrefix: false },
         // 모든 전역 컴포넌트를 components 루트에서 자동 등록
