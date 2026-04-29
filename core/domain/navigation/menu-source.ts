@@ -142,6 +142,15 @@ const MENU_SEED: MenuEntity[] = [
         isActive: true,
     },
     {
+        id: 'MENU_020014',
+        parentId: 'MENU_020000',
+        depth: 2,
+        order: 13,
+        to: '/demos/demo-accordian',
+        labelKey: 'nav.demo.accordian',
+        isActive: true,
+    },
+    {
         id: 'MENU_030000',
         parentId: null,
         depth: 1,
