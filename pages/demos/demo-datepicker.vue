@@ -180,18 +180,23 @@
                     </div>
                 </section>
 
-                <!-- DISABLED -->
+                <!-- DISABLED & READONLY -->
                 <section class="page-demo-card">
                     <h2 class="page-demo-card__title">
-                        Disabled
+                        Disabled &amp; Readonly
                     </h2>
 
                     <p class="page-demo-card__desc">
-                        선택 불가 상태를 제어합니다.
+                        선택 불가 또는 읽기 전용 상태를 제어합니다.
                     </p>
 
                     <div class="page-demo-grid">
                         <AppDatePicker v-model="disabledValue" label="Disabled" disabled hint="비활성 상태">
+                            <template #iconRight>
+                                <Icon icon="mdi:calendar-month-outline" />
+                            </template>
+                        </AppDatePicker>
+                        <AppDatePicker v-model="readonlyValue" label="Readonly" readonly hint="읽기 전용 상태">
                             <template #iconRight>
                                 <Icon icon="mdi:calendar-month-outline" />
                             </template>
@@ -286,6 +291,7 @@ const states = reactive({
 })
 
 const disabledValue = ref<string | null>('2026-05-10')
+const readonlyValue = ref<string | null>('2026-05-10')
 
 const constraints = reactive({
     single: null as string | null,
