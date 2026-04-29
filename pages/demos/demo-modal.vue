@@ -154,9 +154,9 @@
 </template>
 
 <script setup lang="ts">
-import ModalRendererExample from '~/components/demo/modal/ModalRendererExample.vue'
 import { useModalViewer } from '~/core/composables/useModalViewer'
 import { useModalStore } from '~/core/stores/modal'
+import ModalRendererExample from '~/pages/demos/modal/ModalRendererExample.vue'
 
 const { title } = useDemoI18n('modal')
 const modalStore = useModalStore()
@@ -404,7 +404,7 @@ function handleOpenImageViewer() {
 function handleOpenPdfViewer() {
     openPdfViewer({
         name: '샘플 PDF',
-        path: '/samples/project-overview.pdf',
+        path: '/files/sample.pdf',
     })
     lastAction.value = 'viewer:pdf:open'
 }

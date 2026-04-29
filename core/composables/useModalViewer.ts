@@ -1,5 +1,5 @@
-import PdfViewerContent from '~/components/Modal/PdfViewerContent.vue';
-import ImageViewerContent from '~/components/Modal/ImageViewerContent.vue';
+import AppModalViewerPdf from '~/components/Modal/AppModalViewerPdf.vue';
+import AppModalViewerImage from '~/components/Modal/AppModalViewerImage.vue';
 import { useModalStore } from '~/core/stores/modal';
 
 type ImageViewerSource = {
@@ -24,7 +24,7 @@ export function useModalViewer() {
             type: 'custom',
             title: source.name || '이미지 미리보기',
             width: '960px',
-            component: ImageViewerContent,
+            component: AppModalViewerImage,
             componentProps: {
                 src: source.url,
                 alt: source.alt || source.name || '이미지 미리보기',
@@ -40,7 +40,7 @@ export function useModalViewer() {
             title: source.name || 'PDF 미리보기',
             width: '1100px',
             height: '80vh',
-            component: PdfViewerContent,
+            component: AppModalViewerPdf,
             componentProps: {
                 src: source.path,
                 file: source.file,
