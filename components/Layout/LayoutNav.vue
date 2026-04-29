@@ -18,7 +18,7 @@
         <div class="layout-nav__body">
             <div class="layout-nav__list-wrap">
                 <ul class="layout-nav__list" role="menubar" :aria-label="t('nav.home')">
-                    <PatternNavItem v-for="menu in menuTree" :key="menu.id" :item="menu" :get-icon-svg="getIconSvg" />
+                    <LayoutNavItem v-for="menu in menuTree" :key="menu.id" :item="menu" :get-icon-svg="getIconSvg" />
                 </ul>
             </div>
         </div>
@@ -35,7 +35,6 @@
 </template>
 
 <script setup lang="ts">
-import PatternNavItem from '@/components/PatternNavItem.vue'
 import logoSvg from '~/assets/icons/logo.svg?raw'
 import { useI18nText } from '~/core/composables/useI18nText'
 import { useNavigation } from '~/core/composables/useNavigation'

@@ -23,7 +23,7 @@
 
         <ul v-if="hasChildren" v-show="open" :id="submenuId" class="layout-nav__sublist" role="menu"
             :aria-label="`${item.label} submenu`">
-            <PatternNavItem v-for="child in item.children" :key="child.id" :item="child" :get-icon-svg="getIconSvg" />
+            <LayoutNavItem v-for="child in item.children" :key="child.id" :item="child" :get-icon-svg="getIconSvg" />
         </ul>
     </li>
 </template>

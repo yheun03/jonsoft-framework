@@ -58,11 +58,11 @@
         </div>
     </div>
 
-    <LayoutBottomFixed>
+    <LayoutBottomBar>
         <template #right>
             <AppButton>test</AppButton>
         </template>
-    </LayoutBottomFixed>
+    </LayoutBottomBar>
 
 </template>
 
