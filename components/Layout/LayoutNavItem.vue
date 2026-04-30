@@ -2,7 +2,7 @@
     <li class="layout-nav__item" role="none" :class="itemClasses" :style="itemStyle">
         <div class="layout-nav__row">
             <AppButton v-if="hasChildren" class="layout-nav__toggle" variant="text" size="custom"
-                :custom-size="{ width: 20, height: 20 }" ariaLabel="메뉴 펼치기/접기" :aria-expanded="open"
+                :custom-size="{ width: 24, height: 24 }" ariaLabel="메뉴 펼치기/접기" :aria-expanded="open"
                 :aria-controls="submenuId" @click.stop="toggleOpen">
                 <template #iconLeft>
                     <Icon class="layout-nav__toggle-icon" :class="{ 'is-open': open }" icon="mdi:chevron-right"
@@ -13,7 +13,7 @@
             <component :is="linkTag" v-bind="linkAttrs" class="layout-nav__link" role="menuitem"
                 :aria-haspopup="hasChildren ? 'true' : undefined"
                 :aria-expanded="hasChildren ? String(open) : undefined" @click="onClickRow">
-                <span v-if="iconSvg" class="app-icon" aria-hidden="true" v-html="iconSvg" />
+                <span v-if="iconSvg" class="layout-nav__icon app-icon" aria-hidden="true" v-html="iconSvg" />
 
                 <span class="layout-nav__label">
                     {{ item.label }}
@@ -96,7 +96,10 @@ function toggleOpen() {
 function onClickRow(event: MouseEvent) {
     if (isButtonRow.value) {
         event.preventDefault()
-        if (hasChildren.value) toggleOpen()
+
+        if (hasChildren.value) {
+            toggleOpen()
+        }
     }
 }
 </script>

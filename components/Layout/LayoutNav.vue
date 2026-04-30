@@ -7,7 +7,7 @@
 
             <div class="layout-nav__actions" :aria-label="t('nav.demos')">
                 <AppButton v-for="action in headerActions" :key="action.label" class="nav-action" variant="text"
-                    size="custom" :custom-size="{ width: 28 }" :ariaLabel="action.label">
+                    size="custom" :custom-size="{ width: 32, height: 32 }" :ariaLabel="action.label">
                     <template #iconLeft>
                         <Icon :icon="action.icon" aria-hidden="true" />
                     </template>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="layout-nav__footer">
-            <AppButton class="nav-action" variant="text" size="custom" :custom-size="{ width: 28 }"
+            <AppButton class="nav-action" variant="text" size="custom" :custom-size="{ width: 32, height: 32 }"
                 :ariaLabel="t('settings.title')" to="/settings">
                 <template #iconLeft>
                     <Icon icon="mdi:cog-outline" aria-hidden="true" />
