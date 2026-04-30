@@ -31,6 +31,9 @@ const Ko = {
     'nav.demo.section': '섹션 데모',
     'nav.demo.accordian': '아코디언 데모',
     'nav.demo.tabs': '탭 데모',
+    'nav.demo.form': '폼 데모',
+    'nav.demo.pagination': '페이지네이션 데모',
+    'nav.demo.textArea': '텍스트 에어리어 데모',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'AppButton 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
@@ -63,6 +66,12 @@ const Ko = {
     'demo.accordian.desc': 'AppAccordion 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
     'demo.tabs.title': 'AppTabs',
     'demo.tabs.desc': 'AppTabs 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
+    'demo.form.title': 'AppForm',
+    'demo.form.desc': 'AppForm 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
+    'demo.pagination.title': 'AppPagination',
+    'demo.pagination.desc': 'AppPagination 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
+    'demo.textArea.title': 'AppTextarea',
+    'demo.textArea.desc': 'AppTextarea 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
 };
 
 export default Ko;

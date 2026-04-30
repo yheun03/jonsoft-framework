@@ -31,6 +31,9 @@ const En = {
     'nav.demo.section': 'Section Demo',
     'nav.demo.accordian': 'Accordion Demo',
     'nav.demo.tabs': 'Tabs Demo',
+    'nav.demo.form': 'Form Demo',
+    'nav.demo.pagination': 'Pagination Demo',
+    'nav.demo.textArea': 'Textarea Demo',
 
     'demo.button.title': 'AppButton Demo',
     'demo.button.desc': 'Review all AppButton props in one place.',
@@ -63,6 +66,12 @@ const En = {
     'demo.accordian.desc': 'Demo page that showcases all accordion types supported by AppAccordion at once.',
     'demo.tabs.title': 'AppTabs',
     'demo.tabs.desc': 'Demo page that showcases all tabs types supported by AppTabs at once.',
+    'demo.form.title': 'AppForm',
+    'demo.form.desc': 'Demo page that showcases all form types supported by AppForm at once.',
+    'demo.pagination.title': 'AppPagination',
+    'demo.pagination.desc': 'Demo page that showcases all pagination types supported by AppPagination at once.',
+    'demo.textArea.title': 'AppTextarea',
+    'demo.textArea.desc': 'Demo page that showcases all textarea types supported by AppTextarea at once.',
 };
 
 export default En;
