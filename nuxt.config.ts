@@ -4,7 +4,9 @@ export default defineNuxtConfig({
     features: { inlineStyles: false },
 
     app: {
-        baseURL: '/jonsoft-framework/',
+        // 서브폴더 배포 시 브라우저가 요청하는 경로와 반드시 일치해야 함.
+        // GitHub Pages 등 다른 base는 빌드 시 NUXT_APP_BASE_URL 로 지정 (package.json의 generate:gh-pages).
+        baseURL: process.env.NUXT_APP_BASE_URL || '/framework/',
     },
 
     modules: ['@pinia/nuxt'],
