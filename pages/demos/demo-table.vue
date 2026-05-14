@@ -118,7 +118,7 @@
 
 <script setup lang="ts">
 import type { AppTableOption, AppTableRow } from '~/core/type/table'
-const { title, description } = useDemoI18n('select')
+const { title, description } = useDemoI18n('table')
 
 const selectOptions: AppTableOption[] = [
     { label: '선택하세요', value: null },

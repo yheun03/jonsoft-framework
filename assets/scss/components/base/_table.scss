@@ -115,6 +115,7 @@
         color: $gray-900;
         outline: none;
         transition: border-color 0.15s ease;
+        box-sizing: border-box;
 
         &::placeholder {
             color: $gray-500;
