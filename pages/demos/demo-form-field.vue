@@ -142,7 +142,7 @@
 </template>
 
 <script setup lang="ts">
-const { title, description } = useDemoI18n('formField')
+const { title, description } = useDemoI18n('form')
 
 const name = ref('')
 const email = ref('')

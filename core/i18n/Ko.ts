@@ -72,6 +72,8 @@ const Ko = {
     'demo.pagination.desc': 'AppPagination 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
     'demo.textArea.title': 'AppTextarea',
     'demo.textArea.desc': 'AppTextarea 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
+    'demo.accordion.title': 'AppAccordion',
+    'demo.accordion.desc': 'AppAccordion 컴포넌트의 모든 속성을 한 화면에서 확인합니다.',
 };
 
 export default Ko;

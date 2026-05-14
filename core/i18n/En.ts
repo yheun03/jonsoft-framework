@@ -72,6 +72,8 @@ const En = {
     'demo.pagination.desc': 'Demo page that showcases all pagination types supported by AppPagination at once.',
     'demo.textArea.title': 'AppTextarea',
     'demo.textArea.desc': 'Demo page that showcases all textarea types supported by AppTextarea at once.',
+    'demo.accordion.title': 'AppAccordion',
+    'demo.accordion.desc': 'Demo page that showcases all accordion types supported by AppAccordion at once.',
 };
 
 export default En;
